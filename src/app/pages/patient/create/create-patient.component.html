@@ -15,21 +15,37 @@
         <mat-form-field appearance="fill" [style.width.px]=400>
           <mat-label>Nombre</mat-label>
           <input matInput formControlName="firstName">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" [style.width.px]=400>
           <mat-label>Apellido</mat-label>
           <input matInput formControlName="lastName">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         </mat-form-field>
     </div>
-    <div class="flex justify-around">
+    <div class="flex justify-around mb-10">
         <mat-form-field appearance="fill" [style.width.px]=400>
           <mat-label>Phone Number</mat-label>
-          <input matInput formControlName="phoneNumber">
+          <input type="number" matInput formControlName="phoneNumber">
+          <mat-icon matSuffix>phone</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" [style.width.px]=400>
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="address">
+          <mat-label>Cell Phone Number</mat-label>
+          <input type="number" matInput formControlName="address">
+          <mat-icon matSuffix>phone</mat-icon>
         </mat-form-field>
+    </div>
+    <div class="flex justify-around mb-10">
+      <mat-form-field appearance="fill" [style.width.px]=400>
+        <mat-label>Ciudad</mat-label>
+        <input matInput formControlName="phoneNumber">
+        <mat-icon matSuffix>place</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="fill" [style.width.px]=400>
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input type="date" matInput formControlName="address">
+        <mat-icon matSuffix>cake</mat-icon>
+      </mat-form-field>
     </div>
     <button mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
   </form>
