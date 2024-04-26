@@ -33,10 +33,20 @@ export class CreatePatientComponent {
 
     private createForm(){
         this.form = this._formBuilder.group({
-            firstName: ['', Validators.required],
+            firstName: ['', Validators.required, Validators.pattern('[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*'), Validators.minLength(1), Validators.maxLength(2)],
             lastName: ['', Validators.required],
             phoneNumber: ['', Validators.required],
-            address: ['', Validators.required]
+            cellPhoneNumber: ['', Validators.required],
+            email: ['', Validators.required],
+            city: ['', Validators.required],
+            address: ['', Validators.required],
+            recomendedBy: ['', Validators.required],
+            personInCharge: ['', Validators.required],
+            birthDate: ['', Validators.required],
+            maritalStatus: ['', Validators.required],
+            occupation: ['', Validators.required],
+            personalDoctor: ['', Validators.required],
+            previousDentist: ['', Validators.required],
             });
     }
 
