@@ -14,6 +14,12 @@ import { PatientRouting } from './patient.routing';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { CreatePatientComponent } from './create/create-patient.component';
 import { PatientService } from './patient.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { AddImage } from './image/add-image.component';
+import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
+
 
 @NgModule({
   imports: [
@@ -24,11 +30,13 @@ import { PatientService } from './patient.service';
     ReactiveFormsModule,
     TablerIconsModule.pick(TablerIcons),
     MatNativeDateModule,
-    NgxSpinnerModule
+   
+    NgxSpinnerModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule,
   ],
   declarations: [
     ListPatientComponent,
-    CreatePatientComponent
+    CreatePatientComponent,
+    AddImage
   ],
   providers: [
     PatientService,

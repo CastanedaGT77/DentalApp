@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Agregar imagen</h2>
+<mat-dialog-content>
+  Selecciona la imagen
+  <input (change)="capturarFile($event)" color="primary" accept=".jpg,.png,.jpeg" #fileInput type="file">
+  <img width="250px" [src]="previsualizacion">
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button color="primary"mat-flat-button mat-dialog-close>No</button>
+  <button color="primary" mat-flat-button mat-dialog-close cdkFocusInitial>Sí</button>
+</mat-dialog-actions>

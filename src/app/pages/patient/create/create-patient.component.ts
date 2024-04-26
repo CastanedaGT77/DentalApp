@@ -1,25 +1,32 @@
-import { Component } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, Inject } from "@angular/core";
+import { FormBuilder, FormGroup, FormsModule, Validators } from "@angular/forms";
 import { CreatePatientDto } from "src/app/data/dtos/patient/CreatePatientDto";
 import { PatientService } from "../patient.service";
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
+import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { AddImage } from "../image/add-image.component";
 
 @Component({
     selector: "app-create-patient",
-    templateUrl: "./create-patient.component.html"
+    templateUrl: "./create-patient.component.html",
 })
+
 export class CreatePatientComponent {
     form: FormGroup;
-
+    public previsualizacion!: string;
     constructor(
         private readonly _patientService: PatientService,
         private readonly _formBuilder: FormBuilder,
         private readonly _spinnerService: NgxSpinnerService,
         private readonly _snackBarService: MatSnackBar,
-        private readonly _router: Router
+        private readonly _router: Router,
+        public dialog: MatDialog
     ){
         this.createForm();
     }
@@ -35,6 +42,14 @@ export class CreatePatientComponent {
 
     async returnPage(){
         this._router.navigateByUrl("/patient/list");
+    }
+
+    openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+      this.dialog.open(AddImage, {
+        width: '500px',
+        enterAnimationDuration,
+        exitAnimationDuration,
+      });
     }
 
     async onSubmit() {
@@ -61,3 +76,5 @@ export class CreatePatientComponent {
         }
     }
 }
+
+  
