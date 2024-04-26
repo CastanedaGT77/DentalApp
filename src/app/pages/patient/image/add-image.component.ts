@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 @Component({
     selector: 'add-image',
     templateUrl: 'add-image.component.html',
+    
 })
 
 export class AddImage {

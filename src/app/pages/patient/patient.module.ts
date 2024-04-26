@@ -30,7 +30,6 @@ import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } fr
     ReactiveFormsModule,
     TablerIconsModule.pick(TablerIcons),
     MatNativeDateModule,
-   
     NgxSpinnerModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule,
   ],
   declarations: [
