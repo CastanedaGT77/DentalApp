@@ -18,7 +18,10 @@ import { AddImage } from "../image/add-image.component";
 })
 
 export class CreatePatientComponent {
+    // linea para definir sí el stepper te permite pasar o no
+    isLinear = false;
     form: FormGroup;
+    form2: FormGroup;
     public previsualizacion!: string;
     constructor(
         private readonly _patientService: PatientService,
@@ -48,6 +51,10 @@ export class CreatePatientComponent {
             personalDoctor: ['', Validators.required],
             previousDentist: ['', Validators.required],
             });
+        this.form2 = this._formBuilder.group({
+            firstName: ['', Validators.required, Validators.pattern('[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*'), Validators.minLength(1), Validators.maxLength(2)],
+            lastName: ['', Validators.required],
+        })
     }
 
     async returnPage(){

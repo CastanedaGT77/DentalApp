@@ -14,101 +14,146 @@
   </mat-card-content>
 </mat-card>
 
-
-
-<!-- FORM -->
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full shadow-md">
-    <p class="text-lg font-semibold m-5">Información General</p>
-    <div class="flex justify-around mb-5">
-        <mat-form-field appearance="fill" [style.width.px]=400>
-          <mat-label>Nombre</mat-label>
-          <input autocomplete="nope" matInput formControlName="firstName">
-          <!-- <mat-hint>Errores</mat-hint>
-          @if (form.hasError('firstName') && !form.hasError('required')){
-          <mat-error>
-            Por favor completa el campo!
-          </mat-error>
-          }
-          @if (form.hasError('required')){
+<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+</button> -->
+<mat-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="form" label="Campos 1">
+    <!-- FORM -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full shadow-md">
+      <p class="text-lg font-semibold m-5">Información General</p>
+      <div class="flex justify-around mb-5">
+          <mat-form-field appearance="fill" [style.width.px]=400>
+            <mat-label>Nombre</mat-label>
+            <input autocomplete="nope" matInput formControlName="firstName">
+            <!-- <mat-hint>Errores</mat-hint>
+            @if (form.hasError('firstName') && !form.hasError('required')){
             <mat-error>
-              El Nombre es requerido!
+              Por favor completa el campo!
             </mat-error>
-          } -->
-          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            }
+            @if (form.hasError('required')){
+              <mat-error>
+                El Nombre es requerido!
+              </mat-error>
+            } -->
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="fill" [style.width.px]=400>
+            <mat-label>Apellido</mat-label>
+            <input autocomplete="nope" matInput formControlName="lastName">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          </mat-form-field>
+      </div>
+      <div class="flex justify-around mb-5">
+          <mat-form-field appearance="fill" [style.width.px]=400>
+            <mat-label>Phone Number</mat-label>
+            <input autocomplete="nope" type="number" matInput formControlName="phoneNumber">
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="fill" [style.width.px]=400>
+            <mat-label>Cell Phone Number</mat-label>
+            <input autocomplete="nope" type="number" matInput formControlName="cellPhoneNumber">
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+      </div>
+      <div class="flex justify-around mb-5">
+        <mat-form-field appearance="fill" [style.width.px]=400>
+          <mat-label>Ciudad</mat-label>
+          <input autocomplete="nope" matInput formControlName="city">
+          <mat-icon matSuffix>place</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" [style.width.px]=400>
-          <mat-label>Apellido</mat-label>
-          <input autocomplete="nope" matInput formControlName="lastName">
-          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-label>Fecha de Nacimiento</mat-label>
+          <input autocomplete="nope" type="date" matInput formControlName="birthDate">
+          <mat-icon matSuffix>cake</mat-icon>
         </mat-form-field>
-    </div>
-    <div class="flex justify-around mb-5">
+      </div>
+      <div class="flex justify-around mb-5">
         <mat-form-field appearance="fill" [style.width.px]=400>
-          <mat-label>Phone Number</mat-label>
-          <input autocomplete="nope" type="number" matInput formControlName="phoneNumber">
-          <mat-icon matSuffix>phone</mat-icon>
+          <mat-label>Dirección</mat-label>
+          <input autocomplete="nope" matInput formControlName="address">
+          <mat-icon matSuffix>place</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" [style.width.px]=400>
-          <mat-label>Cell Phone Number</mat-label>
-          <input autocomplete="nope" type="number" matInput formControlName="cellPhoneNumber">
-          <mat-icon matSuffix>phone</mat-icon>
+          <mat-label>Correo Electrónico</mat-label>
+          <input autocomplete="nope" type="mail" matInput formControlName="email">
+          <mat-icon matSuffix>email</mat-icon>
         </mat-form-field>
+      </div>
+      <div class="flex justify-around mb-5">
+        <mat-form-field appearance="fill" [style.width.px]=400>
+          <mat-label>Recomendado por</mat-label>
+          <input autocomplete="nope" matInput formControlName="recomendedBy">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="fill" [style.width.px]=400>
+          <mat-label>Persona a Cargo</mat-label>
+          <input autocomplete="nope" matInput formControlName="personInCharge">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="flex justify-around mb-5">
+        <mat-form-field appearance="fill" [style.width.px]=400>
+          <mat-label>Estado Civil</mat-label>
+          <input autocomplete="nope" matInput formControlName="maritalStatus">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="fill" [style.width.px]=400>
+          <mat-label>Ocupación</mat-label>
+          <input autocomplete="nope" matInput formControlName="occupation">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="flex justify-around mb-5">
+        <mat-form-field appearance="fill" [style.width.px]=400>
+          <mat-label>Dentista Previo</mat-label>
+          <input autocomplete="nope" matInput formControlName="previousDentist">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+      </div>
+      <button mat-button matStepperPrevious mat-raised-button color="primary" type="submit" class="m-10">Back</button>
+      <button matStepperNext [disabled]="form.invalid" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="form2" label="Campos 2">
+    <form [formGroup]="form2">
+      <mat-grid-list class="flex justify-between" cols="2" rowHeight="2:1">
+        <mat-grid-tile>
+          <p><mat-slide-toggle>Opción 1 &nbsp;</mat-slide-toggle></p>
+          <p><mat-slide-toggle labelPosition="before">Opción 2</mat-slide-toggle></p>
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+          <p><mat-slide-toggle>Opción 3 &nbsp;</mat-slide-toggle></p>
+          <p><mat-slide-toggle labelPosition="before">Opción 4</mat-slide-toggle></p>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <p><mat-slide-toggle>Opción 5 &nbsp;</mat-slide-toggle></p>
+          <p><mat-slide-toggle labelPosition="before">Opción 6</mat-slide-toggle></p>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <p><mat-slide-toggle>Opción 7 &nbsp;</mat-slide-toggle></p>
+          <p><mat-slide-toggle labelPosition="before">Opción 8</mat-slide-toggle></p>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <!-- <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
     </div>
-    <div class="flex justify-around mb-5">
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Ciudad</mat-label>
-        <input autocomplete="nope" matInput formControlName="city">
-        <mat-icon matSuffix>place</mat-icon>
-      </mat-form-field>
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Fecha de Nacimiento</mat-label>
-        <input autocomplete="nope" type="date" matInput formControlName="birthDate">
-        <mat-icon matSuffix>cake</mat-icon>
-      </mat-form-field>
-    </div>
-    <div class="flex justify-around mb-5">
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Dirección</mat-label>
-        <input autocomplete="nope" matInput formControlName="address">
-        <mat-icon matSuffix>place</mat-icon>
-      </mat-form-field>
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Correo Electrónico</mat-label>
-        <input autocomplete="nope" type="mail" matInput formControlName="email">
-        <mat-icon matSuffix>email</mat-icon>
-      </mat-form-field>
-    </div>
-    <div class="flex justify-around mb-5">
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Recomendado por</mat-label>
-        <input autocomplete="nope" matInput formControlName="recomendedBy">
-        <mat-icon matSuffix>person</mat-icon>
-      </mat-form-field>
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Persona a Cargo</mat-label>
-        <input autocomplete="nope" matInput formControlName="personInCharge">
-        <mat-icon matSuffix>person</mat-icon>
-      </mat-form-field>
-    </div>
-    <div class="flex justify-around mb-5">
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Estado Civil</mat-label>
-        <input autocomplete="nope" matInput formControlName="maritalStatus">
-        <mat-icon matSuffix>person</mat-icon>
-      </mat-form-field>
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Ocupación</mat-label>
-        <input autocomplete="nope" matInput formControlName="occupation">
-        <mat-icon matSuffix>person</mat-icon>
-      </mat-form-field>
-    </div>
-    <div class="flex justify-around mb-5">
-      <mat-form-field appearance="fill" [style.width.px]=400>
-        <mat-label>Dentista Previo</mat-label>
-        <input autocomplete="nope" matInput formControlName="previousDentist">
-        <mat-icon matSuffix>person</mat-icon>
-      </mat-form-field>
-    </div>
-    <button [disabled]="form.invalid" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
-  </form>
+  </mat-step> -->
+</mat-stepper>
+
+
+
+
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
