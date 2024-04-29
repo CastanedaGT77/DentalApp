@@ -23,6 +23,7 @@ export class CreatePatientComponent {
     form: FormGroup;
     form2: FormGroup;
     public previsualizacion!: string;
+    
     constructor(
         private readonly _patientService: PatientService,
         private readonly _formBuilder: FormBuilder,

@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AddImage } from './image/add-image.component';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
+import { DeletePatient } from './delete/delete-patient.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } fr
   declarations: [
     ListPatientComponent,
     CreatePatientComponent,
-    AddImage
+    AddImage,
+    DeletePatient
   ],
   providers: [
     PatientService,

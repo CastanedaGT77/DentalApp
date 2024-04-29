@@ -1,8 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DeletePatient } from '../delete/delete-patient.component';
 @Component({
     selector: "app-list-patient",
     templateUrl: "./list-patient.component.html"
@@ -57,7 +59,8 @@ export class ListPatientComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(
-        private readonly _router: Router
+        private readonly _router: Router,
+        public dialog: MatDialog
     ){
         // this.getPatients();
     }
@@ -67,8 +70,13 @@ export class ListPatientComponent {
         console.log('funciona paciente', paciente);
     }
 
-    eliminarPaciente(paciente: any) {
-        console.log('funciona paciente delete', paciente);
+    eliminarPaciente(element: any): void {
+        console.log('funciona paciente delete', element);
+        this.dialog.open(DeletePatient, {
+            width: '250px',
+            data: { paciente: element }
+        });
+        
     }
 
     verDetalle(paciente: any) {

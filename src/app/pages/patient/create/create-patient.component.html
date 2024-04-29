@@ -121,25 +121,24 @@
       <mat-grid-list class="flex justify-between" cols="2" rowHeight="2:1">
         <mat-grid-tile>
           <p><mat-slide-toggle>Opción 1 &nbsp;</mat-slide-toggle></p>
-          <p><mat-slide-toggle labelPosition="before">Opción 2</mat-slide-toggle></p>
+          <p><mat-slide-toggle>Opción 2</mat-slide-toggle></p>
         </mat-grid-tile>
-        
         <mat-grid-tile>
           <p><mat-slide-toggle>Opción 3 &nbsp;</mat-slide-toggle></p>
-          <p><mat-slide-toggle labelPosition="before">Opción 4</mat-slide-toggle></p>
+          <p><mat-slide-toggle>Opción 4</mat-slide-toggle></p>
         </mat-grid-tile>
         <mat-grid-tile>
           <p><mat-slide-toggle>Opción 5 &nbsp;</mat-slide-toggle></p>
-          <p><mat-slide-toggle labelPosition="before">Opción 6</mat-slide-toggle></p>
+          <p><mat-slide-toggle>Opción 6</mat-slide-toggle></p>
         </mat-grid-tile>
         <mat-grid-tile>
           <p><mat-slide-toggle>Opción 7 &nbsp;</mat-slide-toggle></p>
-          <p><mat-slide-toggle labelPosition="before">Opción 8</mat-slide-toggle></p>
+          <p><mat-slide-toggle>Opción 8</mat-slide-toggle></p>
         </mat-grid-tile>
       </mat-grid-list>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperPrevious mat-raised-button color="primary" type="submit" class="m-10">Back</button>
+        <button matStepperNext [disabled]="form2.invalid" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
       </div>
     </form>
   </mat-step>
