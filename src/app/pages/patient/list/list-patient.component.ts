@@ -65,9 +65,10 @@ export class ListPatientComponent {
         // this.getPatients();
     }
 
-    // Métodos de acción
+    // Métodos de acción llamada a editar paciente
     editarPaciente(paciente: any) {
         console.log('funciona paciente', paciente);
+        this._router.navigateByUrl("/patient/edit")
     }
 
     eliminarPaciente(element: any): void {

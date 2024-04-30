@@ -95,7 +95,7 @@ export class CreatePatientComponent implements OnInit{
 
     private async initializeForm(){
         // Llamar a servicio para obtener paciente
-        // Llenar formulario
+        // Llenar formulario con los datos del paciente obtenidos
         this.form.controls["firstName"].setValue("Edvin");
     }
 
