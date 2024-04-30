@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
       <a href="/">
         <img
           src="./assets/images/logos/cast.JPG"
-          class="align-middle m-2"
+          class="align-middle m-2 rounded-lg opacity-2"
           alt="logo"
         />
       </a>

@@ -12,7 +12,17 @@ export const PatientRouting: Routes = [
       },
       {
         path: 'create',
-        component: CreatePatientComponent
+        component: CreatePatientComponent,
+        data: {
+          type: 'create'
+        }
+      },
+      {
+        path: 'edit',
+        component: CreatePatientComponent,
+        data: {
+          type: 'edit'
+        }
       }
     ],
   },

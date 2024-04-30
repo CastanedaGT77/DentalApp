@@ -25,24 +25,16 @@
       <div class="flex justify-around mb-5">
           <mat-form-field appearance="fill" [style.width.px]=400>
             <mat-label>Nombre</mat-label>
-            <input autocomplete="nope" matInput formControlName="firstName">
-            <!-- <mat-hint>Errores</mat-hint>
-            @if (form.hasError('firstName') && !form.hasError('required')){
-            <mat-error>
-              Por favor completa el campo!
-            </mat-error>
-            }
-            @if (form.hasError('required')){
-              <mat-error>
-                El Nombre es requerido!
-              </mat-error>
-            } -->
+            <input autocomplete="nope" matInput formControlName="firstName" pattern="[a-zA-Z ]*">
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-error *ngIf="form.controls['firstName'].hasError('required')">Nombre <strong>requerido</strong></mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
           </mat-form-field>
           <mat-form-field appearance="fill" [style.width.px]=400>
             <mat-label>Apellido</mat-label>
             <input autocomplete="nope" matInput formControlName="lastName">
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-error *ngIf="form.controls['lastName'].hasError('required')">Apellido <strong>requerido</strong></mat-error>
           </mat-form-field>
       </div>
       <div class="flex justify-around mb-5">
@@ -117,30 +109,15 @@
     </form>
   </mat-step>
   <mat-step [stepControl]="form2" label="Campos 2">
-    <form [formGroup]="form2">
-      <mat-grid-list class="flex justify-between" cols="2" rowHeight="2:1">
-        <mat-grid-tile>
-          <p><mat-slide-toggle>Opción 1 &nbsp;</mat-slide-toggle></p>
-          <p><mat-slide-toggle>Opción 2</mat-slide-toggle></p>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <p><mat-slide-toggle>Opción 3 &nbsp;</mat-slide-toggle></p>
-          <p><mat-slide-toggle>Opción 4</mat-slide-toggle></p>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <p><mat-slide-toggle>Opción 5 &nbsp;</mat-slide-toggle></p>
-          <p><mat-slide-toggle>Opción 6</mat-slide-toggle></p>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <p><mat-slide-toggle>Opción 7 &nbsp;</mat-slide-toggle></p>
-          <p><mat-slide-toggle>Opción 8</mat-slide-toggle></p>
-        </mat-grid-tile>
-      </mat-grid-list>
+      <div class="flex flex-wrap justify-between">
+        <p *ngFor="let detalle of detallesEnfermedad;let i = index;">
+          <mat-slide-toggle [(ngModel)]="detalle.selected">{{detalle.name}}&nbsp;</mat-slide-toggle>
+        </p>
+      </div>
       <div>
         <button mat-button matStepperPrevious mat-raised-button color="primary" type="submit" class="m-10">Back</button>
         <button matStepperNext [disabled]="form2.invalid" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
       </div>
-    </form>
   </mat-step>
   <!-- <mat-step>
     <ng-template matStepLabel>Done</ng-template>
