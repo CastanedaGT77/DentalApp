@@ -1,16 +1,14 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, FormsModule, Validators } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CreatePatientDto } from "src/app/data/dtos/patient/CreatePatientDto";
 import { PatientService } from "../patient.service";
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from "@angular/material/dialog";
-import { MatButtonModule } from "@angular/material/button";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
+import {  MatDialog } from "@angular/material/dialog";
 import { AddImage } from "../image/add-image.component";
+import { DomSanitizer } from "@angular/platform-browser";
 
 class DetalleEnfermedad {
     id: number;
@@ -34,6 +32,7 @@ export class CreatePatientComponent implements OnInit{
     type: "create" | "edit";
     patient: any;
     patientId: number;
+    public archivos!: any;
     
     constructor(
         private readonly _patientService: PatientService,
@@ -42,7 +41,8 @@ export class CreatePatientComponent implements OnInit{
         private readonly _snackBarService: MatSnackBar,
         private readonly _router: Router,
         private readonly _route: ActivatedRoute,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private sanitizer: DomSanitizer
     ){
         this.detallesEnfermedad = [];
         this.type = this._route.snapshot.data["type"] ?? "create";

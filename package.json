@@ -23,6 +23,7 @@
     "angular-tabler-icons": "^2.7.0",
     "apexcharts": "^3.35.3",
     "axios": "^1.6.8",
+    "mat-file-upload": "^11.1.2",
     "ng-apexcharts": "1.7.1",
     "ngx-spinner": "^15.0.1",
     "rxjs": "~7.5.0",

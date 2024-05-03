@@ -128,6 +128,7 @@
               <mat-error *ngIf="form.controls['previousDentist'].hasError('required')">Dentista previo <strong>requerido</strong></mat-error>
               <mat-error *ngIf="form.controls['previousDentist'].hasError('pattern')">Dentista previo inválido ingrese uno correcto</mat-error>
             </mat-form-field>
+            
           </div>
           <button mat-button (click)="returnPage()" mat-raised-button color="primary" type="submit" class="m-10">Back</button>
           <button matStepperNext [disabled]="form.invalid" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>

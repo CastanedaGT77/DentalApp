@@ -31,7 +31,7 @@ import {  PatientProfileComponent } from './patient-profile/patient-profile.comp
     ReactiveFormsModule,
     TablerIconsModule.pick(TablerIcons),
     MatNativeDateModule,
-    NgxSpinnerModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule,
+    NgxSpinnerModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, 
   ],
   declarations: [
     ListPatientComponent,
