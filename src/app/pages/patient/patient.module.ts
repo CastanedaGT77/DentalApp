@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AddImage } from './image/add-image.component';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { DeletePatient } from './delete/delete-patient.component';
-
+import {  PatientProfileComponent } from './patient-profile/patient-profile.component';
 
 @NgModule({
   imports: [
@@ -37,7 +37,8 @@ import { DeletePatient } from './delete/delete-patient.component';
     ListPatientComponent,
     CreatePatientComponent,
     AddImage,
-    DeletePatient
+    DeletePatient,
+    PatientProfileComponent
   ],
   providers: [
     PatientService,

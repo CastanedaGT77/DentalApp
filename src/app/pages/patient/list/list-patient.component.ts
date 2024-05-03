@@ -67,7 +67,7 @@ export class ListPatientComponent {
 
     // Métodos de acción llamada a editar paciente
     editarPaciente(paciente: any) {
-        console.log('funciona paciente', paciente);
+        console.log('funciona paciente editar', paciente);
         this._router.navigateByUrl("/patient/edit")
     }
 
@@ -82,6 +82,7 @@ export class ListPatientComponent {
 
     verDetalle(paciente: any) {
         console.log('funciona paciente ver', paciente);
+        this._router.navigate(['/patient/patientProfile', { paciente: JSON.stringify(paciente) }]);
     }
 
     applyFilter(event: Event) {

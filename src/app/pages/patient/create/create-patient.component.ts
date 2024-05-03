@@ -22,6 +22,7 @@ class DetalleEnfermedad {
     selector: "app-create-patient",
     templateUrl: "./create-patient.component.html",
 })
+
 export class CreatePatientComponent implements OnInit{
     // linea para definir sí el stepper te permite pasar o no
     isLinear = false;
@@ -64,10 +65,6 @@ export class CreatePatientComponent implements OnInit{
         this.detallesEnfermedad.push({id: 4, name: "D", selected: false});
         this.detallesEnfermedad.push({id: 5, name: "E", selected: false});
         this.detallesEnfermedad.push({id: 6, name: "F", selected: false});
-    }
-
-    private createDetallesForm(){
-
     }
 
     private createForm(){
