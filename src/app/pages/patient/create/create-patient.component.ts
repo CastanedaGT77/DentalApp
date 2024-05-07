@@ -33,6 +33,7 @@ export class CreatePatientComponent implements OnInit{
     patient: any;
     patientId: number;
     public archivos!: any;
+    paciente: any;
     
     constructor(
         private readonly _patientService: PatientService,
@@ -52,10 +53,12 @@ export class CreatePatientComponent implements OnInit{
 
     async ngOnInit() {
         this.getDetalles();
+
         if(this.type === "edit")
+            this.paciente = history.state.paciente;
+            console.log('Paciente seleccionado:', this.paciente);
             await this.initializeForm();
     }
-
 
     private getDetalles(){
         // Llamar al servicio
@@ -93,7 +96,10 @@ export class CreatePatientComponent implements OnInit{
     private async initializeForm(){
         // Llamar a servicio para obtener paciente
         // Llenar formulario con los datos del paciente obtenidos
-        this.form.controls["firstName"].setValue("Edvin");
+        this.form.controls["firstName"].setValue(this.paciente.firstName);
+        this.form.controls["lastName"].setValue(this.paciente.lastName);
+        this.form.controls["phoneNumber"].setValue(this.paciente.phoneNumber);
+
     }
 
     async returnPage(){
@@ -111,7 +117,7 @@ export class CreatePatientComponent implements OnInit{
     mostrarDetalles(){
         console.log("DETALLES:::::::", this.detallesEnfermedad);
     }
-
+    
     async onSubmit() {
         if (this.form.valid) {
             Swal.fire({

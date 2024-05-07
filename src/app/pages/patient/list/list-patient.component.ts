@@ -3,83 +3,63 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { DeletePatient } from '../delete/delete-patient.component';
+import { PatientService } from '../patient.service';
+
 @Component({
     selector: "app-list-patient",
     templateUrl: "./list-patient.component.html"
 })
 export class ListPatientComponent {
-    patients = [
-        {position: 1, name: 'Ana Daniela Chavéz Camey', weight: 1.0079, symbol: 'H'},
-        {position: 2, name: 'Marco Antonio Ríos Garcia', weight: 4.0026, symbol: 'He'},
-        {position: 3, name: 'Sergio Arturo Ríos Garcia', weight: 6.941, symbol: 'Li'},
-        {position: 4, name: 'Palido', weight: 9.0122, symbol: 'Be'},
-        {position: 5, name: 'Luis Cotoc', weight: 10.811, symbol: 'B'},
-        {position: 1, name: 'Ana Daniela Chavéz Camey', weight: 1.0079, symbol: 'H'},
-        {position: 2, name: 'Marco Antonio Ríos Garcia', weight: 4.0026, symbol: 'He'},
-        {position: 3, name: 'Sergio Arturo Ríos Garcia', weight: 6.941, symbol: 'Li'},
-        {position: 4, name: 'Palido', weight: 9.0122, symbol: 'Be'},
-        {position: 5, name: 'Luis Cotoc', weight: 10.811, symbol: 'B'},
-        {position: 1, name: 'Ana Daniela Chavéz Camey', weight: 1.0079, symbol: 'H'},
-        {position: 2, name: 'Marco Antonio Ríos Garcia', weight: 4.0026, symbol: 'He'},
-        {position: 3, name: 'Sergio Arturo Ríos Garcia', weight: 6.941, symbol: 'Li'},
-        {position: 4, name: 'Palido', weight: 9.0122, symbol: 'Be'},
-        {position: 5, name: 'Luis Cotoc', weight: 10.811, symbol: 'B'},
-        {position: 1, name: 'Ana Daniela Chavéz Camey', weight: 1.0079, symbol: 'H'},
-        {position: 2, name: 'Marco Antonio Ríos Garcia', weight: 4.0026, symbol: 'He'},
-        {position: 3, name: 'Sergio Arturo Ríos Garcia', weight: 6.941, symbol: 'Li'},
-        {position: 4, name: 'Palido', weight: 9.0122, symbol: 'Be'},
-        {position: 5, name: 'Luis Cotoc', weight: 10.811, symbol: 'B'},
-        {position: 1, name: 'Ana Daniela Chavéz Camey', weight: 1.0079, symbol: 'H'},
-        {position: 2, name: 'Marco Antonio Ríos Garcia', weight: 4.0026, symbol: 'He'},
-        {position: 3, name: 'Sergio Arturo Ríos Garcia', weight: 6.941, symbol: 'Li'},
-        {position: 4, name: 'Palido', weight: 9.0122, symbol: 'Be'},
-        {position: 5, name: 'Luis Cotoc', weight: 10.811, symbol: 'B'},
-        {position: 1, name: 'Ana Daniela Chavéz Camey', weight: 1.0079, symbol: 'H'},
-        {position: 2, name: 'Marco Antonio Ríos Garcia', weight: 4.0026, symbol: 'He'},
-        {position: 3, name: 'Sergio Arturo Ríos Garcia', weight: 6.941, symbol: 'Li'},
-        {position: 4, name: 'Palido', weight: 9.0122, symbol: 'Be'},
-        {position: 5, name: 'Luis Cotoc', weight: 10.811, symbol: 'B'},
-        {position: 1, name: 'Ana Daniela Chavéz Camey', weight: 1.0079, symbol: 'H'},
-        {position: 2, name: 'Marco Antonio Ríos Garcia', weight: 4.0026, symbol: 'He'},
-        {position: 3, name: 'Sergio Arturo Ríos Garcia', weight: 6.941, symbol: 'Li'},
-        {position: 4, name: 'Palido', weight: 9.0122, symbol: 'Be'},
-        {position: 5, name: 'Luis Cotoc', weight: 10.811, symbol: 'B'},
-        {position: 1, name: 'Ana Daniela Chavéz Camey', weight: 1.0079, symbol: 'H'},
-        {position: 2, name: 'Marco Antonio Ríos Garcia', weight: 4.0026, symbol: 'He'},
-        {position: 3, name: 'Sergio Arturo Ríos Garcia', weight: 6.941, symbol: 'Li'},
-        {position: 4, name: 'Palido', weight: 9.0122, symbol: 'Be'},
-        {position: 5, name: 'Luis Cotoc', weight: 10.811, symbol: 'B'},
-    ];
+    patients = [];
     
-    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'actions'];
+    displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'email', 'actions'];
+
+
     dataSource = new MatTableDataSource<any>(this.patients);
   
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(
         private readonly _router: Router,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private _patientService: PatientService
     ){
-        // this.getPatients();
     }
 
     // Métodos de acción llamada a editar paciente
     editarPaciente(paciente: any) {
         console.log('funciona paciente editar', paciente);
-        this._router.navigateByUrl("/patient/edit")
+        this._router.navigate(['/patient/edit'], { state: { paciente: paciente } });
     }
 
-    eliminarPaciente(element: any): void {
-        console.log('funciona paciente delete', element);
+    eliminarPaciente(paciente: any): void {
+        console.log('funciona paciente delete', paciente);
         this.dialog.open(DeletePatient, {
             width: '250px',
-            data: { paciente: element }
+            data: { paciente: paciente }
         });
         
     }
 
+    getPatients() {
+        this._patientService.getPatient().then(response => {
+            if (response && response.patients) {
+                // Asigna los pacientes obtenidos al arreglo patients
+                this.patients = response.patients;
+    
+                // Actualiza la fuente de datos de la tabla
+                this.dataSource.data = this.patients;
+                console.log(this.patients)
+            } else {
+                console.error('Error: No se encontraron pacientes en la respuesta.');
+            }
+        }).catch(error => {
+            console.error('Error al obtener pacientes:', error);
+        });
+    }
+    
+    
     verDetalle(paciente: any) {
         console.log('funciona paciente ver', paciente);
         this._router.navigate(['/patient/patientProfile', { paciente: JSON.stringify(paciente) }]);
@@ -92,6 +72,10 @@ export class ListPatientComponent {
   
     ngAfterViewInit() {
       this.dataSource.paginator = this.paginator;
+    }
+
+    ngOnInit(): void {
+        this.getPatients(); 
     }
 
     redirectCreate(){
