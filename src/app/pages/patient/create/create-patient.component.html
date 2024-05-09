@@ -60,7 +60,7 @@
           <div class="flex justify-around mb-5">
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Ciudad</mat-label>
-              <input autocomplete="nope" matInput formControlName="city" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ,0-9-() ]*">
+              <input autocomplete="nope" matInput formControlName="city" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
               <mat-icon matSuffix>place</mat-icon>
               <mat-error *ngIf="form.controls['city'].hasError('required')">Ciudad <strong>requerido</strong></mat-error>
               <mat-error *ngIf="form.controls['city'].hasError('pattern')">Ciudad inválida ingrese una dirección correcta</mat-error>
@@ -75,14 +75,14 @@
           <div class="flex justify-around mb-5">
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Dirección</mat-label>
-              <input autocomplete="nope" matInput formControlName="address" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ,0-9-() ]*">
+              <input autocomplete="nope" matInput formControlName="address" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
               <mat-icon matSuffix>place</mat-icon>
               <mat-error *ngIf="form.controls['address'].hasError('required')">Dirección <strong>requerida</strong></mat-error>
               <mat-error *ngIf="form.controls['address'].hasError('pattern')">Dirección inválida ingrese una dirección correcta</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Correo Electrónico</mat-label>
-              <input autocomplete="nope" type="email" matInput formControlName="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+              <input autocomplete="nope" type="email" matInput formControlName="email" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
               <mat-icon matSuffix>email</mat-icon>
               <mat-error *ngIf="form.controls['email'].hasError('required')">Email <strong>requerido</strong></mat-error>
               <mat-error *ngIf="form.controls['email'].hasError('pattern')">Email inválido ingrese una dirección correcta</mat-error>
@@ -131,7 +131,7 @@
             
           </div>
           <button mat-button (click)="returnPage()" mat-raised-button color="primary" type="submit" class="m-10">Back</button>
-          <button matStepperNext [disabled]="form.invalid" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
+          <button matStepperNext  (click)="onSubmit()" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
         </form>
       </mat-step>
       <mat-step [stepControl]="form2" label="Campos 2">
@@ -142,7 +142,7 @@
           </div>
           <div>
             <button mat-button matStepperPrevious mat-raised-button color="primary" type="submit" class="m-10">Back</button>
-            <button matStepperNext [disabled]="form2.invalid" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
+            <button matStepperNext (click)="onSubmit()"  mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
           </div>
       </mat-step>
       <!-- <mat-step>

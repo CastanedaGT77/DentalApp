@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CreatePatientDto } from "src/app/data/dtos/patient/CreatePatientDto";
-import { PatientService } from "../patient.service";
+import { PatientService } from '../patient.service';
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -120,6 +120,10 @@ export class CreatePatientComponent implements OnInit{
     
     async onSubmit() {
         if (this.form.valid) {
+            // Verifica si el formulario es válido
+            console.log("Formulario válido");
+    
+            // Muestra el diálogo de confirmación
             Swal.fire({
                 title: "",
                 text: "¿Desea finalizar la creación de usuario?",
@@ -129,24 +133,53 @@ export class CreatePatientComponent implements OnInit{
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Finalizar",
                 cancelButtonText: "Cancelar"
-              }).then(async (result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
+                    // Muestra un mensaje para indicar que se está creando el paciente
                     this._spinnerService.show();
-                    const data : Partial<CreatePatientDto> = this.form.value;
-                    const response = await this._patientService.createPatient(data);
-                    const message = response ? "Paciente creado correctamente" : "Error. No se ha podido crear";
-                    this._snackBarService.open(message, '', {horizontalPosition: "center", verticalPosition: "top", duration: 5000});
-                    this._spinnerService.hide();
-                    if(this.type === "create"){
-                        // Llamar a servicio para crear
-                    }
-                    else if(this.type === "edit"){
-                        // Llamar a servicio editar
+    
+                    // Obtén la imagen capturada del servicio ImageService
+                    const profileImage = this._patientService.capturedImage;
+    
+                    // Asigna los detalles de la enfermedad al objeto de datos
+                    const data: Partial<CreatePatientDto> = this.form.value;
+                    data.profileImage = profileImage;
+                    data.illnessDetails = [0,1,2]; // Asegúrate de que esto esté correctamente configurado
+    
+                    try {
+                        // Intenta crear el paciente
+                        const response = await this._patientService.createPatient(data);
+                        if (response) {
+                            // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
+                            const message = "Paciente creado correctamente";
+                            this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+                            this.form.reset();
+                            this.returnPage();
+                        } else {
+                            // Si la creación falla, muestra un mensaje de error
+                            const errorMessage = "Error al crear el paciente";
+                            this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+                        }
+                    } catch (error) {
+                        // Maneja cualquier error que ocurra durante la creación del paciente
+                        console.error("Error al crear el paciente:", error);
+                        const errorMessage = "Error al crear el paciente";
+                        this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+                    } finally {
+                        // Oculta el spinner después de realizar la operación
+                        this._spinnerService.hide();
                     }
                 }
-              });
+            });
+        } else {
+            // Si el formulario no es válido, muestra un mensaje de error
+            const errorMessage = "Por favor, completa todos los campos correctamente";
+            this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         }
     }
+    
+    
+    
 }
 
   

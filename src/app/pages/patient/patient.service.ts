@@ -5,6 +5,8 @@ import { axiosClient } from 'src/app/axios/axiosConfig';
 @Injectable()
 export class PatientService {
 
+    capturedImage: string | null = null;
+
     constructor(){
     }
 

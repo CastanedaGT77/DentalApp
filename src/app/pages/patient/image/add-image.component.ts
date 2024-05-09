@@ -11,6 +11,8 @@ import {MatButtonModule} from '@angular/material/button';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
+import { Injectable } from '@angular/core';
+import { PatientService } from '../patient.service';
 
 @Component({
     selector: 'add-image',
@@ -22,7 +24,8 @@ export class AddImage {
   public previsualizacion!: string;
   public archivos!: any;
   public loading!: boolean;
-  constructor(public dialogRef: MatDialogRef<AddImage>, private sanitizer: DomSanitizer) {}
+  capturedImage: string | null = null;
+  constructor(public dialogRef: MatDialogRef<AddImage>, private sanitizer: DomSanitizer, private PatientService: PatientService) {}
 
   capturarFile(event:any): any {
     const MAXIMO_TAMANIO_BYTES = 100000000;
@@ -44,7 +47,8 @@ export class AddImage {
       console.log('archivo cap', archivoCapturado)
       this.extraerBase64(archivoCapturado).then((imagen: any) => {
       this.previsualizacion = imagen.base;
-      localStorage.setItem('base64',imagen.base)
+      this.PatientService.capturedImage = imagen.base;
+      //localStorage.setItem('base64',imagen.base)
       //console.log('asss', imagen);
     })
     this.archivos = archivoCapturado;
@@ -62,7 +66,7 @@ export class AddImage {
         resolve({
           base: reader.result
         });
-        //console.log('resolve',resolve)
+        console.log('resolve',resolve)
       };
       reader.onerror = error => {
         resolve({
