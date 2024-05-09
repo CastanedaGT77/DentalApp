@@ -39,7 +39,6 @@ export class ListPatientComponent {
             width: '250px',
             data: { paciente: paciente }
         });
-        
     }
 
     getPatients() {

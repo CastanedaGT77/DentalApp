@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>Eliminar Paciente</h2>
 <mat-dialog-content>
-  Te gustaría elimar el paciente: {{data.paciente.id}}, {{data.paciente.firstName}}  ?
+  ¿Te gustaría eliminar el paciente: {{data.paciente.id}}, {{data.paciente.firstName}}?
 </mat-dialog-content>
 <mat-dialog-actions>
   <button color="whiteLetter" mat-flat-button mat-dialog-close>No</button>
-  <button click="eliminarPaciente()" color="primary" mat-flat-button mat-dialog-close cdkFocusInitial>Sí</button>
+  <button (click)="eliminarPaciente(data.paciente.id)" color="primary" mat-flat-button mat-dialog-close cdkFocusInitial>Sí</button>
 </mat-dialog-actions>
