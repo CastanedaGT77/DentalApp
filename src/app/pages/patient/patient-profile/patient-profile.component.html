@@ -11,7 +11,17 @@
       <mat-card-subtitle>Edad: {{paciente.birthDate | date}} </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p> {{paciente.symbol}} </p>
+      <p> Números de Contacto: {{paciente.phoneNumber}} - {{paciente.cellPhoneNumber}} </p>
+      <p> Correo Electrónico: {{paciente.email}} </p>
+      <p> Ciudad: {{paciente.city}} </p>
+      <p> Dirección: {{paciente.address}} </p>
+      <p> Recomendado por: {{paciente.recommendedBy}} </p>
+      <p> Persona a Cargo: {{paciente.personInCharge}} </p>
+      <p> Estado Civil: {{paciente.maritalStatus}} </p>
+      <p> Ocupación: {{paciente.occupation}} </p>
+      <p> Doctor Personal: {{paciente.personalDoctor}} </p>
+      <p> Dentista Previo: {{paciente.previousDentist}} </p>
+      <p> Detalle de Enfermedad: {{paciente.illnessDetails}} </p>
     </mat-card-content>
    
 </mat-card>

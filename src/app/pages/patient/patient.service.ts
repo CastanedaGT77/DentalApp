@@ -15,7 +15,6 @@ export class PatientService {
             console.log("DATA FORM CREATE PATIENT SERVICE:", requestData);
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.post('/patient', requestData);
-            debugger;
             return true;
         } catch(error){
             return null;

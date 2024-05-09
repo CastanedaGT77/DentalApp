@@ -82,7 +82,7 @@
             </mat-form-field>
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Correo Electrónico</mat-label>
-              <input autocomplete="nope" type="email" matInput formControlName="email" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+              <input autocomplete="nope" type="email" matInput formControlName="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
               <mat-icon matSuffix>email</mat-icon>
               <mat-error *ngIf="form.controls['email'].hasError('required')">Email <strong>requerido</strong></mat-error>
               <mat-error *ngIf="form.controls['email'].hasError('pattern')">Email inválido ingrese una dirección correcta</mat-error>
@@ -91,10 +91,10 @@
           <div class="flex justify-around mb-5">
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Recomendado por</mat-label>
-              <input autocomplete="nope" matInput formControlName="recomendedBy" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+              <input autocomplete="nope" matInput formControlName="recommendedBy" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
               <mat-icon matSuffix>person</mat-icon>
-              <mat-error *ngIf="form.controls['recomendedBy'].hasError('required')">Recomendación <strong>requerida</strong></mat-error>
-              <mat-error *ngIf="form.controls['recomendedBy'].hasError('pattern')">Recomendación inválida ingrese una correcta</mat-error>
+              <mat-error *ngIf="form.controls['recommendedBy'].hasError('required')">Recomendación <strong>requerida</strong></mat-error>
+              <mat-error *ngIf="form.controls['recommendedBy'].hasError('pattern')">Recomendación inválida ingrese una correcta</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Persona a Cargo</mat-label>
@@ -128,10 +128,17 @@
               <mat-error *ngIf="form.controls['previousDentist'].hasError('required')">Dentista previo <strong>requerido</strong></mat-error>
               <mat-error *ngIf="form.controls['previousDentist'].hasError('pattern')">Dentista previo inválido ingrese uno correcto</mat-error>
             </mat-form-field>
+            <mat-form-field appearance="fill" [style.width.px]=400>
+              <mat-label>Doctor Personal</mat-label>
+              <input autocomplete="nope" matInput formControlName="personalDoctor" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+              <mat-icon matSuffix>person</mat-icon>
+              <mat-error *ngIf="form.controls['personalDoctor'].hasError('required')">Personal doctor <strong>requerido</strong></mat-error>
+              <mat-error *ngIf="form.controls['personalDoctor'].hasError('pattern')">Personal doctor inválido, ingrese uno correcto</mat-error>
+            </mat-form-field>
             
           </div>
           <button mat-button (click)="returnPage()" mat-raised-button color="primary" type="submit" class="m-10">Back</button>
-          <button matStepperNext  (click)="onSubmit()" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
+          <button matStepperNext (click)="onSubmit()" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
         </form>
       </mat-step>
       <mat-step [stepControl]="form2" label="Campos 2">

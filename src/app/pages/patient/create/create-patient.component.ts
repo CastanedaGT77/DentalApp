@@ -79,7 +79,7 @@ export class CreatePatientComponent implements OnInit{
             email: ['', Validators.required],
             city: ['', Validators.required],
             address: ['', Validators.required],
-            recomendedBy: ['', Validators.required],
+            recommendedBy: ['', Validators.required],
             personInCharge: ['', Validators.required],
             birthDate: ['', Validators.required],
             maritalStatus: ['', Validators.required],
@@ -94,12 +94,11 @@ export class CreatePatientComponent implements OnInit{
     }
 
     private async initializeForm(){
-        // Llamar a servicio para obtener paciente
         // Llenar formulario con los datos del paciente obtenidos
         this.form.controls["firstName"].setValue(this.paciente.firstName);
         this.form.controls["lastName"].setValue(this.paciente.lastName);
         this.form.controls["phoneNumber"].setValue(this.paciente.phoneNumber);
-
+        // Continuar llenando el formulario con los demás campos del paciente...
     }
 
     async returnPage(){
@@ -119,10 +118,9 @@ export class CreatePatientComponent implements OnInit{
     }
     
     async onSubmit() {
-        if (this.form.valid) {
+        
             // Verifica si el formulario es válido
             console.log("Formulario válido");
-    
             // Muestra el diálogo de confirmación
             Swal.fire({
                 title: "",
@@ -137,17 +135,14 @@ export class CreatePatientComponent implements OnInit{
                 if (result.isConfirmed) {
                     // Muestra un mensaje para indicar que se está creando el paciente
                     this._spinnerService.show();
-    
                     // Obtén la imagen capturada del servicio ImageService
                     const profileImage = this._patientService.capturedImage;
-    
                     // Asigna los detalles de la enfermedad al objeto de datos
                     const data: Partial<CreatePatientDto> = this.form.value;
                     data.profileImage = profileImage;
-                    data.illnessDetails = [0,1,2]; // Asegúrate de que esto esté correctamente configurado
-    
+                    data.illnessDetails = [1,2,3]; // Asegúrate de que esto esté correctamente configurado
                     try {
-                        // Intenta crear el paciente
+                        //Crear el paciente
                         const response = await this._patientService.createPatient(data);
                         if (response) {
                             // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
@@ -171,11 +166,7 @@ export class CreatePatientComponent implements OnInit{
                     }
                 }
             });
-        } else {
-            // Si el formulario no es válido, muestra un mensaje de error
-            const errorMessage = "Por favor, completa todos los campos correctamente";
-            this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-        }
+        
     }
     
     

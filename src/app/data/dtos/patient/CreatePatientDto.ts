@@ -14,7 +14,7 @@ export class CreatePatientDto {
     personalDoctor: string;
     previousDentist: string;
     profileImage: string | null;
-    illnessDetails: [0,1,2];
+    illnessDetails: number[];
 }
 
 

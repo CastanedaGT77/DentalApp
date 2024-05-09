@@ -48,9 +48,14 @@ export class ListPatientComponent {
                 // Asigna los pacientes obtenidos al arreglo patients
                 this.patients = response.patients;
     
+                // Imprime los pacientes obtenidos para verificar
+                console.log('Pacientes obtenidos:', this.patients);
+    
                 // Actualiza la fuente de datos de la tabla
                 this.dataSource.data = this.patients;
-                console.log(this.patients)
+    
+                // Imprime el dataSource.data para verificar
+                console.log('Datos del dataSource:', this.dataSource.data);
             } else {
                 console.error('Error: No se encontraron pacientes en la respuesta.');
             }
@@ -58,7 +63,6 @@ export class ListPatientComponent {
             console.error('Error al obtener pacientes:', error);
         });
     }
-    
     
     verDetalle(paciente: any) {
         console.log('funciona paciente ver', paciente);
