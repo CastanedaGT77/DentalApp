@@ -94,11 +94,12 @@ export class CreatePatientComponent implements OnInit{
     }
 
     private async initializeForm(){
+        // Llamar a servicio para obtener paciente
         // Llenar formulario con los datos del paciente obtenidos
         this.form.controls["firstName"].setValue(this.paciente.firstName);
         this.form.controls["lastName"].setValue(this.paciente.lastName);
         this.form.controls["phoneNumber"].setValue(this.paciente.phoneNumber);
-        // Continuar llenando el formulario con los demás campos del paciente...
+
     }
 
     async returnPage(){
