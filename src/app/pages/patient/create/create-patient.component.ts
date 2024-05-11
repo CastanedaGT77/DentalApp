@@ -96,10 +96,22 @@ export class CreatePatientComponent implements OnInit{
     private async initializeForm(){
         // Llamar a servicio para obtener paciente
         // Llenar formulario con los datos del paciente obtenidos
+        console.log('paciente para iniciar edit',this.paciente.lastName)
         this.form.controls["firstName"].setValue(this.paciente.firstName);
         this.form.controls["lastName"].setValue(this.paciente.lastName);
         this.form.controls["phoneNumber"].setValue(this.paciente.phoneNumber);
-
+        this.form.controls["cellPhoneNumber"].setValue(this.paciente.cellPhoneNumber);
+        this.form.controls["email"].setValue(this.paciente.email);
+        this.form.controls["city"].setValue(this.paciente.city);
+        this.form.controls["address"].setValue(this.paciente.address);
+        this.form.controls["recommendedBy"].setValue(this.paciente.recommendedBy);
+        this.form.controls["personInCharge"].setValue(this.paciente.personInCharge);
+        this.form.controls["maritalStatus"].setValue(this.paciente.maritalStatus);
+        this.form.controls["occupation"].setValue(this.paciente.occupation);
+        this.form.controls["personalDoctor"].setValue(this.paciente.personalDoctor);
+        this.form.controls["previousDentist"].setValue(this.paciente.previousDentist);
+        this.form.controls["birthDate"].setValue(this.paciente.birthDate);
+        this.form.controls["profileImage"].setValue(this.paciente.profileImage);
     }
 
     async returnPage(){
@@ -119,7 +131,6 @@ export class CreatePatientComponent implements OnInit{
     }
     
     async onSubmit() {
-        
             // Verifica si el formulario es válido
             console.log("Formulario válido");
             // Muestra el diálogo de confirmación

@@ -35,7 +35,7 @@
               </mat-form-field>
               <mat-form-field appearance="fill" [style.width.px]=400>
                 <mat-label>Apellido</mat-label>
-                <input autocomplete="nope" matInput formControlName="lastName" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+                <input autocomplete="nope" matInput [(ngModel)]="paciente.lastName" formControlName="lastName" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
                 <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                 <mat-error *ngIf="form.controls['lastName'].hasError('required')">Apellidos <strong>requerido</strong></mat-error>
                 <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Apellidos inválido ingrese solo letras</mat-error>
