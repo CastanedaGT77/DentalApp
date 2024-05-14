@@ -5,7 +5,7 @@
   </div>
     <mat-card-header>
       <div mat-card-avatar class="example-header-image">
-        <img mat-card-image src="./assets/images/profile/user-1.jpg" alt="Patient Image">
+        <img mat-card-image [src]="sanitizedImage" alt="Patient Image">
       </div>
       <mat-card-title>Paciente: {{paciente.firstName}} {{paciente.lastName}} </mat-card-title>
       <mat-card-subtitle>Edad: {{paciente.birthDate | date}} </mat-card-subtitle>

@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CreatePatientDto } from 'src/app/data/dtos/patient/CreatePatientDto';
 import { axiosClient } from 'src/app/axios/axiosConfig';
+import { HttpStatusCode } from 'axios';
+import { SetProfileImageDto } from 'src/app/data/dtos/patient/SetProfileImageDto';
+import { GetProfileImageDto } from 'src/app/data/dtos/patient/GetProfileImageDto';
 
 @Injectable()
 export class PatientService {
@@ -12,11 +15,37 @@ export class PatientService {
 
     async createPatient(requestData: Partial<CreatePatientDto>){
         try {
-            console.log("DATA FORM CREATE PATIENT SERVICE:", requestData);
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.post('/patient', requestData);
-            return true;
+            if(response && response.data.code === HttpStatusCode.InternalServerError)
+                throw Error();
+            return response.data.id;
         } catch(error){
+            return null;
+        }
+    }
+
+    async setProfileImage(request: Partial<SetProfileImageDto>){
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.post('/patient/profileImage', request);
+            if(response && response.data.code === HttpStatusCode.InternalServerError)
+                throw Error();
+            return response.data.id;
+        } catch(error){
+            return null;
+        }
+    }
+
+    async getProfileImage(id: number){
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get(`/patient/profileImage/${id}`);
+            if(response && response.data.code === HttpStatusCode.InternalServerError)
+                throw Error();
+            return response.data;
+        } catch(error){
+            console.log(error);
             return null;
         }
     }
