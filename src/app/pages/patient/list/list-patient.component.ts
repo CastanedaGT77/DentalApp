@@ -44,8 +44,12 @@ export class ListPatientComponent {
     eliminarPaciente(paciente: any): void {
         console.log('funciona paciente delete', paciente);
         this.dialog.open(DeletePatient, {
-            width: '250px',
+            width: '300px',
             data: { paciente: paciente }
+        }).afterClosed().subscribe(data => {
+            if(data){
+                this.getPatients();
+            }
         });
     }
 
@@ -74,6 +78,22 @@ export class ListPatientComponent {
     verDetalle(paciente: any) {
         console.log('funciona paciente ver', paciente);
         this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+    }
+
+    verTratamientos(paciente: any) {
+        console.log('funciona paciente ver tratamientos', paciente);
+        const patientId = paciente.id ?? null;
+        if(patientId){
+            //this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+        }
+    }
+
+    verPagos(paciente: any) {
+        console.log('funciona paciente ver pagos', paciente);
+        const patientId = paciente.id ?? null;
+        if(patientId){
+            //this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+        }
     }
 
     applyFilter(event: Event) {

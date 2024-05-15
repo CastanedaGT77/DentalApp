@@ -10,7 +10,8 @@
               <mat-card-subtitle *ngIf="type === 'create' " class="mat-body-1">Creación</mat-card-subtitle>
               <mat-card-subtitle *ngIf="type === 'edit' " class="mat-body-1">Edición</mat-card-subtitle>
           </div>
-          <button (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Agregar imagen</button>
+          <button *ngIf="type === 'create' " (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Agregar imagen</button>
+          <button *ngIf="type === 'edit' " (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Actualizar imagen</button>
       </div>
   </mat-card-content>
 </mat-card>
@@ -140,8 +141,10 @@
         </form>
       </mat-step>
       <mat-step [stepControl]="form2" label="Detalles">
-          <div class="flex flex-wrap justify-between">
-            <p *ngFor="let detalle of detallesEnfermedad;let i = index;">
+          <p class="text-md font-bold">Seleccione las opciones:</p>
+          <br>
+          <div class="flex flex-wrap justify-start p-20">
+            <p *ngFor="let detalle of detallesEnfermedad;let i = index;" class="min-w-60 h-20">
               <mat-slide-toggle [(ngModel)]="detalle.selected">{{detalle.name}}&nbsp;</mat-slide-toggle>
             </p>
           </div>

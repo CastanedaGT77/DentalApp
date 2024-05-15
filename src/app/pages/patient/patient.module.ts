@@ -22,6 +22,7 @@ import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } fr
 import { DeletePatient } from './delete/delete-patient.component';
 import {  PatientProfileComponent } from './patient-profile/patient-profile.component';
 import { IllnessDetailService } from '../illnessDetail/illnessDetail.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { IllnessDetailService } from '../illnessDetail/illnessDetail.service';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatButtonModule, 
+    MatButtonModule,
+    MatTooltipModule
   ],
   declarations: [
     ListPatientComponent,

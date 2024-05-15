@@ -32,7 +32,6 @@ export class CreatePatientComponent implements OnInit{
     public previsualizacion!: string;
     detallesEnfermedad: DetalleEnfermedad[];
     type: "create" | "edit";
-    patient: any;
     patientId: number;
     public archivos!: any;
     paciente: any;
@@ -50,15 +49,16 @@ export class CreatePatientComponent implements OnInit{
     ){
         this.detallesEnfermedad = [];
         this.type = this._route.snapshot.data["type"] ?? "create";
-        this.patientId = 1;
         this.createForm();
     }
 
     async ngOnInit() {
-        this.getDetalles();
-        if(this.type === "edit"){
+        if(this.type === "create"){
+            this.getDetalles();
+        }
+        else if(this.type === "edit"){
             this.paciente = history.state.paciente;
-            console.log('Paciente seleccionado:', this.paciente);
+            this.initializeDetalles();
             await this.initializeForm();
         }
     }
@@ -69,6 +69,22 @@ export class CreatePatientComponent implements OnInit{
         if(details){
             details.forEach((d: any) => {
                 this.detallesEnfermedad.push({...d, selected: false});
+            });
+        }
+    }
+
+    private async initializeDetalles(){
+        // Llamar al servicio
+        const details = await this._illnessDetailService.getIllnessDetails();
+        const patientDetails = this.paciente.illnessDetails;
+        if(details && patientDetails){
+            details.forEach((d: any) => {
+                const assignedDetail = patientDetails.find((detail: any) => detail.id === d.id);
+                if(assignedDetail){
+                    this.detallesEnfermedad.push({...d, selected: true});
+                } else {
+                    this.detallesEnfermedad.push({...d, selected: false});
+                }
             });
         }
     }
@@ -99,13 +115,18 @@ export class CreatePatientComponent implements OnInit{
     private async initializeForm(){
         // Llamar a servicio para obtener paciente
         // Llenar formulario con los datos del paciente obtenidos
+        this.patientId = this.paciente.id;
         this.form.controls["firstName"].setValue(this.paciente.firstName);
         this.form.controls["lastName"].setValue(this.paciente.lastName);
         this.form.controls["phoneNumber"].setValue(this.paciente.phoneNumber);
         this.form.controls["cellPhoneNumber"].setValue(this.paciente.cellPhoneNumber);
         this.form.controls["city"].setValue(this.paciente.city);
-        console.log("FECJA:", this.paciente.birthDate);
-        this.form.controls["birthDate"].setValue(formatDate(new Date(this.paciente.birthDate), 'dd-MM-yyy', 'en'));
+        const date = new Date(this.paciente.birthDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        this.form.controls["birthDate"].setValue(formattedDate);
         this.form.controls["address"].setValue(this.paciente.address);
         this.form.controls["email"].setValue(this.paciente.email);
         this.form.controls["recommendedBy"].setValue(this.paciente.recommendedBy);
@@ -133,6 +154,11 @@ export class CreatePatientComponent implements OnInit{
     }
     
     async onSubmit() {
+            if(this.form.invalid){
+                const errorMessage = "Verifique todos los campos del formulario.";
+                this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+                return;
+            }
             // Verifica si el formulario es válido
             if(this.form.valid){
                 if(this.type === "create"){
@@ -203,27 +229,27 @@ export class CreatePatientComponent implements OnInit{
                             data.illnessDetails = this.detallesEnfermedad.filter(x => x.selected).map(x =>  ({id: x.id}));
                             try {
                                 //Crear el paciente
-                                const response = await this._patientService.createPatient(data);
+                                const response = await this._patientService.updatePatient({id: this.patientId, ...data});
                                 if (response) {
                                     // Guardar imagen
                                     const profileImage = this._patientService.capturedImage;
                                     if(profileImage){
-                                        const responseImagen = await this._patientService.setProfileImage({id: response, image: profileImage});
+                                        const responseImagen = await this._patientService.setProfileImage({id: this.patientId, image: profileImage});
                                     }
                                     // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                    const message = "Paciente creado correctamente";
+                                    const message = "Paciente editado correctamente";
                                     this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                     this.form.reset();
                                     this.returnPage();
                                 } else {
                                     // Si la creación falla, muestra un mensaje de error
-                                    const errorMessage = "Error al crear el paciente";
+                                    const errorMessage = "Error al editar el paciente";
                                     this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 }
                             } catch (error) {
                                 // Maneja cualquier error que ocurra durante la creación del paciente
-                                console.error("Error al crear el paciente:", error);
-                                const errorMessage = "Error al crear el paciente";
+                                console.error("Error al editar el paciente:", error);
+                                const errorMessage = "Error al editar el paciente";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             } finally {
                                 // Oculta el spinner después de realizar la operación
