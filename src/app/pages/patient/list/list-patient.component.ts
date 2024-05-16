@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { DeletePatient } from '../delete/delete-patient.component';
 import { PatientService } from '../patient.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
     selector: "app-list-patient",
@@ -13,6 +14,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ListPatientComponent {
     patients = [];
+
+    patientImage: string;
+    sanitizedImage: SafeResourceUrl | null;
     
     displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'email', 'actions'];
 
@@ -25,7 +29,8 @@ export class ListPatientComponent {
         private readonly _router: Router,
         public dialog: MatDialog,
         private _patientService: PatientService,
-        private spinnerService: NgxSpinnerService
+        private spinnerService: NgxSpinnerService,
+        private readonly _sanitizer: DomSanitizer
     ){
     }
 
@@ -35,10 +40,26 @@ export class ListPatientComponent {
         this.spinnerService.hide();
     }
 
+    private async _getImage(patientId: number){
+        if(patientId){
+          const response = await this._patientService.getProfileImage(patientId);
+          if(response){
+            this.sanitizedImage = this._sanitizer.bypassSecurityTrustResourceUrl(response);
+            //console.log('imagen sana', this.sanitizedImage)
+          }
+        }
+    }
+
     // Métodos de acción llamada a editar paciente
     editarPaciente(paciente: any) {
-        console.log('funciona paciente editar', paciente);
-        this._router.navigate(['/patient/edit'], { state: { paciente: paciente } });
+        //console.log('funciona paciente editar', paciente);
+        this._getImage(paciente.id).then(() => {
+            console.log('imagen mandada', this.sanitizedImage);
+            this._router.navigate(['/patient/edit'], { state: { paciente: paciente, image: this.sanitizedImage } });
+        }).catch(error => {
+            console.error('Error al obtener la imagen del paciente:', error);
+        });
+        // this._router.navigate(['/patient/edit'], { state: { paciente: paciente, image: this.sanitizedImage } });
     }
 
     eliminarPaciente(paciente: any): void {
@@ -60,7 +81,7 @@ export class ListPatientComponent {
                 this.patients = response.patients;
     
                 // Imprime los pacientes obtenidos para verificar
-                console.log('Pacientes obtenidos:', this.patients);
+                //console.log('Pacientes obtenidos:', this.patients);
     
                 // Actualiza la fuente de datos de la tabla
                 this.dataSource.data = this.patients;

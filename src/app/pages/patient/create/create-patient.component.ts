@@ -8,9 +8,8 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import {  MatDialog } from "@angular/material/dialog";
 import { AddImage } from "../image/add-image.component";
-import { DomSanitizer } from "@angular/platform-browser";
 import { IllnessDetailService } from "../../illnessDetail/illnessDetail.service";
-import { formatDate } from "@angular/common";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 
 class DetalleEnfermedad {
     id: number;
@@ -36,6 +35,7 @@ export class CreatePatientComponent implements OnInit{
     public archivos!: any;
     paciente: any;
     illnessDetails: any;
+    sanitizedImage: SafeResourceUrl | null;
     
     constructor(
         private readonly _patientService: PatientService,
@@ -45,7 +45,8 @@ export class CreatePatientComponent implements OnInit{
         private readonly _router: Router,
         private readonly _route: ActivatedRoute,
         private readonly _dialog: MatDialog,
-        private readonly _illnessDetailService: IllnessDetailService
+        private readonly _illnessDetailService: IllnessDetailService,
+        private readonly _sanitizer: DomSanitizer
     ){
         this.detallesEnfermedad = [];
         this.type = this._route.snapshot.data["type"] ?? "create";
@@ -57,7 +58,11 @@ export class CreatePatientComponent implements OnInit{
             this.getDetalles();
         }
         else if(this.type === "edit"){
+            //console.log('statee',history.state)
+
             this.paciente = history.state.paciente;
+            this.sanitizedImage = history.state.image.changingThisBreaksApplicationSecurity;
+            //console.log('imagen para mostrar',this.sanitizedImage)
             this.initializeDetalles();
             await this.initializeForm();
         }
@@ -92,9 +97,9 @@ export class CreatePatientComponent implements OnInit{
     private createForm(){
         this.form = this._formBuilder.group({
             firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
-            lastName: ['', Validators.required],
-            phoneNumber: ['', Validators.required],
-            cellPhoneNumber: ['', Validators.required],
+            lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+            phoneNumber: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(8)]],
+            cellPhoneNumber: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(8)]],
             email: ['', Validators.required],
             city: ['', Validators.required],
             address: ['', Validators.required],
@@ -179,6 +184,7 @@ export class CreatePatientComponent implements OnInit{
                             this._spinnerService.show();
                             // Asigna los detalles de la enfermedad al objeto de datos
                             const data: Partial<CreatePatientDto> = this.form.value;
+                            
                             data.illnessDetails = this.detallesEnfermedad.filter(x => x.selected).map(x =>  ({id: x.id}));
                             try {
                                 //Crear el paciente

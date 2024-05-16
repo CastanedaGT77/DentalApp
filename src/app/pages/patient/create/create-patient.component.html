@@ -10,6 +10,9 @@
               <mat-card-subtitle *ngIf="type === 'create' " class="mat-body-1">Creación</mat-card-subtitle>
               <mat-card-subtitle *ngIf="type === 'edit' " class="mat-body-1">Edición</mat-card-subtitle>
           </div>
+          <div mat-card-avatar class="example-header-image">
+            <img mat-card-image [src]="sanitizedImage" alt="Patient Image">
+          </div>
           <button *ngIf="type === 'create' " (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Agregar imagen</button>
           <button *ngIf="type === 'edit' " (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Actualizar imagen</button>
       </div>
@@ -29,14 +32,14 @@
           <div class="flex justify-around mb-5">
               <mat-form-field appearance="fill" [style.width.px]=400>
                 <mat-label>Nombre</mat-label>
-                <input autocomplete="nope" matInput formControlName="firstName" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+                <input autocomplete="nope" matInput formControlName="firstName" minlength maxlength pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
                 <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                 <mat-error *ngIf="form.controls['firstName'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
                 <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
               </mat-form-field>
               <mat-form-field appearance="fill" [style.width.px]=400>
                 <mat-label>Apellido</mat-label>
-                <input autocomplete="nope" matInput [(ngModel)]="paciente.lastName" formControlName="lastName" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+                <input autocomplete="nope" matInput formControlName="lastName" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
                 <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                 <mat-error *ngIf="form.controls['lastName'].hasError('required')">Apellidos <strong>requerido</strong></mat-error>
                 <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Apellidos inválido ingrese solo letras</mat-error>
@@ -45,9 +48,10 @@
           <div class="flex justify-around mb-5">
               <mat-form-field appearance="fill" [style.width.px]=400>
                 <mat-label>Número de Teléfono</mat-label>
-                <input autocomplete="nope" type="number" matInput formControlName="phoneNumber" pattern="[0-9]*">
+                <input autocomplete="nope" type="number" matInput minlength="1" maxlength="8" formControlName="phoneNumber" pattern="[0-9]*">
                 <mat-icon matSuffix>phone</mat-icon>
                 <mat-error *ngIf="form.controls['phoneNumber'].hasError('required')">Número de Teléfono <strong>requerido</strong></mat-error>
+                <mat-error *ngIf="form.controls['phoneNumber'].hasError('maxlength')">Muchos caracteres<strong>requerido</strong></mat-error>
                 <mat-error *ngIf="form.controls['phoneNumber'].hasError('pattern')">Número de Teléfono inválido ingrese solo números</mat-error>
               </mat-form-field>
               <mat-form-field appearance="fill" [style.width.px]=400>
@@ -148,10 +152,10 @@
               <mat-slide-toggle [(ngModel)]="detalle.selected">{{detalle.name}}&nbsp;</mat-slide-toggle>
             </p>
           </div>
-          <div>
+          <div class="flex grow">
             <br>
             <br>
-            <button matStepperNext (click)="onSubmit()"  mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
+            <button matStepperNext (click)="onSubmit()"  mat-raised-button color="primary" type="submit" class="grow h-14">Guardar</button>
           </div>
       </mat-step>
     </mat-stepper>
