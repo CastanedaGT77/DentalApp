@@ -1,4 +1,5 @@
-export class CreatePatientDto {
+export class UpdatePatientDto {
+    id: number;
     firstName: string;
     lastName: string;
     phoneNumber: string;
@@ -15,5 +16,3 @@ export class CreatePatientDto {
     previousDentist: string;
     illnessDetails: {id: number}[];
 }
-
-

@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DeletePatient } from '../delete/delete-patient.component';
 import { PatientService } from '../patient.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: "app-list-patient",
@@ -23,8 +24,15 @@ export class ListPatientComponent {
     constructor(
         private readonly _router: Router,
         public dialog: MatDialog,
-        private _patientService: PatientService
+        private _patientService: PatientService,
+        private spinnerService: NgxSpinnerService
     ){
+    }
+
+    async ngOnInit(){
+        this.spinnerService.show();
+        this.getPatients(); 
+        this.spinnerService.hide();
     }
 
     // Métodos de acción llamada a editar paciente
@@ -36,8 +44,12 @@ export class ListPatientComponent {
     eliminarPaciente(paciente: any): void {
         console.log('funciona paciente delete', paciente);
         this.dialog.open(DeletePatient, {
-            width: '250px',
+            width: '300px',
             data: { paciente: paciente }
+        }).afterClosed().subscribe(data => {
+            if(data){
+                this.getPatients();
+            }
         });
     }
 
@@ -65,7 +77,23 @@ export class ListPatientComponent {
     
     verDetalle(paciente: any) {
         console.log('funciona paciente ver', paciente);
-        this._router.navigate(['/patient/patientProfile', { paciente: JSON.stringify(paciente) }]);
+        this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+    }
+
+    verTratamientos(paciente: any) {
+        console.log('funciona paciente ver tratamientos', paciente);
+        const patientId = paciente.id ?? null;
+        if(patientId){
+            //this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+        }
+    }
+
+    verPagos(paciente: any) {
+        console.log('funciona paciente ver pagos', paciente);
+        const patientId = paciente.id ?? null;
+        if(patientId){
+            //this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+        }
     }
 
     applyFilter(event: Event) {
@@ -75,10 +103,6 @@ export class ListPatientComponent {
   
     ngAfterViewInit() {
       this.dataSource.paginator = this.paginator;
-    }
-
-    ngOnInit(): void {
-        this.getPatients(); 
     }
 
     redirectCreate(){

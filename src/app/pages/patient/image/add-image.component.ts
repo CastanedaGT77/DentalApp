@@ -43,16 +43,26 @@ export class AddImage {
       // Limpiar
       //foto = "";
     } else {
-      archivoCapturado = event.target.files[0];
-      console.log('archivo cap', archivoCapturado)
-      this.extraerBase64(archivoCapturado).then((imagen: any) => {
-      this.previsualizacion = imagen.base;
-      this.PatientService.capturedImage = imagen.base;
-      //localStorage.setItem('base64',imagen.base)
-      //console.log('asss', imagen);
-    })
-    this.archivos = archivoCapturado;
-    // console.log('archivos', this.archivos)
+      try {
+        archivoCapturado = event.target.files[0];
+        console.log('archivo cap', archivoCapturado)
+        this.extraerBase64(archivoCapturado).then((imagen: any) => {
+        this.previsualizacion = imagen.base;
+        this.PatientService.capturedImage = imagen.base;
+      })
+      this.archivos = archivoCapturado;
+      Swal.fire({
+        icon: 'success',
+        title: 'Carga exitosa',
+        text: 'La imagen se ha cargado correctamente.',
+      });
+      } catch(error){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'La imagen no se ha podido cargar.',
+        });
+      }
     }
   }
 

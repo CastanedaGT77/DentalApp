@@ -10,7 +10,8 @@
               <mat-card-subtitle *ngIf="type === 'create' " class="mat-body-1">Creación</mat-card-subtitle>
               <mat-card-subtitle *ngIf="type === 'edit' " class="mat-body-1">Edición</mat-card-subtitle>
           </div>
-          <button (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Agregar imagen</button>
+          <button *ngIf="type === 'create' " (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Agregar imagen</button>
+          <button *ngIf="type === 'edit' " (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Actualizar imagen</button>
       </div>
   </mat-card-content>
 </mat-card>
@@ -21,7 +22,7 @@
 <mat-card class="cardWithShadow">
   <mat-card-content>
     <mat-stepper [linear]="isLinear" #stepper>
-      <mat-step [stepControl]="form" label="Campos 1">
+      <mat-step [stepControl]="form" label="Información General">
         <!-- FORM -->
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full shadow-md">
           <p class="text-lg font-semibold m-5">Información General</p>
@@ -30,7 +31,7 @@
                 <mat-label>Nombre</mat-label>
                 <input autocomplete="nope" matInput formControlName="firstName" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
                 <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-error *ngIf="form.controls['firstName'].hasError('required')">Nombres <strong>requerido</strong></mat-error>
+                <mat-error *ngIf="form.controls['firstName'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
                 <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
               </mat-form-field>
               <mat-form-field appearance="fill" [style.width.px]=400>
@@ -107,10 +108,11 @@
           <div class="flex justify-around mb-5">
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Estado Civil</mat-label>
-              <input autocomplete="nope" matInput formControlName="maritalStatus" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-              <mat-icon matSuffix>person</mat-icon>
+              <mat-select formControlName="maritalStatus">
+                  <mat-option value="Soltero">Soltero</mat-option>
+                  <mat-option value="Casado">Casado</mat-option>
+              </mat-select>
               <mat-error *ngIf="form.controls['maritalStatus'].hasError('required')">Estado civil <strong>requerido</strong></mat-error>
-              <mat-error *ngIf="form.controls['maritalStatus'].hasError('pattern')">Estado Civil inválido ingrese uno correcto</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Ocupación</mat-label>
@@ -135,35 +137,24 @@
               <mat-error *ngIf="form.controls['personalDoctor'].hasError('required')">Personal doctor <strong>requerido</strong></mat-error>
               <mat-error *ngIf="form.controls['personalDoctor'].hasError('pattern')">Personal doctor inválido, ingrese uno correcto</mat-error>
             </mat-form-field>
-            
           </div>
-          <button mat-button (click)="returnPage()" mat-raised-button color="primary" type="submit" class="m-10">Back</button>
-          <button matStepperNext (click)="onSubmit()" mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
         </form>
       </mat-step>
-      <mat-step [stepControl]="form2" label="Campos 2">
-          <div class="flex flex-wrap justify-between">
-            <p *ngFor="let detalle of detallesEnfermedad;let i = index;">
+      <mat-step [stepControl]="form2" label="Detalles">
+          <p class="text-md font-bold">Seleccione las opciones:</p>
+          <br>
+          <div class="flex flex-wrap justify-start p-20">
+            <p *ngFor="let detalle of detallesEnfermedad;let i = index;" class="min-w-60 h-20">
               <mat-slide-toggle [(ngModel)]="detalle.selected">{{detalle.name}}&nbsp;</mat-slide-toggle>
             </p>
           </div>
           <div>
-            <button mat-button matStepperPrevious mat-raised-button color="primary" type="submit" class="m-10">Back</button>
+            <br>
+            <br>
             <button matStepperNext (click)="onSubmit()"  mat-raised-button color="primary" type="submit" class="m-10">Guardar</button>
           </div>
       </mat-step>
-      <!-- <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
-        </div>
-      </mat-step> -->
     </mat-stepper>
   </mat-card-content>
 </mat-card>
-
-
-
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>

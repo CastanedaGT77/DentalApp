@@ -21,6 +21,8 @@ import { AddImage } from './image/add-image.component';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { DeletePatient } from './delete/delete-patient.component';
 import {  PatientProfileComponent } from './patient-profile/patient-profile.component';
+import { IllnessDetailService } from '../illnessDetail/illnessDetail.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -31,7 +33,12 @@ import {  PatientProfileComponent } from './patient-profile/patient-profile.comp
     ReactiveFormsModule,
     TablerIconsModule.pick(TablerIcons),
     MatNativeDateModule,
-    NgxSpinnerModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, 
+    NgxSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatTooltipModule
   ],
   declarations: [
     ListPatientComponent,
@@ -42,6 +49,7 @@ import {  PatientProfileComponent } from './patient-profile/patient-profile.comp
   ],
   providers: [
     PatientService,
+    IllnessDetailService,
     NgxSpinnerService
   ]
 })
