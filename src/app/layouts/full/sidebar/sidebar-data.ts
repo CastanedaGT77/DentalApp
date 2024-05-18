@@ -18,7 +18,7 @@ export const navItems: NavItem[] = [
     route: "patient/list"
   },
   {
-    displayName: "Detalles de Enfermedad",
+    displayName: "Detalles de Diagnóstico",
     iconName: "user",
     route: "illnessDetail/list"
   },
