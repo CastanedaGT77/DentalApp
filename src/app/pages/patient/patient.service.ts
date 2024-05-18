@@ -3,7 +3,6 @@ import { CreatePatientDto } from 'src/app/data/dtos/patient/CreatePatientDto';
 import { axiosClient } from 'src/app/axios/axiosConfig';
 import { HttpStatusCode } from 'axios';
 import { SetProfileImageDto } from 'src/app/data/dtos/patient/SetProfileImageDto';
-import { GetProfileImageDto } from 'src/app/data/dtos/patient/GetProfileImageDto';
 import { UpdatePatientDto } from 'src/app/data/dtos/patient/UpdatePatientDto';
 
 @Injectable()

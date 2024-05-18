@@ -1,1 +1,68 @@
-<span>hola funciona illness detail</span>
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <div class="flex justify-between">
+            <div>
+                <mat-card-title>Illness Detail</mat-card-title>
+                <mat-card-subtitle class="mat-body-1">Listado</mat-card-subtitle>
+            </div>
+            <button mat-flat-button color="primary" (click)="redirectCreate()">Crearr Illness Detail</button>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-form-field>
+    <input class="form-control" matInput placeholder="Buscar" (keyup)="applyFilter($event)">
+</mat-form-field>
+<table mat-table [dataSource]="dataSource">
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let illnessDetail"> {{illnessDetail.id}} </td>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let illnessDetail"> {{illnessDetail.name}} </td>
+    </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+        <td mat-cell *matCellDef="let illnessDetail"> {{illnessDetail.description}} </td>
+    </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let illnessDetail"> {{illnessDetail.active}} </td>
+    </ng-container>
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let illnessDetail">
+            <button mat-icon-button (click)="editarIllnessDetail(illnessDetail)" matTooltip="Editar">
+                <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
+            </button>
+            <button mat-icon-button (click)="eliminarIllnessDetail(illnessDetail)" matTooltip="Eliminar">
+                <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
+            </button>
+            <!-- <button mat-icon-button (click)="verDetalle(patients)">
+                <mat-icon [ngStyle]="{'color':'gray'}" matTooltip="Detalles">person</mat-icon>
+            </button>
+            <button mat-icon-button (click)="editarPaciente(patients)" matTooltip="Editar">
+                <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
+            </button>
+            <button mat-icon-button (click)="eliminarPaciente(patients)" matTooltip="Eliminar">
+                <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
+            </button>
+            <button mat-icon-button (click)="verTratamientos(patients)" matTooltip="Tratamientos">
+                <mat-icon [ngStyle]="{'color':'blue'}" fontIcon="assignment">assignment</mat-icon>
+            </button>
+            <button mat-icon-button (click)="verPagos(patients)" matTooltip="Pagos">
+                <mat-icon [ngStyle]="{'color':'green'}" fontIcon="payment">payment</mat-icon>
+            </button> -->
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSize]="7" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>

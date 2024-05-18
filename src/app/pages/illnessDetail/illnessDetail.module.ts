@@ -16,6 +16,9 @@ import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } fr
 import { IllnessDetailService } from '../illnessDetail/illnessDetail.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { IllnessDetailRouting } from './illnessDetail.routing';
+import { ListIllnessDetailComponent } from './list/list-illnessDetail.component';
+import { CreateIllnessDetailComponent } from './create/create-illnessDetail.component';
+import { DeleteIllnessDetail } from './delete/delete-IllnessDetail.component';
 
 @NgModule({
     imports: [
@@ -34,7 +37,9 @@ import { IllnessDetailRouting } from './illnessDetail.routing';
       MatTooltipModule
     ],
     declarations: [
-      
+      ListIllnessDetailComponent,
+      CreateIllnessDetailComponent,
+      DeleteIllnessDetail
     ],
     providers: [
       IllnessDetailService,
