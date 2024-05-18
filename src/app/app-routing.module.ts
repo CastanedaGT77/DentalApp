@@ -34,6 +34,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'illnessDetail',
+        loadChildren: () =>
+          import('./pages/illnessDetail/illnessDetail.module').then(
+            (m) => m.IllnessDetailModule
+          ),
+      },
+      {
         path: 'extra',
         loadChildren: () =>
           import('./pages/extra/extra.module').then((m) => m.ExtraModule),
