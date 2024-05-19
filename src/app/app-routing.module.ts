@@ -41,6 +41,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'treatmentType',
+        loadChildren: () =>
+          import('./pages/treatment-type/treatment-type.module').then(
+            (m) => m.TreatmentTypeModule
+          ),
+      },
+      {
         path: 'extra',
         loadChildren: () =>
           import('./pages/extra/extra.module').then((m) => m.ExtraModule),

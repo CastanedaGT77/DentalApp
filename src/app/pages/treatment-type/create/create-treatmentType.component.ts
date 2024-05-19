@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { CreatePatientDto } from "src/app/data/dtos/patient/CreatePatientDto";
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -8,22 +7,21 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {  MatDialog } from "@angular/material/dialog";
 import { IllnessDetailService } from "../../illnessDetail/illnessDetail.service";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
-import { CreateIllnessDetailDto } from '../../../data/dtos/IllnessDetail/CreateIllnessDetailDTO';
-import { UpdateIllnessDetailDto } from 'src/app/data/dtos/IllnessDetail/UpdateIllnessDetailDTO';
-
+import { TreatmentTypeService } from "../treatment-type.service";
+import { CreateTreatmentTypeDto } from "src/app/data/dtos/treatmentType/CreateTreatmentTypeDTO";
+import { UpdateTreatmentTypeDto } from '../../../data/dtos/treatmentType/UpdateTreatmentTypeDTO';
 
 @Component({
-    selector: "app-create-illnessDetail",
-    templateUrl: "./create-illnessDetail.component.html",
+    selector: "app-create-treatmentType",
+    templateUrl: "./create-treatmentType.component.html",
 })
 
-export class CreateIllnessDetailComponent implements OnInit {
+export class CreateTreatmentType implements OnInit {
     
     type: "create" | "edit";
-    illnessDetail: any;
+    treatmentType: any;
     form: FormGroup;
-    illnessDetailId: number;
-
+    treatmentTypeId: number;
 
     constructor(
         private readonly _formBuilder: FormBuilder,
@@ -32,35 +30,30 @@ export class CreateIllnessDetailComponent implements OnInit {
         private readonly _router: Router,
         private readonly _route: ActivatedRoute,
         private readonly _dialog: MatDialog,
-        private readonly _illnessDetailService: IllnessDetailService,
+        private readonly _treatmentTypeService: TreatmentTypeService,
         private readonly _sanitizer: DomSanitizer
     ){
         this.type = this._route.snapshot.data["type"] ?? "create";
         this.createForm();
     }
 
+    
     private createForm(){
         this.form = this._formBuilder.group({
             name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
-            description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],    
+            description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],   
+            suggestedPrice: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]], 
+            estimatedTime: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],  
         });
     }
 
-    async ngOnInit() {
-        if(this.type === "create"){
-            //this.getDetalles();
-        }
-        else if(this.type === "edit"){
-            //console.log('statee',history.state)
-            this.illnessDetail = history.state.illnessDetail;
-            await this.initializeForm();
-        }
-    }
-
-
-
-    async returnPage(){
-        this._router.navigateByUrl("/illnessDetail/list");
+    private async initializeForm(){
+        this.treatmentTypeId = this.treatmentType.id;
+        console.log('illness para iniciar edit',this.treatmentType.name)
+        this.form.controls["name"].setValue(this.treatmentType.name);
+        this.form.controls["description"].setValue(this.treatmentType.description);
+        this.form.controls["suggestedPrice"].setValue(this.treatmentType.suggestedPrice);
+        this.form.controls["estimatedTime"].setValue(this.treatmentType.estimatedTime);
     }
 
     async onSubmit() {
@@ -75,7 +68,7 @@ export class CreateIllnessDetailComponent implements OnInit {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la creación de illnessdetail?",
+                    text: "¿Desea finalizar la creación de treatmentType?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -87,26 +80,26 @@ export class CreateIllnessDetailComponent implements OnInit {
                         // Muestra un mensaje para indicar que se está creando el paciente
                         this._spinnerService.show();
                         // Asigna los detalles de la enfermedad al objeto de datos
-                        const data: Partial<CreateIllnessDetailDto> = this.form.value;
+                        const data: Partial<CreateTreatmentTypeDto> = this.form.value;
                         try {
                             //Crear el paciente
-                            const response = await this._illnessDetailService.createIllnessDetail(data);
+                            const response = await this._treatmentTypeService.createTreatmentType(data);
                             if (response) {
                                 
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "Illness creada correctamente";
+                                const message = "treatmentType creada correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
                                 // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al crear el Illness";
+                                const errorMessage = "Error al crear el treatmentType";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al crear el Illness:", error);
-                            const errorMessage = "Error al crear el Illness";
+                            console.error("Error al crear el treatmentType:", error);
+                            const errorMessage = "Error al crear el treatmentType";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             // Oculta el spinner después de realizar la operación
@@ -118,7 +111,7 @@ export class CreateIllnessDetailComponent implements OnInit {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la edición de illnessdetail?",
+                    text: "¿Desea finalizar la edición de treatmentType?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -130,26 +123,26 @@ export class CreateIllnessDetailComponent implements OnInit {
                         // Muestra un mensaje para indicar que se está creando el paciente
                         this._spinnerService.show();
                         // Asigna los detalles de la enfermedad al objeto de datos
-                        const data: Partial<UpdateIllnessDetailDto> = this.form.value;
+                        const data: Partial<UpdateTreatmentTypeDto> = this.form.value;
                         try {
                             //Crear el paciente
-                            const response = await this._illnessDetailService.updateIllnessDetail({id: this.illnessDetailId, ...data});
+                            const response = await this._treatmentTypeService.updateTreatmentType({id: this.treatmentTypeId, ...data});
                             if (response) {
                                
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "illnessdetail editado correctamente";
+                                const message = "treatmentType editado correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
                                 // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al editar el illnessdetail";
+                                const errorMessage = "Error al editar el treatmentType";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al editar el illnessdetail:", error);
-                            const errorMessage = "Error al editar el illnessdetail";
+                            console.error("Error al editar el treatmentType:", error);
+                            const errorMessage = "Error al editar el treatmentType";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             // Oculta el spinner después de realizar la operación
@@ -161,13 +154,19 @@ export class CreateIllnessDetailComponent implements OnInit {
         }
     }
 
+    async ngOnInit() {
+        if(this.type === "create"){
+            //this.getDetalles();
+        }
+        else if(this.type === "edit"){
+            //console.log('statee',history.state)
+            this.treatmentType = history.state.treatmentType;
+            await this.initializeForm();
+        }
+    }
 
-    private async initializeForm(){
-        this.illnessDetailId = this.illnessDetail.id;
-        console.log('illness para iniciar edit',this.illnessDetail.name)
-        this.form.controls["name"].setValue(this.illnessDetail.name);
-        this.form.controls["description"].setValue(this.illnessDetail.description);
-        
+    async returnPage(){
+        this._router.navigateByUrl("/treatmentType/list");
     }
 
 }

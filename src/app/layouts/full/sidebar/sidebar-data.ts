@@ -22,6 +22,11 @@ export const navItems: NavItem[] = [
     iconName: "user",
     route: "illnessDetail/list"
   },
+  {
+    displayName: "Tipos de Tratamiento",
+    iconName: "user",
+    route: "treatmentType/list"
+  },
   // {
   //   navCap: 'Usuarios',
   // },

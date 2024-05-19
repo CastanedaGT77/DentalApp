@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Eliminar Tipo de Tratamiento</h2>
+<mat-dialog-content>
+  <div>
+    <p>¿Te gustaría eliminar el registro:</p>
+    <br>
+    <p class="text-md font-bold">
+      {{data.treatmentType.name}},{{data.treatmentType.description}}?
+    </p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button (click)="closeDialog()" color="whiteLetter" mat-flat-button>No</button>
+  <button (click)="eliminarTreatmentType(data.treatmentType.id)" color="primary" mat-flat-button cdkFocusInitial>Eliminar</button>
+</mat-dialog-actions>
