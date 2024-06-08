@@ -27,6 +27,11 @@ export const navItems: NavItem[] = [
     iconName: "user",
     route: "treatmentType/list"
   },
+  {
+    displayName: "Citas",
+    iconName: "calendar",
+    route: "date/calendar"
+  },
   // {
   //   navCap: 'Usuarios',
   // },
