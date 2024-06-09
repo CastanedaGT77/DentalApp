@@ -1,0 +1,23 @@
+<h1>Create Role</h1>
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <mat-checkbox [checked]="node.checked" (change)="onCheckChange(node, $event.checked)">
+      {{node.name}}
+    </mat-checkbox>
+  </mat-tree-node>
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+    <div class="mat-tree-node">
+      <mat-checkbox [checked]="node.checked" (change)="onCheckChange(node, $event.checked)">
+        {{node.name}}
+      </mat-checkbox>
+    </div>
+    <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+      <mat-tree-node *ngFor="let child of node.children" matTreeNodePadding>
+        <mat-checkbox [checked]="child.checked" (change)="onCheckChange(child, $event.checked)">
+          {{child.name}}
+        </mat-checkbox>
+      </mat-tree-node>
+    </div>
+  </mat-nested-tree-node>
+</mat-tree>
+<button (click)="getSelectedPermissions()">Show</button>

@@ -10,6 +10,19 @@ export const navItems: NavItem[] = [
     route: '/dashboard',
   },
   {
+    navCap: "Administración"
+  },
+  {
+    displayName: "Roles",
+    iconName: "user",
+    route: "role/list"
+  },
+  {
+    displayName: "Usuarios",
+    iconName: "user",
+    route: "user/list"
+  },
+  {
     navCap: "Información General"
   },
   {

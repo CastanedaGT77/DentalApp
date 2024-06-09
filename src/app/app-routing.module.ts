@@ -26,6 +26,21 @@ const routes: Routes = [
             (m) => m.UicomponentsModule
           ),
       },
+      // ADMIN
+      {
+        path: 'role',
+        loadChildren: () =>
+          import('./pages/role/role.module').then(
+            (m) => m.RoleModule
+          )
+      },
+      {
+        path: 'user',
+        loadChildren: () =>
+          import('./pages/role/role.module').then(
+            (m) => m.RoleModule
+          )
+      },
       {
         path: 'patient',
         loadChildren: () =>
