@@ -4,7 +4,6 @@ import {
     ViewChild,
     TemplateRef,
     OnInit,
-    AfterViewInit,
   } from '@angular/core';
   import {
     startOfDay,
@@ -25,6 +24,8 @@ import {
     CalendarView,
   } from 'angular-calendar';
   import { EventColor } from 'calendar-utils';
+import { DateService } from '../date.service';
+import { CitaModel } from '../models/CitaExample';
   
   const colors: Record<string, EventColor> = {
     red: {
@@ -58,88 +59,50 @@ import {
     ],
     templateUrl: './calendar.component.html',
   })
-  export class CalendarComponent implements OnInit, AfterViewInit {
+  export class CalendarComponent implements OnInit {
     @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
   
     view: CalendarView = CalendarView.Month;
-  
     CalendarView = CalendarView;
-  
     viewDate: Date = new Date();
-  
     modalData?: {
       action: string;
       event: CalendarEvent;
     };
-  
-    actions: CalendarEventAction[] = [
-      {
-        label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-        a11yLabel: 'Edit',
-        onClick: ({ event }: { event: CalendarEvent }): void => {
-          this.handleEvent('Edited', event);
-        },
-      },
-      {
-        label: '<i class="fas fa-fw fa-trash-alt"></i>',
-        a11yLabel: 'Delete',
-        onClick: ({ event }: { event: CalendarEvent }): void => {
-          this.events = this.events.filter((iEvent) => iEvent !== event);
-          this.handleEvent('Deleted', event);
-        },
-      },
-    ];
-  
     refresh = new Subject<void>();
-  
-    events: CalendarEvent[] = [
-      {
-        start: subDays(startOfDay(new Date()), 1),
-        end: addDays(new Date(), 1),
-        title: 'A 3 day event',
-        color: { ...colors['red'] },
-        actions: this.actions,
-        allDay: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-        draggable: true,
-      },
-      {
-        start: startOfDay(new Date()),
-        title: 'An event with no end date',
-        color: { ...colors['yellow'] },
-        actions: this.actions,
-      },
-      {
-        start: subDays(endOfMonth(new Date()), 3),
-        end: addDays(endOfMonth(new Date()), 3),
-        title: 'A long event that spans 2 months',
-        color: { ...colors['blue'] },
-        allDay: true,
-      },
-      {
-        start: addHours(startOfDay(new Date()), 2),
-        end: addHours(new Date(), 2),
-        title: 'A draggable and resizable event',
-        color: { ...colors['yellow'] },
-        actions: this.actions,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-        draggable: true,
-      },
-    ];
-  
+    events: CalendarEvent[];
     activeDayIsOpen: boolean = true;
+    // Appointments
+    appointments: CitaModel[];
+
+
+    constructor(
+      private readonly dateService: DateService
+    ) {
+    }
   
-    constructor(private modal: NgbModal) {}
-  
-    async ngOnInit() {}
-  
-    ngAfterViewInit() {}
+    async ngOnInit() {
+      this.appointments = await this.dateService.getAppointment();
+      await this.createCalendarEvents();
+    }
+
+    async createCalendarEvents(){
+      let tempEvents: CalendarEvent[] = [];
+      this.appointments.forEach(a => {
+        try {
+          tempEvents.push({
+            id: a.id,
+            start: new Date(),
+            end: new Date(),
+            title: `${a.patient} - ${a.description}`,
+            color: { ...colors['red'] }
+          });
+        } catch(error){}
+      });
+      this.events = tempEvents;
+      this.refresh.next();
+    }
+
   
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
       if (isSameMonth(date, this.viewDate)) {
@@ -174,11 +137,23 @@ import {
     }
   
     handleEvent(action: string, event: CalendarEvent): void {
-      this.modalData = { event, action };
-      this.modal.open(this.modalContent, { size: 'lg' });
+      if(action === "Clicked"){
+        // Abrir modal donde muestre información de la cita y también los botones para poder editar y eliminar
+        this.modalData = { event, action };
+        alert(JSON.stringify(event));
+      }
     }
   
-    addEvent(): void {
+    openNewAppointmentModal(){
+      // Abrir modal para cita y obtener respuesta de modal
+
+      // Llamar a servicio para agregar en bd y en componente
+      this.addAppointment();
+    }
+
+    private addAppointment(): void {
+      // Servicio para agregar en bd, validar que respuesta es correcta para agregar a componente
+
       this.events = [
         ...this.events,
         {
@@ -220,5 +195,6 @@ import {
       event.color.secondaryText = color;
       this.refresh.next();
     }
+    
   }
   

@@ -1,12 +1,25 @@
 import { Injectable } from "@angular/core";
-import { HttpStatusCode } from "axios";
-import { axiosClient } from 'src/app/axios/axiosConfig';
-import { CreateTreatmentTypeDto } from '../../data/dtos/treatmentType/CreateTreatmentTypeDTO';
-import { UpdateTreatmentTypeDto } from '../../data/dtos/treatmentType/UpdateTreatmentTypeDTO';
+import { CitaModel } from "./models/CitaExample";
+
 
 
 @Injectable()
 export class DateService {
 
+    async getAppointment() : Promise<CitaModel[]> {
+        try {
+            const appointments: CitaModel[] = [
+                {
+                    id: 1,
+                    patient: "Edvin",
+                    description: "Limpieza",
+                    appointmentDate: "1/1/2024"
+                }
+            ];
+            return appointments;
+        } catch(error){
+            return [];
+        }
+    }
 
 }

@@ -50,14 +50,6 @@ export class ListUserComponent implements OnInit, AfterViewInit {
     
     eliminarIllnessDetail(illnessDetail: any): void {
         console.log('funciona illnessDetail delete', illnessDetail);
-        this.dialog.open(DeleteIllnessDetail, {
-            width: '300px',
-            data: { illnessDetail: illnessDetail }
-        }).afterClosed().subscribe(data => {
-            if(data){
-                this.getIllnessDetail();
-            }
-        });
     }
 
     applyFilter(event: Event) {
