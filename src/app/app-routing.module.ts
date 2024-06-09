@@ -63,6 +63,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'date',
+        loadChildren: () =>
+          import('./pages/date/date.module').then(
+            (m) => m.DateModule
+          ),
+      },
+      {
         path: 'extra',
         loadChildren: () =>
           import('./pages/extra/extra.module').then((m) => m.ExtraModule),
