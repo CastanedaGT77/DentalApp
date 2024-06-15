@@ -26,6 +26,8 @@ import {
   import { EventColor } from 'calendar-utils';
 import { DateService } from '../date.service';
 import { CitaModel } from '../models/CitaExample';
+import { Pipe, PipeTransform } from '@angular/core';
+
   
   const colors: Record<string, EventColor> = {
     red: {
@@ -59,11 +61,13 @@ import { CitaModel } from '../models/CitaExample';
     ],
     templateUrl: './calendar.component.html',
   })
+
   export class CalendarComponent implements OnInit {
     @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
   
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
+    locale: string = 'es';  // Configurar la localización a español
     viewDate: Date = new Date();
     modalData?: {
       action: string;
