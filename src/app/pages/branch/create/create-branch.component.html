@@ -1,0 +1,37 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <div class="flex justify-between">
+            <div>
+              <div class="flex  mb-5 cursor-pointer hover:underline" (click)="returnPage()">
+                <mat-icon fontIcon="west"></mat-icon>
+                <p class="ml-2">Regresar</p>
+              </div>
+                <mat-card-title>Sucursal</mat-card-title>
+                <mat-card-subtitle *ngIf="type === 'create' " class="mat-body-1">Creación</mat-card-subtitle>
+                <mat-card-subtitle *ngIf="type === 'edit' " class="mat-body-1">Edición</mat-card-subtitle>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <!-- FORM -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <p class="text-lg font-semibold m-5">Información General</p>
+            <div class="m-32">
+                <mat-form-field appearance="fill" [style.width.px]=600>
+                  <mat-label>Nombre sucursal</mat-label>
+                  <input autocomplete="nope" matInput formControlName="name" minlength maxlength pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-error *ngIf="form.controls['name'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
+                  <mat-error *ngIf="form.controls['name'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex grow mt-10 p-20">
+                <button (click)="onSubmit()" mat-raised-button color="primary" type="submit" class="grow h-14">Guardar</button>
+            </div>
+          </form>
+        </mat-card-content>
+    </mat-card>
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>

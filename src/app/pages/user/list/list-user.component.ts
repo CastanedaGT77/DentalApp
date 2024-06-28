@@ -17,7 +17,7 @@ export class ListUserComponent implements OnInit, AfterViewInit {
     dataSource = new MatTableDataSource<any>(this.users);
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    displayedColumns: string[] = ['id', 'name', 'description', 'active','actions'];
+    displayedColumns: string[] = ['id', 'firstName','lastName','email','userName','isActive','actions'];
     
     constructor(
         private readonly _router: Router,
@@ -35,20 +35,23 @@ export class ListUserComponent implements OnInit, AfterViewInit {
 
     async getUsers() {
         try {
-            
+            const response = await this._userService.getUsers();
+            this.users = response;
+            console.log("USERS:", this.users);
+            this.dataSource.data = this.users;
         } catch (error) {
             console.error('Error al obtener datos:', error);
         }
     }
 
     // Métodos de acción llamada a editar paciente
-    editarIllnessDetail(illnessDetail: any) {
+    editUser(illnessDetail: any) {
         //console.log('funciona paciente editar', paciente);
         this._router.navigate(['/illnessDetail/edit'], { state: { illnessDetail: illnessDetail } });
     
     }
     
-    eliminarIllnessDetail(illnessDetail: any): void {
+    deleteUser(illnessDetail: any): void {
         console.log('funciona illnessDetail delete', illnessDetail);
     }
 
@@ -62,6 +65,6 @@ export class ListUserComponent implements OnInit, AfterViewInit {
     }
 
     redirectCreate(){
-        this._router.navigateByUrl("/illnessDetail/create");
+        this._router.navigateByUrl("/user/create");
     }
 }

@@ -23,6 +23,11 @@ export const navItems: NavItem[] = [
     route: "user/list"
   },
   {
+    displayName: "Sucursales",
+    iconName: "home",
+    route: "branch/list"
+  },
+  {
     navCap: "Información General"
   },
   {

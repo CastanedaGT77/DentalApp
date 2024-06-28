@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 import { PatientModule } from './pages/patient/patient.module';
+import { UserModule } from './pages/user/user.module';
 
 const routes: Routes = [
   {
@@ -37,8 +38,15 @@ const routes: Routes = [
       {
         path: 'user',
         loadChildren: () =>
-          import('./pages/role/role.module').then(
-            (m) => m.RoleModule
+          import('./pages/user/user.module').then(
+            (m) => m.UserModule
+          )
+      },
+      {
+        path: 'branch',
+        loadChildren: () =>
+          import('./pages/branch/branch.module').then(
+            (m) => m.BranchModule
           )
       },
       {

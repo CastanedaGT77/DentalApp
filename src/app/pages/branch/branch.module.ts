@@ -12,18 +12,18 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { IllnessDetailService } from '../illnessDetail/illnessDetail.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UserRouting } from './user.routing';
-import { ListUserComponent } from './list/list-user.component';
-import { UserService } from './user.service';
-import { CreateUserComponent } from './create/create-user.component';
-import { RoleService } from '../role/role.service';
+import { BranchRouting } from './branch.routing';
+import { BranchListComponent } from './list/branch-list.component';
+import { CreateBranchComponent } from './create/create-branch.component';
+import { BranchService } from './branch.service';
 
 @NgModule({
     imports: [
       CommonModule,
-      RouterModule.forChild(UserRouting),
+      RouterModule.forChild(BranchRouting),
       MaterialModule,
       FormsModule,
       ReactiveFormsModule,
@@ -37,15 +37,13 @@ import { RoleService } from '../role/role.service';
       MatTooltipModule
     ],
     declarations: [
-        ListUserComponent,
-        CreateUserComponent
+        BranchListComponent,
+        CreateBranchComponent
     ],
     providers: [
-      IllnessDetailService,
       NgxSpinnerService,
-      UserService,
-      RoleService
+      BranchService
     ]
   })
-  export class UserModule {}
+  export class BranchModule {}
   

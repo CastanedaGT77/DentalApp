@@ -2,10 +2,10 @@
     <mat-card-content>
         <div class="flex justify-between">
             <div>
-                <mat-card-title>Roles</mat-card-title>
+                <mat-card-title>Sucursales</mat-card-title>
                 <mat-card-subtitle class="mat-body-1">Listado</mat-card-subtitle>
             </div>
-            <button mat-flat-button color="primary" (click)="redirectCreate()">Crear Rol</button>
+            <button mat-flat-button color="primary" (click)="redirectCreate()">Crear Sucursal</button>
         </div>
     </mat-card-content>
 </mat-card>
@@ -16,22 +16,19 @@
     <!-- Position Column -->
     <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> No. </th>
-        <td mat-cell *matCellDef="let role"> {{role.id}} </td>
+        <td mat-cell *matCellDef="let branch"> {{branch.id}} </td>
     </ng-container>
-    <!-- First Name Column -->
+    <!-- Name Column -->
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
-        <td mat-cell *matCellDef="let role"> {{role.name}} </td>
+        <td mat-cell *matCellDef="let branch"> {{branch.name}} </td>
     </ng-container>
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
-        <td mat-cell *matCellDef="let role">
-            <button mat-icon-button (click)="editRole(role)" matTooltip="Editar">
+        <td mat-cell *matCellDef="let branch">
+            <button mat-icon-button (click)="editBranch(branch)" matTooltip="Editar">
                 <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteRole(role)" matTooltip="Eliminar">
-                <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
             </button>
         </td>
     </ng-container>
