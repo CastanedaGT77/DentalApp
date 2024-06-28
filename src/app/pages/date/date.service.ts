@@ -13,7 +13,13 @@ export class DateService {
                     id: 1,
                     patient: "Edvin",
                     description: "Limpieza",
-                    appointmentDate: "1/1/2024"
+                    appointmentDate: "14/06/2024"
+                },
+                {
+                    id: 1,
+                    patient: "Marco",
+                    description: "Sin Muelas",
+                    appointmentDate: "15/06/2024"
                 }
             ];
             return appointments;

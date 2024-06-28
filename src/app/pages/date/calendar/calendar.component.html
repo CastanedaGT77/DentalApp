@@ -1,11 +1,11 @@
 <mat-card class="cardWithShadow">
   <mat-card-content>
-    <div class="flex justify-between">
+    <div class="flex justify-between items-center">
       <div>
         <mat-card-title>Calendario de Citas</mat-card-title>
       </div>
       <div>
-        <button button mat-flat-button color="primary" (click)="openNewAppointmentModal()">
+        <button mat-flat-button color="primary" (click)="openNewAppointmentModal()">
           Agregar cita
         </button>
       </div>
@@ -13,71 +13,42 @@
   </mat-card-content>
 </mat-card>
 
-<div class="row text-center">
-  <div class="col-md-4">
-    <div class="btn-group">
-      <div
-        mwlCalendarPreviousView
-        [view]="view"
-        [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay()"
-      >
-        <button mat-flat-button color="primary">
-          Previous
-        </button>
-      </div>
-      <div
-        class="btn btn-outline-secondary"
-        mwlCalendarToday
-        [(viewDate)]="viewDate"
-      >
-        Today
-      </div>
-      <div
-        class="btn btn-primary"
-        mwlCalendarNextView
-        [view]="view"
-        [(viewDate)]="viewDate"
-        (viewDateChange)="closeOpenMonthViewDay()"
-      >
-        Next
-      </div>
-    </div>
+<div class="flex justify-between items-center mt-4">
+  <div >
+    <button mat-stroked-button color="primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+      Previo
+    </button>
+    <button mat-stroked-button color="primary" mwlCalendarToday [(viewDate)]="viewDate">
+      Hoy
+    </button>
+    <button mat-stroked-button color="primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+      Siguiente
+    </button>
   </div>
-  <div class="col-md-4">
-    <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
-  </div>
-  <div class="col-md-4">
-    <div class="btn-group">
-      <div
-        class="btn btn-primary"
-        (click)="setView(CalendarView.Month)"
-        [class.active]="view === CalendarView.Month"
-      >
-        Month
-      </div>
-      <div
-        class="btn btn-primary"
-        (click)="setView(CalendarView.Week)"
-        [class.active]="view === CalendarView.Week"
-      >
-        Week
-      </div>
-      <div
-        class="btn btn-primary"
-        (click)="setView(CalendarView.Day)"
-        [class.active]="view === CalendarView.Day"
-      >
-        Day
-      </div>
-    </div>
+  <div >
+    <button mat-stroked-button color="primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+      Mes
+    </button>
+    <button mat-stroked-button color="primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+      Semana
+    </button>
+    <button mat-stroked-button color="primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+      Día
+    </button>
   </div>
 </div>
+
+<div class="flex justify-center space-x-4 mt-4">
+  <h3 class="text-lg font-semibold">{{ viewDate | calendarDate:(view + 'ViewTitle'):'es' | titlecase }}</h3>
+</div>
+
 <br />
+
 <div [ngSwitch]="view" class="overflow-y-scroll h-96">
   <mwl-calendar-month-view
     *ngSwitchCase="CalendarView.Month"
     [viewDate]="viewDate"
+    [locale]="locale"
     [events]="events"
     [refresh]="refresh"
     [activeDayIsOpen]="activeDayIsOpen"
@@ -89,6 +60,7 @@
   <mwl-calendar-week-view
     *ngSwitchCase="CalendarView.Week"
     [viewDate]="viewDate"
+    [locale]="locale"
     [events]="events"
     [refresh]="refresh"
     (eventClicked)="handleEvent('Clicked', $event.event)"
@@ -98,6 +70,7 @@
   <mwl-calendar-day-view
     *ngSwitchCase="CalendarView.Day"
     [viewDate]="viewDate"
+    [locale]="locale"
     [events]="events"
     [refresh]="refresh"
     (eventClicked)="handleEvent('Clicked', $event.event)"
