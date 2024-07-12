@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { CalendarComponent } from './calendar/calendar.component';
+import { CreateDateComponent } from './create/create-date.component';
 
 
 
@@ -11,20 +12,13 @@ export const DateRouting: Routes = [
         path: 'calendar',
         component: CalendarComponent
       },
-      // {
-      //   path: 'create',
-      //   component: CreateTreatmentType,
-      //   data: {
-      //     type: 'create'
-      //   }
-      // },
-      // {
-      //   path: 'edit',
-      //   component: CreateTreatmentType,
-      //   data: {
-      //     type: 'edit'
-      //   }
-      // },
+      {
+        path: 'create',
+        component: CreateDateComponent,
+        data: {
+          type: 'create'
+        }
+      },
     ],
     
   },

@@ -27,6 +27,7 @@ import {
 import { DateService } from '../date.service';
 import { CitaModel } from '../models/CitaExample';
 import { Pipe, PipeTransform } from '@angular/core';
+import { Router } from '@angular/router';
 
   
   const colors: Record<string, EventColor> = {
@@ -81,7 +82,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 
     constructor(
-      private readonly dateService: DateService
+      private readonly dateService: DateService,
+      private readonly _router: Router,
     ) {
     }
   
@@ -89,6 +91,10 @@ import { Pipe, PipeTransform } from '@angular/core';
       this.appointments = await this.dateService.getAppointment();
       await this.createCalendarEvents();
     }
+
+    redirectCreate(){
+      this._router.navigateByUrl("/date/create");
+  }
 
     async createCalendarEvents(){
       let tempEvents: CalendarEvent[] = [];

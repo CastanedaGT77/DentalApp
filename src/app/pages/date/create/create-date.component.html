@@ -1,0 +1,62 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <div class="flex justify-between">
+            <div>
+              <div class="flex  mb-5 cursor-pointer hover:underline" (click)="returnPage()">
+                <mat-icon fontIcon="west"></mat-icon>
+                <p class="ml-2">Regresar</p>
+              </div>
+                <mat-card-title>Cita</mat-card-title>
+                <mat-card-subtitle *ngIf="type === 'create' " class="mat-body-1">Creación</mat-card-subtitle>
+                <!-- <mat-card-subtitle *ngIf="type === 'edit' " class="mat-body-1">Edición</mat-card-subtitle> -->
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+      <!-- FORM -->
+      <form [formGroup]="form" class="w-full shadow-md">
+        <p class="text-lg font-semibold m-5">Información General</p>
+          <div class="flex justify-around mb-5">
+            <mat-form-field appearance="fill" [style.width.px]=400>
+                <mat-label>Seleccione al Paciente</mat-label>
+                <mat-select>
+                  <mat-option value="one">Maco</mat-option>
+                  <mat-option value="two">Palido</mat-option>
+                  <mat-option value="one">Chan</mat-option>
+                  <mat-option value="two">Wicho</mat-option>
+                  <mat-option value="one">Tato</mat-option>
+                  <mat-option value="two">Gerardo</mat-option>
+                  <mat-option value="one">Jorge</mat-option>
+                  <mat-option value="two">Sergio</mat-option>
+                </mat-select>
+              </mat-form-field>
+            <mat-form-field appearance="fill" [style.width.px]=400>
+              <mat-label>Descripción</mat-label>
+              <textarea autocomplete="nope" matInput formControlName="name" minlength maxlength pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*"></textarea>
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-error *ngIf="form.controls['name'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
+              <mat-error *ngIf="form.controls['name'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="flex justify-around mb-5">
+            <mat-form-field appearance="fill" [style.width.px]=400>
+              <mat-label>Fecha </mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="datetime">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill" [style.width.px]=400>
+              <mat-label>Hora</mat-label>
+              <input matInput type="time" formControlName="time">
+            </mat-form-field>
+          </div>
+          <div class="flex grow mt-10 p-20">
+              <button (click)="pruebaFecha()" mat-raised-button color="primary" type="submit" class="grow h-14">Guardar</button>
+          </div>
+        </form>
+      </mat-card-content>
+  </mat-card>
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>

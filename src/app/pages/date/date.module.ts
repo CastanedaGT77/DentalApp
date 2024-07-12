@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
 
@@ -21,6 +21,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { CreateDateComponent } from './create/create-date.component';
 
 // Registrar los datos de localización en español
 registerLocaleData(localeEs);
@@ -46,11 +47,13 @@ registerLocaleData(localeEs);
     FlatpickrModule.forRoot()
   ],
   declarations: [
-    CalendarComponent
+    CalendarComponent,
+    CreateDateComponent
   ],
   providers: [
     DateService,
-    NgxSpinnerService
+    NgxSpinnerService,
+    DatePipe
   ]
 })
 export class DateModule {}

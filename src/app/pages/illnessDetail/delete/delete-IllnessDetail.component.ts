@@ -6,8 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { IllnessDetailService } from '../illnessDetail.service';
 
 @Component({
-    selector: 'delete-illnessDetail',
-    templateUrl: 'delete-illnessDetail.component.html',
+    selector: 'delete-IllnessDetail',
+    templateUrl: 'delete-IllnessDetail.component.html',
     
 })
 
