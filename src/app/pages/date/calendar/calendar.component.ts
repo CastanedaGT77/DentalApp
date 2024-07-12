@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
-import { startOfDay, endOfDay, isSameDay, isSameMonth } from 'date-fns';
+import { startOfDay, endOfDay, isSameDay, isSameMonth, addMinutes } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarView, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { DateService } from '../date.service';
@@ -63,11 +63,11 @@ export class CalendarComponent implements OnInit {
     let tempEvents: CalendarEvent[] = [];
     this.appointments.forEach(a => {
       try {
-        const appointmentDate = this.parseDate(a.appointmentDate);
+        const appointmentDate = this.parseDate(a.appointmentDate, a.hour);
         tempEvents.push({
           id: a.id,
           start: appointmentDate,
-          end: appointmentDate,
+          end: addMinutes(appointmentDate, 30), // Duración de 30 minutos
           title: `${a.patient} - ${a.description}`,
           color: { ...colors['red'] }
         });
@@ -79,12 +79,10 @@ export class CalendarComponent implements OnInit {
     this.refresh.next();
   }
 
-  parseDate(dateString: string): Date {
-    const parts = dateString.split('/');
-    const day = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1; // Month is zero-based in JavaScript Date
-    const year = parseInt(parts[2], 10);
-    return new Date(year, month, day);
+  parseDate(dateString: string, hourString: string): Date {
+    const [day, month, year] = dateString.split('/').map(part => parseInt(part, 10));
+    const [hour, minute] = hourString.split(':').map(part => parseInt(part, 10));
+    return new Date(year, month - 1, day, hour, minute);
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
