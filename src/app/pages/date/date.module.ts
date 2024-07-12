@@ -22,6 +22,8 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { CreateDateComponent } from './create/create-date.component';
+import { AppointmentDetailsDialog } from './view-date/view-date.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Registrar los datos de localización en español
 registerLocaleData(localeEs);
@@ -48,12 +50,14 @@ registerLocaleData(localeEs);
   ],
   declarations: [
     CalendarComponent,
-    CreateDateComponent
+    CreateDateComponent,
+    AppointmentDetailsDialog
   ],
   providers: [
     DateService,
     NgxSpinnerService,
-    DatePipe
+    DatePipe,
+    MatDialogModule
   ]
 })
 export class DateModule {}

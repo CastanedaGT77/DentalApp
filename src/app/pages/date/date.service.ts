@@ -14,21 +14,64 @@ export class DateService {
                     patient: "Edvin",
                     description: "Limpieza",
                     appointmentDate: "14/07/2024",
-                    hour: "14:30"
+                    hour: "14:30",
+                    hourF: "15:00"
                 },
                 {
                     id: 1,
                     patient: "Marco",
                     description: "Sin Muelas",
                     appointmentDate: "15/07/2024",
-                    hour: "14:05"
+                    hour: "14:05",
+                    hourF: "14:30"
                 },
                 {
                     id: 1,
                     patient: "Meli",
                     description: "Sin el Palido",
                     appointmentDate: "14/07/2024",
-                    hour: "14:45"
+                    hour: "15:00",
+                    hourF: "15:50"
+                },
+                {
+                    id: 1,
+                    patient: "Meli",
+                    description: "Sin el Palido",
+                    appointmentDate: "14/07/2024",
+                    hour: "15:00",
+                    hourF: "15:50"
+                },
+                {
+                    id: 1,
+                    patient: "Meli",
+                    description: "Sin el Palido",
+                    appointmentDate: "14/07/2024",
+                    hour: "15:00",
+                    hourF: "15:50"
+                },
+                {
+                    id: 1,
+                    patient: "Meli",
+                    description: "Sin el Palido",
+                    appointmentDate: "14/07/2024",
+                    hour: "15:00",
+                    hourF: "15:50"
+                },
+                {
+                    id: 1,
+                    patient: "Meli",
+                    description: "Sin el Palido",
+                    appointmentDate: "14/07/2024",
+                    hour: "15:00",
+                    hourF: "15:50"
+                },
+                {
+                    id: 1,
+                    patient: "Meli",
+                    description: "Sin el Palido",
+                    appointmentDate: "14/07/2024",
+                    hour: "15:00",
+                    hourF: "15:50"
                 }
             ];
             return appointments;

@@ -3,5 +3,6 @@ export class CitaModel {
     public patient: string;
     public description: string;
     appointmentDate: string;  // formato 'dd/MM/yyyy'
-    hour: string;             // formato 'HH.mm'
+    hour: string;             // formato 'HH:Smm'
+    hourF: string;            // formato 'HH:mm'
 }

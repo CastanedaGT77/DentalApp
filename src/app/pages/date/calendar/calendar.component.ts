@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
-import { startOfDay, endOfDay, isSameDay, isSameMonth, addMinutes } from 'date-fns';
+import { endOfDay, isSameDay, isSameMonth, startOfDay } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarView, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { DateService } from '../date.service';
 import { CitaModel } from '../models/CitaExample';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { AppointmentDetailsDialog } from '../view-date/view-date.component';
 
 const colors: Record<string, any> = {
   red: {
@@ -47,7 +49,8 @@ export class CalendarComponent implements OnInit {
   constructor(
     private readonly dateService: DateService,
     private readonly _router: Router,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    public dialog: MatDialog
   ) {}
 
   async ngOnInit() {
@@ -63,26 +66,48 @@ export class CalendarComponent implements OnInit {
     let tempEvents: CalendarEvent[] = [];
     this.appointments.forEach(a => {
       try {
-        const appointmentDate = this.parseDate(a.appointmentDate, a.hour);
+        const appointmentStart = this.parseDate(a.appointmentDate, a.hour);
+        const appointmentEnd = this.parseDate(a.appointmentDate, a.hourF);
         tempEvents.push({
           id: a.id,
-          start: appointmentDate,
-          end: addMinutes(appointmentDate, 30), // Duración de 30 minutos
+          start: appointmentStart,
+          end: appointmentEnd,
           title: `${a.patient} - ${a.description}`,
-          color: { ...colors['red'] }
+          color: { ...colors['red'] },
+          meta: a // Almacenar el objeto de la cita completa en la propiedad meta
         });
       } catch (error) {
         console.error('Error parsing date for appointment:', a, error);
       }
     });
-    this.events = tempEvents;
+
+    this.events = this.ensureNoOverlap(tempEvents);
     this.refresh.next();
   }
 
-  parseDate(dateString: string, hourString: string): Date {
+  parseDate(dateString: string, timeString: string): Date {
     const [day, month, year] = dateString.split('/').map(part => parseInt(part, 10));
-    const [hour, minute] = hourString.split(':').map(part => parseInt(part, 10));
+    const [hour, minute] = timeString.split(':').map(part => parseInt(part, 10));
     return new Date(year, month - 1, day, hour, minute);
+  }
+
+  ensureNoOverlap(events: CalendarEvent[]): CalendarEvent[] {
+    // Sort events by start time
+    events.sort((a, b) => a.start.getTime() - b.start.getTime());
+
+    for (let i = 0; i < events.length - 1; i++) {
+      const currentEvent = events[i];
+      const nextEvent = events[i + 1];
+      if (currentEvent.end && nextEvent.start && currentEvent.end > nextEvent.start) {
+        // Adjust next event start and end to ensure no overlap
+        nextEvent.start = new Date(currentEvent.end.getTime());
+        if (nextEvent.end) {
+          nextEvent.end = new Date(nextEvent.start.getTime() + (nextEvent.end.getTime() - nextEvent.start.getTime()));
+        }
+      }
+    }
+
+    return events;
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -115,10 +140,17 @@ export class CalendarComponent implements OnInit {
 
   handleEvent(action: string, event: CalendarEvent): void {
     if (action === "Clicked") {
-      // Abrir modal donde muestre información de la cita y también los botones para poder editar y eliminar
+      // Abrir modal donde muestre información de la cita
       this.modalData = { event, action };
-      alert(JSON.stringify(event));
+      this.openAppointmentDetails(event.meta);
     }
+  }
+
+  openAppointmentDetails(appointment: CitaModel): void {
+    this.dialog.open(AppointmentDetailsDialog, {
+      width: '300px',
+      data: appointment
+    });
   }
 
   openNewAppointmentModal() {
