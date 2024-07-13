@@ -1,42 +1,45 @@
-<mat-card class="cardWithShadow">
-  <div class="flex  mb-5 cursor-pointer hover:underline" (click)="returnPage()">
+<mat-card class="cardWithShadow p-6">
+  <div class="flex items-center mb-5 cursor-pointer hover:underline" (click)="returnPage()">
     <mat-icon fontIcon="west"></mat-icon>
     <p class="ml-2">Regresar</p>
   </div>
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image">
-        <img mat-card-image [src]="sanitizedImage" alt="Patient Image">
-      </div>
-      <mat-card-title>Paciente: {{paciente.firstName}} {{paciente.lastName}} </mat-card-title>
-      <mat-card-subtitle>Edad: {{paciente.birthDate | date}} </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p> Números de Contacto: {{paciente.phoneNumber}} - {{paciente.cellPhoneNumber}} </p>
-      <p> Correo Electrónico: {{paciente.email}} </p>
-      <p> Ciudad: {{paciente.city}} </p>
-      <p> Dirección: {{paciente.address}} </p>
-      <p> Recomendado por: {{paciente.recommendedBy}} </p>
-      <p> Persona a Cargo: {{paciente.personInCharge}} </p>
-      <p> Estado Civil: {{paciente.maritalStatus}} </p>
-      <p> Ocupación: {{paciente.occupation}} </p>
-      <p> Doctor Personal: {{paciente.personalDoctor}} </p>
-      <p> Dentista Previo: {{paciente.previousDentist}} </p>
-      <p> Detalle de Enfermedad: {{paciente.illnessDetails}} </p>
-    </mat-card-content>
-   
+  <mat-card-header class="flex items-center space-x-4">
+    <div mat-card-avatar class="example-header-image">
+      <img mat-card-image [src]="sanitizedImage" alt="Patient Image" class="rounded-full w-20 h-20">
+    </div>
+    <div>
+      <mat-card-title class="text-xl font-semibold">Paciente: {{ paciente.firstName }} {{ paciente.lastName }}</mat-card-title>
+      <mat-card-subtitle class="text-gray-600">Edad: {{ paciente.birthDate | date }}</mat-card-subtitle>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <p><strong>Números de Contacto:</strong> {{ paciente.phoneNumber }} - {{ paciente.cellPhoneNumber }}</p>
+      <p><strong>Correo Electrónico:</strong> {{ paciente.email }}</p>
+      <p><strong>Ciudad:</strong> {{ paciente.city }}</p>
+      <p><strong>Dirección:</strong> {{ paciente.address }}</p>
+      <p><strong>Recomendado por:</strong> {{ paciente.recommendedBy }}</p>
+      <p><strong>Persona a Cargo:</strong> {{ paciente.personInCharge }}</p>
+      <p><strong>Estado Civil:</strong> {{ paciente.maritalStatus }}</p>
+      <p><strong>Ocupación:</strong> {{ paciente.occupation }}</p>
+      <p><strong>Doctor Personal:</strong> {{ paciente.personalDoctor }}</p>
+      <p><strong>Dentista Previo:</strong> {{ paciente.previousDentist }}</p>
+      <p class="md:col-span-2"><strong>Detalle de Enfermedad:</strong> {{ paciente.illnessDetails}}</p>
+    </div>
+  </mat-card-content>
 </mat-card>
 
-<mat-card class="cardWithShadow">
+<mat-card class="cardWithShadow p-6 mt-6">
   <mat-card-header>
-    <mat-card-title>Historial clínico</mat-card-title>
+    <mat-card-title class="text-xl font-semibold">Historial clínico</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <p>Esta es una descripción</p>
   </mat-card-content>
 </mat-card>
-  
-<mat-card class="cardWithShadow">
+
+<mat-card class="cardWithShadow p-6 mt-6 flex justify-end">
   <mat-card-actions>
-    <button mat-button mat-raised-button color="primary" (click)="returnPage()" >Regresar</button>
+    <button mat-raised-button color="primary" (click)="returnPage()">Regresar</button>
   </mat-card-actions>
 </mat-card>

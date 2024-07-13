@@ -55,6 +55,17 @@ export class CreateTreatmentType implements OnInit {
         this.form.controls["suggestedPrice"].setValue(this.treatmentType.suggestedPrice);
         this.form.controls["estimatedTime"].setValue(this.treatmentType.estimatedTime);
     }
+    
+    async ngOnInit() {
+        if(this.type === "create"){
+            //this.getDetalles();
+        }
+        else if(this.type === "edit"){
+            //console.log('statee',history.state)
+            this.treatmentType = history.state.treatmentType;
+            await this.initializeForm();
+        }
+    }
 
     async onSubmit() {
         if(this.form.invalid){
@@ -154,16 +165,7 @@ export class CreateTreatmentType implements OnInit {
         }
     }
 
-    async ngOnInit() {
-        if(this.type === "create"){
-            //this.getDetalles();
-        }
-        else if(this.type === "edit"){
-            //console.log('statee',history.state)
-            this.treatmentType = history.state.treatmentType;
-            await this.initializeForm();
-        }
-    }
+    
 
     async returnPage(){
         this._router.navigateByUrl("/treatmentType/list");
