@@ -21,7 +21,10 @@ export class CreateDateComponent {
     patients!: any;
     branches!: any;
     users!: any;
-    dataSource! : any;
+    dataSource!: any;
+    dataSourceBranch!: any;
+    dataSourceUser!: any;
+
 
     constructor(
         private readonly _formBuilder: FormBuilder,
@@ -79,30 +82,25 @@ export class CreateDateComponent {
         });
     }
 
-    getBranches() {
-        this._branchService.getBranches().then(response => {
-            if (response && response.branches) {
-                this.branches = response.branches;
-                console.log('branches',this.branches)
-            } else {
-                console.error('Error: No se encontraron branches en la respuesta.');
-            }
-        }).catch(error => {
-            console.error('Error al obtener branches:', error);
-        });
+    async getBranches() {
+        const response = await this._branchService.getBranches();
+        if (response) {
+            this.branches = response;
+            this.dataSourceBranch.data = this.branches;
+        } else {
+            console.error('Error: No se encontraron datos en la respuesta.');
+        }
     }
 
-    getUsers() {
-        this._userService.getUsers().then(response => {
-            if (response && response.users) {
-                this.users = response.users;
-                console.log('users',this.users)
-            } else {
-                console.error('Error: No se encontraron users en la respuesta.');
-            }
-        }).catch(error => {
-            console.error('Error al obtener users:', error);
-        });
+    async getUsers() {
+        try {
+            const response = await this._userService.getUsers();
+            this.users = response;
+            console.log("USERS:", this.users);
+            this.dataSourceUser.data = this.users;
+        } catch (error) {
+            console.error('Error al obtener datos:', error);
+        }
     }
     
     pruebaFecha(){
@@ -110,6 +108,7 @@ export class CreateDateComponent {
         console.log('fecha', this.datetime)
         console.log('fecha formateada', formattedDate)
         console.log('hora', this.time)
+        console.log('datos para guardar cita', this.form)
     }
 
     get datetime() {
