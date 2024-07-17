@@ -24,6 +24,9 @@ import localeEs from '@angular/common/locales/es';
 import { CreateDateComponent } from './create/create-date.component';
 import { AppointmentDetailsDialog } from './view-date/view-date.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PatientService } from '../patient/patient.service';
+import { BranchService } from '../branch/branch.service';
+import { UserService } from '../user/user.service';
 
 // Registrar los datos de localización en español
 registerLocaleData(localeEs);
@@ -54,7 +57,10 @@ registerLocaleData(localeEs);
     AppointmentDetailsDialog
   ],
   providers: [
+    PatientService,
     DateService,
+    BranchService,
+    UserService,
     NgxSpinnerService,
     DatePipe,
     MatDialogModule

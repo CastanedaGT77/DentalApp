@@ -1,8 +1,11 @@
 export class createAppointmentDTO {
     // public id: number;
-    public patient: string;
-    public description: string;
-    appointmentDate: string;  // formato 'dd/MM/yyyy'
-    hour: string;             // formato 'HH:Smm'
-    hourF: string;            // formato 'HH:mm'
+    public patientId: number;
+    public branchId: number;
+    public assignedUser: number;
+    public appointmentDate: string;
+    public observations: string;
+    public startHour: string;
+    public endHour: string;
+
 }

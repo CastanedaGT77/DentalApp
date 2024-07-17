@@ -7,6 +7,9 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DomSanitizer } from "@angular/platform-browser";
 import Swal from "sweetalert2";
 import { DatePipe } from "@angular/common";
+import { PatientService } from "../../patient/patient.service";
+import { BranchService } from "../../branch/branch.service";
+import { UserService } from "../../user/user.service";
 
 @Component({
     selector: "app-create-date",
@@ -15,6 +18,11 @@ import { DatePipe } from "@angular/common";
 export class CreateDateComponent {
     type: "create" | "edit";
     form: FormGroup;
+    patients!: any;
+    branches!: any;
+    users!: any;
+    dataSource! : any;
+
     constructor(
         private readonly _formBuilder: FormBuilder,
         private readonly _spinnerService: NgxSpinnerService,
@@ -22,7 +30,9 @@ export class CreateDateComponent {
         private readonly _router: Router,
         private readonly _route: ActivatedRoute,
         private readonly _dialog: MatDialog,
-        // private readonly _branchService: BranchService,
+        private readonly _patientService: PatientService,
+        private readonly _branchService: BranchService,
+        private readonly _userService: UserService,
         private readonly _sanitizer: DomSanitizer,
         private readonly datePipe: DatePipe
     ){
@@ -32,9 +42,13 @@ export class CreateDateComponent {
 
     private createForm(){
         this.form = this._formBuilder.group({
-            name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
-            datetime: ['', Validators.required],
-            time: ['', Validators.required]
+            patientId: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
+            branchId: ['', Validators.required],
+            assignedUser: ['', Validators.required],
+            appointmentDate: ['', Validators.required],
+            observations: ['', Validators.required],
+            startHour: ['', Validators.required],
+            endHour: ['', Validators.required],
         });
     }
 
@@ -47,8 +61,50 @@ export class CreateDateComponent {
             // this.illnessDetail = history.state.illnessDetail;
             await this.initializeForm();
         }
+        this.getBranches();
+        this.getUsers();
+        this.getPatients();
     }
 
+    getPatients() {
+        this._patientService.getPatient().then(response => {
+            if (response && response.patients) {
+                this.patients = response.patients;
+                console.log('pacientes',this.patients)
+            } else {
+                console.error('Error: No se encontraron pacientes en la respuesta.');
+            }
+        }).catch(error => {
+            console.error('Error al obtener pacientes:', error);
+        });
+    }
+
+    getBranches() {
+        this._branchService.getBranches().then(response => {
+            if (response && response.branches) {
+                this.branches = response.branches;
+                console.log('branches',this.branches)
+            } else {
+                console.error('Error: No se encontraron branches en la respuesta.');
+            }
+        }).catch(error => {
+            console.error('Error al obtener branches:', error);
+        });
+    }
+
+    getUsers() {
+        this._userService.getUsers().then(response => {
+            if (response && response.users) {
+                this.users = response.users;
+                console.log('users',this.users)
+            } else {
+                console.error('Error: No se encontraron users en la respuesta.');
+            }
+        }).catch(error => {
+            console.error('Error al obtener users:', error);
+        });
+    }
+    
     pruebaFecha(){
         const formattedDate = this.datePipe.transform(this.datetime, 'dd/MM/yyyy');
         console.log('fecha', this.datetime)
