@@ -1,10 +1,10 @@
 <h1 mat-dialog-title>Detalles de la Cita</h1>
 <div mat-dialog-content>
-    <p><strong>Paciente:</strong> {{data.patient}}</p>
-    <p><strong>Descripción:</strong> {{data.description}}</p>
+    <p><strong>Paciente:</strong> {{data.patientId}}</p>
+    <p><strong>Descripción:</strong> {{data.observations}}</p>
     <p><strong>Fecha:</strong> {{data.appointmentDate}}</p>
-    <p><strong>Hora de Inicio:</strong> {{data.hour}}</p>
-    <p><strong>Hora de Finalización:</strong> {{data.hourF}}</p>
+    <p><strong>Hora de Inicio:</strong> {{data.startHour}}</p>
+    <p><strong>Hora de Finalización:</strong> {{data.endHour}}</p>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cerrar</button>

@@ -54,8 +54,13 @@ export class CalendarComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.appointments = await this.dateService.getAppointment();
-    await this.createCalendarEvents();
+    try {
+      this.appointments = await this.dateService.getAppointment();
+      console.log('dates', this.appointments)
+      await this.createCalendarEvents();
+    } catch (error) {
+      console.error("Error al obtener citas:", error);
+    }
   }
 
   redirectCreate() {
@@ -66,13 +71,17 @@ export class CalendarComponent implements OnInit {
     let tempEvents: CalendarEvent[] = [];
     this.appointments.forEach(a => {
       try {
-        const appointmentStart = this.parseDate(a.appointmentDate, a.hour);
-        const appointmentEnd = this.parseDate(a.appointmentDate, a.hourF);
+        if (!a.appointmentDate || !a.startHour || !a.endHour) {
+          throw new Error("Missing appointment date or time");
+        }
+        const appointmentStart = this.parseDate(a.appointmentDate, a.startHour);
+        const appointmentEnd = this.parseDate(a.appointmentDate, a.endHour);
+        console.log('horas', appointmentStart, appointmentEnd)
         tempEvents.push({
           id: a.id,
           start: appointmentStart,
           end: appointmentEnd,
-          title: `${a.patient} - ${a.description}`,
+          title: `${a.patientId} - ${a.observations}`,
           color: { ...colors['red'] },
           meta: a // Almacenar el objeto de la cita completa en la propiedad meta
         });
@@ -86,8 +95,14 @@ export class CalendarComponent implements OnInit {
   }
 
   parseDate(dateString: string, timeString: string): Date {
+    if (!dateString || !timeString) {
+      throw new Error("Invalid date or time string");
+    }
     const [day, month, year] = dateString.split('/').map(part => parseInt(part, 10));
     const [hour, minute] = timeString.split(':').map(part => parseInt(part, 10));
+    if (isNaN(day) || isNaN(month) || isNaN(year) || isNaN(hour) || isNaN(minute)) {
+      throw new Error("Invalid date or time components");
+    }
     return new Date(year, month - 1, day, hour, minute);
   }
 

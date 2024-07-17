@@ -3,6 +3,8 @@ export class CitaModel {
     public patient: string;
     public description: string;
     appointmentDate: string;  // formato 'dd/MM/yyyy'
-    hour: string;             // formato 'HH:Smm'
-    hourF: string;            // formato 'HH:mm'
+    startHour: string;             // formato 'HH:Smm'
+    endHour: string;            // formato 'HH:mm'
+    observations: string;
+    patientId: number;
 }
