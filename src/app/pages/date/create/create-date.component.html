@@ -26,7 +26,15 @@
                 <mat-option *ngFor="let patient of patients" [value]="patient.id">{{ patient.firstName }} {{ patient.lastName }}</mat-option>
               </mat-select>
             </mat-form-field>
-          <mat-form-field appearance="fill" [style.width.px]=400>
+            <mat-form-field appearance="fill" [style.width.px]=400>
+              <mat-label>Seleccione la sucursal</mat-label>
+              <mat-select formControlName="branchId">
+                <mat-option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="flex justify-around mb-5">
+          <mat-form-field appearance="fill" [style.width.px]=800>
             <mat-label>Observaciones</mat-label>
             <textarea autocomplete="nope" matInput formControlName="observations"></textarea>
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
@@ -34,20 +42,7 @@
             <mat-error *ngIf="form.controls['name'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error> -->
           </mat-form-field>
         </div>
-        <div class="flex justify-around mb-5">
-          <mat-form-field appearance="fill" [style.width.px]=400>
-              <mat-label>Seleccione la sucursal</mat-label>
-              <mat-select formControlName="branchId">
-                <mat-option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-         <mat-form-field appearance="fill" [style.width.px]=400>
-              <mat-label>Seleccione al Encargado</mat-label>
-              <mat-select formControlName="assignedUser">
-                <mat-option *ngFor="let user of users" [value]="user.id">{{ user.firstName }} {{ user.lastName }}</mat-option>
-              </mat-select>
-          </mat-form-field>
-        </div>
+
         <div class="flex justify-around mb-5">
           <mat-form-field appearance="fill" [style.width.px]=400>
             <mat-label>Fecha </mat-label>
@@ -55,11 +50,19 @@
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-          <mat-form-field appearance="fill" [style.width.px]=200>
+          <mat-form-field appearance="fill" [style.width.px]=400>
+            <mat-label>Seleccione al Encargado</mat-label>
+            <mat-select formControlName="assignedUser">
+              <mat-option *ngFor="let user of users" [value]="user.id">{{ user.firstName }} {{ user.lastName }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex justify-around mb-5">
+          <mat-form-field appearance="fill" [style.width.px]=400>
             <mat-label>Hora Inicio</mat-label>
             <input matInput type="time" formControlName="startHour">
           </mat-form-field>
-          <mat-form-field appearance="fill" [style.width.px]=200>
+          <mat-form-field appearance="fill" [style.width.px]=400>
             <mat-label>Hora Fin</mat-label>
             <input matInput type="time" formControlName="endHour">
           </mat-form-field>
