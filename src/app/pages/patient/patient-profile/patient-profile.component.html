@@ -4,16 +4,16 @@
     <p class="ml-2">Regresar</p>
   </div>
   <mat-card-header class="flex items-center space-x-4">
-    <div mat-card-avatar class="example-header-image">
-      <img mat-card-image [src]="sanitizedImage" alt="Patient Image" class="rounded-full w-20 h-20">
+    <div class="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+      <img [src]="sanitizedImage" alt="Patient Image" class="w-full h-full object-cover">
     </div>
     <div>
-      <mat-card-title class="text-xl font-semibold">Paciente: {{ paciente.firstName }} {{ paciente.lastName }}</mat-card-title>
-      <mat-card-subtitle class="text-gray-600">Edad: {{ paciente.birthDate | date }}</mat-card-subtitle>
+      <h2 class="text-xl font-semibold">Paciente: {{ paciente.firstName }} {{ paciente.lastName }}</h2>
+      <p class="text-gray-600">Edad: {{ paciente.birthDate | date }}</p>
     </div>
   </mat-card-header>
   <mat-card-content class="space-y-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <p><strong>Números de Contacto:</strong> {{ paciente.phoneNumber }} - {{ paciente.cellPhoneNumber }}</p>
       <p><strong>Correo Electrónico:</strong> {{ paciente.email }}</p>
       <p><strong>Ciudad:</strong> {{ paciente.city }}</p>
@@ -24,14 +24,16 @@
       <p><strong>Ocupación:</strong> {{ paciente.occupation }}</p>
       <p><strong>Doctor Personal:</strong> {{ paciente.personalDoctor }}</p>
       <p><strong>Dentista Previo:</strong> {{ paciente.previousDentist }}</p>
-      <br>
-      <div class="md:col-span-2">
-        <strong>Detalle de Enfermedad:</strong>
-        <div *ngFor="let detail of paciente.illnessDetails">
-          <p><strong>Nombre:</strong> {{ detail.name }}</p>
-          <p><strong>Descripción:</strong> {{ detail.description }}</p>
-        </div>
-      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow p-6 mt-6">
+  <mat-card-content>
+    <h3 class="text-lg font-semibold mb-2">Detalle de Enfermedad:</h3>
+    <div *ngFor="let detail of paciente.illnessDetails; let i = index" class="mb-4">
+      <p class="text-gray-700"><strong>{{ i + 1 }}. Nombre:</strong> {{ detail.name }}</p>
+      <p class="text-gray-500"><strong>Descripción:</strong> {{ detail.description }}</p>
     </div>
   </mat-card-content>
 </mat-card>
@@ -41,7 +43,7 @@
     <mat-card-title class="text-xl font-semibold">Historial clínico</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <p>Esta es una descripción</p>
+    <p class="text-gray-700">Esta es una descripción</p>
   </mat-card-content>
 </mat-card>
 
