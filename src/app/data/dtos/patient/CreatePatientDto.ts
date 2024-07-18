@@ -13,7 +13,7 @@ export class CreatePatientDto {
     occupation: string;
     personalDoctor: string;
     previousDentist: string;
-    illnessDetails: {id: number}[];
+    illnessDetails: number[];
 }
 
 

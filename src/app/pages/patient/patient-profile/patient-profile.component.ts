@@ -26,6 +26,7 @@ export class PatientProfileComponent implements OnInit {
   async ngOnInit() {
     // Obtener el parámetro 'paciente' de la URL
     this.paciente = history.state.paciente;
+    console.log('paciente profile', this.paciente)
     this._getImage(this.paciente?.id);
   }
 

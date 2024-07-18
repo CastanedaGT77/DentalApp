@@ -14,5 +14,5 @@ export class UpdatePatientDto {
     occupation: string;
     personalDoctor: string;
     previousDentist: string;
-    illnessDetails: {id: number}[];
+    illnessDetails: number[];
 }

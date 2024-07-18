@@ -24,7 +24,14 @@
       <p><strong>Ocupación:</strong> {{ paciente.occupation }}</p>
       <p><strong>Doctor Personal:</strong> {{ paciente.personalDoctor }}</p>
       <p><strong>Dentista Previo:</strong> {{ paciente.previousDentist }}</p>
-      <p class="md:col-span-2"><strong>Detalle de Enfermedad:</strong> {{ paciente.illnessDetails}}</p>
+      <br>
+      <div class="md:col-span-2">
+        <strong>Detalle de Enfermedad:</strong>
+        <div *ngFor="let detail of paciente.illnessDetails">
+          <p><strong>Nombre:</strong> {{ detail.name }}</p>
+          <p><strong>Descripción:</strong> {{ detail.description }}</p>
+        </div>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>
