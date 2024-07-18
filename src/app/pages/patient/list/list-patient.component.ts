@@ -18,7 +18,7 @@ export class ListPatientComponent {
     patientImage: string;
     sanitizedImage: SafeResourceUrl | null;
     
-    displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'email', 'actions'];
+    displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'email', 'active', 'actions'];
 
 
     dataSource = new MatTableDataSource<any>(this.patients);

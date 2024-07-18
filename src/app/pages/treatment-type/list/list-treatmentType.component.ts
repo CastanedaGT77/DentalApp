@@ -19,7 +19,7 @@ export class ListTreatmentTypeComponent implements OnInit, AfterViewInit {
     dataSource = new MatTableDataSource<any>(this.treatmentType);
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    displayedColumns: string[] = ['id', 'name', 'description', 'suggestedPrice', 'estimatedTime', 'actions'];
+    displayedColumns: string[] = ['id', 'name', 'description', 'suggestedPrice', 'estimatedTime', 'active', 'actions'];
     
     constructor(
         private readonly _router: Router,

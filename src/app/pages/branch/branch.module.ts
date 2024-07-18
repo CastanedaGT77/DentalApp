@@ -19,6 +19,7 @@ import { BranchRouting } from './branch.routing';
 import { BranchListComponent } from './list/branch-list.component';
 import { CreateBranchComponent } from './create/create-branch.component';
 import { BranchService } from './branch.service';
+import { DeleteBranch } from './delete/delete-branch.component';
 
 @NgModule({
     imports: [
@@ -38,7 +39,8 @@ import { BranchService } from './branch.service';
     ],
     declarations: [
         BranchListComponent,
-        CreateBranchComponent
+        CreateBranchComponent,
+        DeleteBranch
     ],
     providers: [
       NgxSpinnerService,

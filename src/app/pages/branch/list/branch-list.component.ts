@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { BranchService } from "../branch.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { DomSanitizer } from "@angular/platform-browser";
+import { DeleteBranch } from "../delete/delete-branch.component";
 
 @Component({
     selector: "app-branch-list",
@@ -16,7 +17,7 @@ export class BranchListComponent{
     dataSource = new MatTableDataSource<any>(this.branches);
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    displayedColumns: string[] = ['id', 'name', 'actions'];
+    displayedColumns: string[] = ['id', 'name', 'isActive', 'actions'];
     
     constructor(
         private readonly _router: Router,
@@ -43,13 +44,22 @@ export class BranchListComponent{
     }
 
     // Métodos de acción llamada a editar paciente
-    editBranch(illnessDetail: any) {
+    editBranch(branch: any) {
         //console.log('funciona paciente editar', paciente);
-        this._router.navigate(['/illnessDetail/edit'], { state: { illnessDetail: illnessDetail } });
+        this._router.navigate(['/branch/edit'], { state: { branch: branch } });
     
     }
     
-    deleteBranch(illnessDetail: any): void {
+    deleteBranch(branch: any): void {
+        console.log('funciona delete delete', branch);
+        this.dialog.open(DeleteBranch, {
+            width: '300px',
+            data: { branch: branch }
+        }).afterClosed().subscribe(data => {
+            if(data){
+                this.getBranches();
+            }
+        });
     }
 
     applyFilter(event: Event) {

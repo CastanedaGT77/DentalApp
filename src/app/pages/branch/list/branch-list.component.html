@@ -23,12 +23,35 @@
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
         <td mat-cell *matCellDef="let branch"> {{branch.name}} </td>
     </ng-container>
+    <!-- Status Column -->
+    <ng-container matColumnDef="isActive">
+        <th mat-header-cell *matHeaderCellDef> Estado </th>
+        <td mat-cell *matCellDef="let branch">
+            <ng-template [ngIf]="branch.active===true">
+                <span
+                  class="bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12"
+                >
+                    Activo
+                </span>
+            </ng-template>
+            <ng-template [ngIf]="branch.active===false">
+                <span
+                    class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12"
+                >
+                    Inactivo
+                </span>
+            </ng-template>
+        </td>
+    </ng-container>
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let branch">
             <button mat-icon-button (click)="editBranch(branch)" matTooltip="Editar">
                 <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteBranch(branch)" matTooltip="Eliminar">
+                <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
             </button>
         </td>
     </ng-container>
