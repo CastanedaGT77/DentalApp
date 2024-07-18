@@ -55,8 +55,9 @@ export class ListPatientComponent {
         //console.log('funciona paciente editar', paciente);
         this._getImage(paciente.id).then(() => {
             console.log('imagen mandada', this.sanitizedImage);
-            console.log('imagen mandada', paciente.id);
+            console.log('acá funciono', paciente.id);
             this._router.navigate(['/patient/edit'], { state: { paciente: paciente, image: this.sanitizedImage } });
+
         }).catch(error => {
             console.error('Error al obtener la imagen del paciente:', error);
         });

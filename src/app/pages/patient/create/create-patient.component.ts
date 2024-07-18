@@ -54,19 +54,24 @@ export class CreatePatientComponent implements OnInit{
     }
 
     async ngOnInit() {
-        if(this.type === "create"){
+        if (this.type === "create") {
             this.getDetalles();
-        }
-        else if(this.type === "edit"){
-            //console.log('statee',history.state)
-
+        } else if (this.type === "edit") {
+            console.log('statee', history.state);
+    
             this.paciente = history.state.paciente;
-            this.sanitizedImage = history.state.image.changingThisBreaksApplicationSecurity;
-            //console.log('imagen para mostrar',this.sanitizedImage)
+            console.log('this.paciente', this.paciente);
+    
+            if (history.state.image) {
+                this.sanitizedImage = history.state.image.changingThisBreaksApplicationSecurity;
+            }
+            
+            // console.log('imagen para mostrar', this.sanitizedImage)
             this.initializeDetalles();
             await this.initializeForm();
         }
     }
+    
 
     private async getDetalles(){
         // Llamar al servicio
@@ -117,32 +122,35 @@ export class CreatePatientComponent implements OnInit{
         })
     }
 
-    private async initializeForm(){
-        // Llamar a servicio para obtener paciente
+    private async initializeForm() {
         // Llenar formulario con los datos del paciente obtenidos
-        this.patientId = this.paciente.id;
-        console.log('paciente para iniciar edit',this.paciente.lastName)
-        this.form.controls["firstName"].setValue(this.paciente.firstName);
-        this.form.controls["lastName"].setValue(this.paciente.lastName);
-        this.form.controls["phoneNumber"].setValue(this.paciente.phoneNumber);
-        this.form.controls["cellPhoneNumber"].setValue(this.paciente.cellPhoneNumber);
-        this.form.controls["city"].setValue(this.paciente.city);
-        const date = new Date(this.paciente.birthDate);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
-        this.form.controls["birthDate"].setValue(formattedDate);
-        this.form.controls["address"].setValue(this.paciente.address);
-        this.form.controls["email"].setValue(this.paciente.email);
-        this.form.controls["recommendedBy"].setValue(this.paciente.recommendedBy);
-        this.form.controls["personInCharge"].setValue(this.paciente.personInCharge);
-        this.form.controls["maritalStatus"].setValue(this.paciente.maritalStatus);
-        this.form.controls["occupation"].setValue(this.paciente.occupation);
-        this.form.controls["previousDentist"].setValue(this.paciente.previousDentist);
-        this.form.controls["personalDoctor"].setValue(this.paciente.personalDoctor);
+        if (this.paciente) {
+            this.patientId = this.paciente.id;
+            console.log('paciente para iniciar edit', this.patientId);
+            this.form.controls["firstName"].setValue(this.paciente.firstName);
+            this.form.controls["lastName"].setValue(this.paciente.lastName);
+            this.form.controls["phoneNumber"].setValue(this.paciente.phoneNumber);
+            this.form.controls["cellPhoneNumber"].setValue(this.paciente.cellPhoneNumber);
+            this.form.controls["city"].setValue(this.paciente.city);
+            const date = new Date(this.paciente.birthDate);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+            this.form.controls["birthDate"].setValue(formattedDate);
+            this.form.controls["address"].setValue(this.paciente.address);
+            this.form.controls["email"].setValue(this.paciente.email);
+            this.form.controls["recommendedBy"].setValue(this.paciente.recommendedBy);
+            this.form.controls["personInCharge"].setValue(this.paciente.personInCharge);
+            this.form.controls["maritalStatus"].setValue(this.paciente.maritalStatus);
+            this.form.controls["occupation"].setValue(this.paciente.occupation);
+            this.form.controls["previousDentist"].setValue(this.paciente.previousDentist);
+            this.form.controls["personalDoctor"].setValue(this.paciente.personalDoctor);
+        } else {
+            console.error("No se encontró el paciente en el estado.");
+        }
     }
-
+    
     async returnPage(){
         this._router.navigateByUrl("/patient/list");
     }
