@@ -266,10 +266,7 @@ export class CreatePatientComponent implements OnInit{
                     });
                 }
             }
-        
     }
-    
-    
     
 }
 
