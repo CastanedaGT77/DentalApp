@@ -28,7 +28,7 @@ export class DateService {
             throw Error();
         return response.data.id;
     } catch(error){
-        return null;
+        return error;
     }
   }
 
