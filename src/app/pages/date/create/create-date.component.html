@@ -17,7 +17,7 @@
 <mat-card class="cardWithShadow">
 <mat-card-content>
     <!-- FORM -->
-    <form [formGroup]="form" class="w-full shadow-md">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full shadow-md">
       <p class="text-lg font-semibold m-5">Información General</p>
         <div class="flex justify-around mb-5">
           <mat-form-field appearance="fill" [style.width.px]=400>
@@ -68,7 +68,7 @@
           </mat-form-field>
         </div>
         <div class="flex grow mt-10 p-20">
-            <button (click)="pruebaFecha()" mat-raised-button color="primary" type="submit" class="grow h-14">Guardar</button>
+            <button (click)="onSubmit()" mat-raised-button color="primary" type="submit" class="grow h-14">Guardar</button>
         </div>
       </form>
     </mat-card-content>

@@ -3,7 +3,7 @@ export class createAppointmentDTO {
     public patientId: number;
     public branchId: number;
     public assignedUser: number;
-    public appointmentDate: string;
+    public appointmentDate: string | null;
     public observations: string;
     public startHour: string;
     public endHour: string;
