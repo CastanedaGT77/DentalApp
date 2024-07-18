@@ -44,7 +44,7 @@
 
 <br />
 
-<div [ngSwitch]="view" class="overflow-y-scroll h-96">
+<div [ngSwitch]="view" class="w-full h-full overflow-hidden">
   <mwl-calendar-month-view
     *ngSwitchCase="CalendarView.Month"
     [viewDate]="viewDate"
