@@ -95,7 +95,7 @@ export class CreateTreatmentType implements OnInit {
                         try {
                             //Crear el paciente
                             const response = await this._treatmentTypeService.createTreatmentType(data);
-                            if (response) {
+                            if (response && response.code === 201) {
                                 
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
                                 const message = "treatmentType creada correctamente";
@@ -138,7 +138,7 @@ export class CreateTreatmentType implements OnInit {
                         try {
                             //Crear el paciente
                             const response = await this._treatmentTypeService.updateTreatmentType({id: this.treatmentTypeId, ...data});
-                            if (response) {
+                            if (response && response.code === 201) {
                                
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
                                 const message = "treatmentType editado correctamente";

@@ -20,16 +20,14 @@ export class DateService {
     }
   }
   
-  async createAppointment(requestData: Partial<createAppointmentDTO>){
+  async createAppointment(data: Partial<createAppointmentDTO>) {
     try {
         axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
-        const response = await axiosClient.post('/appointment', requestData);
-        if(response && response.data.code === HttpStatusCode.InternalServerError)
-            throw Error();
-        return response.data.id;
-    } catch(error){
-        return error;
+        const response = await axiosClient.post('/appointment', data);
+        return response.data; // Retorna la respuesta completa del backend
+    } catch (error) {
+        console.error('Error al crear la cita:', error);
+        return null;
     }
   }
-
 }

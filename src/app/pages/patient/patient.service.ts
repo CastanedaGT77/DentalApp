@@ -19,7 +19,7 @@ export class PatientService {
             const response = await axiosClient.post('/patient', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
-            return response.data.id;
+            return response.data;
         } catch(error){
             return null;
         }
@@ -31,7 +31,7 @@ export class PatientService {
             const response = await axiosClient.put('/patient', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
-            return response.data.id;
+            return response.data;
         } catch(error){
             return null;
         }

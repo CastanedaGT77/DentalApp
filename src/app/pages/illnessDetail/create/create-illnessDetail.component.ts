@@ -91,7 +91,7 @@ export class CreateIllnessDetailComponent implements OnInit {
                         try {
                             //Crear el paciente
                             const response = await this._illnessDetailService.createIllnessDetail(data);
-                            if (response) {
+                            if (response && response.code === 201) {
                                 
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
                                 const message = "Illness creada correctamente";
@@ -134,7 +134,7 @@ export class CreateIllnessDetailComponent implements OnInit {
                         try {
                             //Crear el paciente
                             const response = await this._illnessDetailService.updateIllnessDetail({id: this.illnessDetailId, ...data});
-                            if (response) {
+                            if (response && response.code === 201) {
                                
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
                                 const message = "illnessdetail editado correctamente";

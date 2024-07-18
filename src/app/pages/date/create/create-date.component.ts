@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -17,16 +17,12 @@ import { DateService } from "../date.service";
     selector: "app-create-date",
     templateUrl: "./create-date.component.html"
 })
-export class CreateDateComponent {
+export class CreateDateComponent implements OnInit {
     type: "create" | "edit";
     form: FormGroup;
     patients!: any;
     branches!: any;
     users!: any;
-    dataSource!: any;
-    dataSourceBranch!: any;
-    dataSourceUser!: any;
-
 
     constructor(
         private readonly _formBuilder: FormBuilder,
@@ -41,12 +37,12 @@ export class CreateDateComponent {
         private readonly _userService: UserService,
         private readonly _sanitizer: DomSanitizer,
         private readonly datePipe: DatePipe
-    ){
+    ) {
         this.type = this._route.snapshot.data["type"] ?? "create";
         this.createForm();
     }
 
-    private createForm(){
+    private createForm() {
         this.form = this._formBuilder.group({
             patientId: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
             branchId: ['', Validators.required],
@@ -59,11 +55,10 @@ export class CreateDateComponent {
     }
 
     async ngOnInit() {
-        if(this.type === "create"){
-            //this.getDetalles();
-        }
-        else if(this.type === "edit"){
-            //console.log('statee',history.state)
+        if (this.type === "create") {
+            // this.getDetalles();
+        } else if (this.type === "edit") {
+            // console.log('statee', history.state);
             // this.illnessDetail = history.state.illnessDetail;
             await this.initializeForm();
         }
@@ -76,7 +71,7 @@ export class CreateDateComponent {
         this._patientService.getPatient().then(response => {
             if (response && response.patients) {
                 this.patients = response.patients;
-                console.log('pacientes',this.patients)
+                console.log('pacientes', this.patients);
             } else {
                 console.error('Error: No se encontraron pacientes en la respuesta.');
             }
@@ -89,7 +84,6 @@ export class CreateDateComponent {
         const response = await this._branchService.getBranches();
         if (response) {
             this.branches = response;
-            this.dataSourceBranch.data = this.branches;
         } else {
             console.error('Error: No se encontraron datos en la respuesta.');
         }
@@ -100,25 +94,22 @@ export class CreateDateComponent {
             const response = await this._userService.getUsers();
             this.users = response;
             console.log("USERS:", this.users);
-            this.dataSourceUser.data = this.users;
         } catch (error) {
             console.error('Error al obtener datos:', error);
         }
     }
 
     async onSubmit() {
-        if(this.form.invalid){
+        if (this.form.invalid) {
             const errorMessage = "Verifique todos los campos del formulario.";
             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
             return;
         }
-        // Verifica si el formulario es válido
-        if(this.form.valid){
-            if(this.type === "create"){
-                // Muestra el diálogo de confirmación
+        if (this.form.valid) {
+            if (this.type === "create") {
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la creación de illnessdetail?",
+                    text: "¿Desea finalizar la creación de la cita?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -127,66 +118,56 @@ export class CreateDateComponent {
                     cancelButtonText: "Cancelar"
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        // Muestra un mensaje para indicar que se está creando el paciente
                         this._spinnerService.show();
-                        // Asigna los detalles de la enfermedad al objeto de datos
                         const data: Partial<createAppointmentDTO> = this.form.value;
                         const formattedDate = this.datePipe.transform(data.appointmentDate, 'dd/MM/yyyy');
                         data.appointmentDate = formattedDate;
-                        console.log('data cita', data)
+                        console.log('data cita', data);
                         try {
-                            //Crear el paciente
                             const response = await this._dateService.createAppointment(data);
-                            if (response) {
-                                
-                                // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "date creada correctamente";
+                            if (response && response.code === 201) { // Ajusta esto según la estructura de la respuesta del backend
+                                const message = "Cita creada correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
-                                // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al crear el date";
+                                const errorMessage = "Error al crear la cita";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
-                            // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al crear el date:", error);
-                            const errorMessage = "Error al crear el date";
+                            console.error("Error al crear la cita:", error);
+                            const errorMessage = "Error al crear la cita";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
-                            // Oculta el spinner después de realizar la operación
                             this._spinnerService.hide();
                         }
                     }
                 });
-            } 
+            }
         }
     }
-    
-    pruebaFecha(){
+
+    pruebaFecha() {
         const formattedDate = this.datePipe.transform(this.datetime, 'dd/MM/yyyy');
-        console.log('fecha', this.datetime)
-        console.log('fecha formateada', formattedDate)
-        console.log('hora', this.time)
-        console.log('datos para guardar cita', this.form)
+        console.log('fecha', this.datetime);
+        console.log('fecha formateada', formattedDate);
+        console.log('hora', this.time);
+        console.log('datos para guardar cita', this.form);
     }
 
     get datetime() {
-        return this.form.get('datetime')?.value;
-    }
-    
-    get time() {
-        return this.form.get('time')?.value;
+        return this.form.get('appointmentDate')?.value;
     }
 
-    async returnPage(){
+    get time() {
+        return this.form.get('startHour')?.value;
+    }
+
+    async returnPage() {
         this._router.navigateByUrl("/date/calendar");
     }
 
-    private async initializeForm(){
-       
-        
+    private async initializeForm() {
+        // Lógica para inicializar el formulario en modo edición
     }
-
 }

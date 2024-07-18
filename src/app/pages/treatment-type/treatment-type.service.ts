@@ -25,7 +25,7 @@ export class TreatmentTypeService {
             const response = await axiosClient.post('/treatmentType', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
-            return response.data.id;
+            return response.data;
         } catch(error){
             return null;
         }
@@ -37,7 +37,7 @@ export class TreatmentTypeService {
             const response = await axiosClient.put('/treatmentType', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
-            return response.data.id;
+            return response.data;
         } catch(error){
             return null;
         }

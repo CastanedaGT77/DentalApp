@@ -87,7 +87,7 @@ export class CreateBranchComponent {
                         try {
                             //Crear el paciente
                             const response = await this._branchService.createBranch(data);
-                            if (response) {
+                            if (response && response.code === 201) {
                                 
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
                                 const message = "branch creada correctamente";
@@ -130,7 +130,7 @@ export class CreateBranchComponent {
                         try {
                             //Crear el paciente
                             const response = await this._branchService.updateBranch({id: this.branchId, ...data});
-                            if (response) {
+                            if (response && response.code === 201) {
                                
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
                                 const message = "branch editado correctamente";

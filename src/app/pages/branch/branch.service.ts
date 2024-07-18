@@ -24,7 +24,7 @@ export class BranchService {
             const response = await axiosClient.post('/branch', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
-            return response.data.id;
+            return response.data;
         } catch(error){
             return null;
         }
@@ -36,7 +36,7 @@ export class BranchService {
             const response = await axiosClient.put('/branch', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
-            return response.data.id;
+            return response.data;
         } catch(error){
             return null;
         }

@@ -189,7 +189,7 @@ export class CreatePatientComponent implements OnInit{
                             try {
                                 //Crear el paciente
                                 const response = await this._patientService.createPatient(data);
-                                if (response) {
+                                if (response && response.code === 201) {
                                     // Guardar imagen
                                     const profileImage = this._patientService.capturedImage;
                                     if(profileImage){
@@ -237,7 +237,7 @@ export class CreatePatientComponent implements OnInit{
                             try {
                                 //Crear el paciente
                                 const response = await this._patientService.updatePatient({id: this.patientId, ...data});
-                                if (response) {
+                                if (response && response.code === 201) {
                                     // Guardar imagen
                                     const profileImage = this._patientService.capturedImage;
                                     if(profileImage){
