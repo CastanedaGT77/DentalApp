@@ -34,7 +34,8 @@ export class PatientProfileComponent implements OnInit {
     if(patientId){
       const response = await this._patientService.getProfileImage(patientId);
       if(response){
-        this.sanitizedImage = this._sanitizer.bypassSecurityTrustResourceUrl(response);
+        this.sanitizedImage = this._sanitizer.bypassSecurityTrustResourceUrl(response.data);
+        console.log('imagen patient', this.sanitizedImage)
       }
     }
   }

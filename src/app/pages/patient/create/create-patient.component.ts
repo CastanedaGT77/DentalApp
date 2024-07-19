@@ -184,7 +184,7 @@ export class CreatePatientComponent implements OnInit {
                             if (response && response.code === 201) {
                                 const profileImage = this._patientService.capturedImage;
                                 if (profileImage) {
-                                    await this._patientService.setProfileImage({ id: response, image: profileImage });
+                                    await this._patientService.setProfileImage({ id: response.data, image: profileImage });
                                 }
                                 const message = "Paciente creado correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
