@@ -201,14 +201,12 @@ export class CreateDateComponent implements OnInit {
     this.form.controls["patientId"].setValue(this.appointment.patientId.id);
     this.form.controls["branchId"].setValue(this.appointment.branchId);
     this.form.controls["assignedUser"].setValue(this.appointment.assignedUser);
-    const date = new Date(this.appointment.appointmentDate);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${day}/${month}/${year}`;
-    this.form.controls["appointmentDate"].setValue(formattedDate);
+    const dateParts = this.appointment.appointmentDate.split('/');
+    const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    this.form.controls["appointmentDate"].setValue(date);
     this.form.controls["observations"].setValue(this.appointment.observations);
     this.form.controls["startHour"].setValue(this.appointment.startHour);
     this.form.controls["endHour"].setValue(this.appointment.endHour);
   }
+  
 }
