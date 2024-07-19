@@ -1,11 +1,21 @@
-<h1 mat-dialog-title>Detalles de la Cita</h1>
-<div mat-dialog-content>
-    <p><strong>Paciente:</strong> {{data.patientId}}</p>
-    <p><strong>Descripción:</strong> {{data.observations}}</p>
-    <p><strong>Fecha:</strong> {{data.appointmentDate}}</p>
-    <p><strong>Hora de Inicio:</strong> {{data.startHour}}</p>
-    <p><strong>Hora de Finalización:</strong> {{data.endHour}}</p>
+<h1 mat-dialog-title class="text-2xl font-bold text-center mb-4">Detalles de la Cita</h1>
+<div mat-dialog-content class="space-y-6">
+  <div class="flex items-center space-x-4">
+    <img *ngIf="data.patientId.profileImage" [src]="data.patientId.profileImage" alt="Patient Image" class="w-16 h-16 rounded-full border border-gray-300">
+    <div>
+      <p class="text-lg font-semibold">{{ data.patientId.firstName }} {{ data.patientId.lastName }}</p>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <p><strong class="text-gray-600">Sucursal:</strong> {{data.branchId}}</p>
+    <p><strong class="text-gray-600">Encargado:</strong> {{data.assignedUser}}</p>
+    <p><strong class="text-gray-600">Fecha:</strong> {{data.appointmentDate}}</p>
+    <p><strong class="text-gray-600">Hora de Inicio:</strong> {{data.startHour}}</p>
+    <p><strong class="text-gray-600">Hora de Finalización:</strong> {{data.endHour}}</p>
+    <p><strong class="text-gray-600">Estado:</strong> {{data.status}}</p>
+    <p class="sm:col-span-2"><strong class="text-gray-600">Descripción:</strong> {{data.observations}}</p>
+  </div>
 </div>
-<div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Cerrar</button>
+<div mat-dialog-actions class="flex justify-end mt-4">
+  <button mat-button (click)="onNoClick()" class="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-700 transition">Cerrar</button>
 </div>

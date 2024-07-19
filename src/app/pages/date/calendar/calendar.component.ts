@@ -81,7 +81,7 @@ export class CalendarComponent implements OnInit {
           id: a.id,
           start: appointmentStart,
           end: appointmentEnd,
-          title: `${a.patientId} - ${a.observations}`,
+          title: `${a.patientId.firstName + ' ' + a.patientId.lastName} - ${a.observations}`,
           color: { ...colors['red'] },
           meta: a // Almacenar el objeto de la cita completa en la propiedad meta
         });
