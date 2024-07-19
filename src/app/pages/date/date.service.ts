@@ -3,6 +3,7 @@ import { CitaModel } from "./models/CitaExample";
 import { axiosClient } from "src/app/axios/axiosConfig";
 import { createAppointmentDTO } from "src/app/data/dtos/appointment/createAppointmentDTO";
 import { HttpStatusCode } from "axios";
+import { updateAppointmentDTO } from "src/app/data/dtos/appointment/updateAppointmentDTO";
 
 
 
@@ -30,4 +31,16 @@ export class DateService {
         return null;
     }
   }
+
+  async updateAppointment(requestData: Partial<updateAppointmentDTO>){
+    try {
+        axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+        const response = await axiosClient.put('/appointment', requestData);
+        if(response && response.data.code === HttpStatusCode.InternalServerError)
+            throw Error();
+        return response.data;
+    } catch(error){
+        return null;
+    }
+}
 }

@@ -24,7 +24,6 @@ export class CreateIllnessDetailComponent implements OnInit {
     form: FormGroup;
     illnessDetailId: number;
 
-
     constructor(
         private readonly _formBuilder: FormBuilder,
         private readonly _spinnerService: NgxSpinnerService,
@@ -56,8 +55,6 @@ export class CreateIllnessDetailComponent implements OnInit {
             await this.initializeForm();
         }
     }
-
-
 
     async returnPage(){
         this._router.navigateByUrl("/illnessDetail/list");
@@ -160,7 +157,6 @@ export class CreateIllnessDetailComponent implements OnInit {
             }
         }
     }
-
 
     private async initializeForm(){
         this.illnessDetailId = this.illnessDetail.id;

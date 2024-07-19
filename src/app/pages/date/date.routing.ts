@@ -17,8 +17,16 @@ export const DateRouting: Routes = [
         component: CreateDateComponent,
         data: {
           type: 'create'
-        }
+        },
       },
+      {
+        path: 'edit',
+        component: CreateDateComponent,
+        data: {
+          type: 'edit'
+        }
+      }
+      
     ],
     
   },
