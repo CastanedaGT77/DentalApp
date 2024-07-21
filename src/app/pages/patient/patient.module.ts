@@ -23,6 +23,8 @@ import { DeletePatient } from './delete/delete-patient.component';
 import {  PatientProfileComponent } from './patient-profile/patient-profile.component';
 import { IllnessDetailService } from '../illnessDetail/illnessDetail.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PatientTreatmentComponent } from '../treatment/patient-treatments/patient-treatments.component';
+import { TreatmentService } from '../treatment/treatment.service';
 
 @NgModule({
   imports: [
@@ -45,11 +47,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CreatePatientComponent,
     AddImage,
     DeletePatient,
-    PatientProfileComponent
+    PatientProfileComponent,
   ],
   providers: [
     PatientService,
     IllnessDetailService,
+    TreatmentService,
     NgxSpinnerService
   ]
 })

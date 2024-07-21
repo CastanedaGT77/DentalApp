@@ -107,7 +107,7 @@ export class ListPatientComponent {
         console.log('funciona paciente ver tratamientos', paciente);
         const patientId = paciente.id ?? null;
         if(patientId){
-            //this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+            this._router.navigate(['/treatment/patientTreatment'], { state: { paciente: paciente } });
         }
     }
 

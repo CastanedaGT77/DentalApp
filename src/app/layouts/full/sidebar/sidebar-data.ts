@@ -50,6 +50,11 @@ export const navItems: NavItem[] = [
     iconName: "calendar",
     route: "date/calendar"
   },
+  {
+    displayName: "Tratamientos",
+    iconName: "user",
+    route: "treatment/list"
+  },
   // {
   //   navCap: 'Usuarios',
   // },

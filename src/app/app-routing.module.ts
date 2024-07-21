@@ -78,6 +78,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'treatment',
+        loadChildren: () =>
+          import('./pages/treatment/treatment.module').then(
+            (m) => m.TreatmentModule
+          ),
+      },
+      {
         path: 'extra',
         loadChildren: () =>
           import('./pages/extra/extra.module').then((m) => m.ExtraModule),

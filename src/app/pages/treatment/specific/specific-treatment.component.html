@@ -1,0 +1,43 @@
+<mat-card class="cardWithShadow p-6">
+    <div class="flex items-center mb-5 cursor-pointer hover:underline" (click)="returnPage()">
+      <mat-icon fontIcon="west"></mat-icon>
+      <p class="ml-2">Regresar</p>
+    </div>
+    <mat-card-header class="flex items-center">
+      <div>
+        <h2 class="text-xl font-semibold">Tratamiento: {{ treatment.name }} </h2>
+        <p class="text-gray-600">Descripción: {{ treatment.description }}</p>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <p><strong>Estatus Tratamiento:</strong> <span [ngClass]="{'bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12': treatment.status, 'bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12': !treatment.status}">{{ treatment.status ? 'Activo' : 'Inactivo' }}</span></p>
+        <p><strong>Estatus del Pago:</strong> <span [ngClass]="{'bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12': treatment.paymentStatus, 'bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12': !treatment.paymentStatus}">{{ treatment.paymentStatus ? 'Pagado' : 'Pendiente' }}</span></p>
+        <p><strong>Estatus de las Cuotas:</strong> <span [ngClass]="{'bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12': treatment.quotation, 'bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12': !treatment.quotation}">{{ treatment.quotation ? 'Activa' : 'Inactiva' }}</span></p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card *ngFor="let detail of treatment.treatmentDetails; let i = index" class="cardWithShadow p-6 mt-6">
+    <mat-card-content>
+      <h3 class="text-lg font-semibold mb-2">Detalle de Tratamiento:</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <p class="text-gray-700"><strong>{{ i + 1 }}. Estatus del Pago:</strong> <span [ngClass]="{'bg-blue-500  p-1 rounded': detail.paymentStatus, 'bg-red-500  p-1 rounded': !detail.paymentStatus}">{{ detail.paymentStatus ? 'Pagado' : 'Pendiente' }}</span></p>
+        <p class="text-gray-500"><strong>Pieza:</strong> {{ detail.piece }}</p>
+        <p class="text-gray-500"><strong>Precio Real:</strong> {{ detail.realPrice }}</p>
+        <p class="text-gray-500"><strong>Estatus del Tratamiento:</strong> <span [ngClass]="{'bg-blue-500 p-1 rounded': detail.status, 'bg-red-500 p-1 rounded': !detail.status}">{{ detail.status ? 'Activo' : 'Inactivo' }}</span></p>
+        <p class="text-gray-500"><strong>Precio Sugerido:</strong> {{ detail.suggestedPrice }}</p>
+        <p class="text-gray-700"><strong>Nombre:</strong> {{ detail.treatmentType.name }}</p>
+        <p class="text-gray-700"><strong>Descripción:</strong> {{ detail.treatmentType.description }}</p>
+        <p class="text-gray-700"><strong>Precio Sugerido:</strong> {{ detail.treatmentType.suggestedPrice }}</p>
+        <p class="text-gray-700"><strong>Tiempo Estimado:</strong> {{ detail.treatmentType.estimatedTime }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card class="cardWithShadow p-6 mt-6 flex justify-end">
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="returnPage()">Regresar</button>
+    </mat-card-actions>
+  </mat-card>
+  
