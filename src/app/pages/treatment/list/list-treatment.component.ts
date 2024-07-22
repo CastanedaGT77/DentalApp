@@ -15,6 +15,8 @@ import { TreatmentService } from '../treatment.service';
 })
 export class ListTreatmentComponent implements OnInit, AfterViewInit {
 
+    treatmentD = [];
+    dataSource2 = new MatTableDataSource<any>(this.treatmentD);
     treatment = [];
     dataSource = new MatTableDataSource<any>(this.treatment);
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -51,11 +53,34 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
         }
     }
 
-    // Métodos de acción llamada a editar paciente
-    editarTreatment(treatment: any) {
-        console.log('funciona paciente editar', treatment);
-        this._router.navigate(['/treatment/edit'], { state: { treatment: treatment } });
-    
+    async getTreatmentDetail(treatmentId: number) {
+        try {
+          console.log('entra aca')
+            const response = await this._treatment.getTreatmentDetail(treatmentId);
+            if (response && response.data) {
+                this.treatmentD = response.data;
+                console.log('Datos obtenidos all fin:', this.treatmentD);
+                this.dataSource2.data = this.treatmentD;
+                console.log('Datos del dataSource:', this.dataSource2.data);
+            } else {
+                console.error('Error: No se encontraron datos en la respuesta.');
+            }
+        } catch (error) {
+            console.error('Error al obtener datos:', error);
+        }
+    }
+
+    // Métodos de acción llamada a editar tratamiento
+    async editarTreatment(treatment: number) {
+        await this.getTreatmentDetail(treatment);
+        console.log('funciona tratamiento editar', treatment);
+        this._router.navigate(['/treatment/edit'], { state: { treatmentD: this.treatmentD } });
+    }
+
+    async verTratamiento(treatment: number) {
+        await this.getTreatmentDetail(treatment);
+        console.log('datos que mande', this.treatmentD);
+        this._router.navigate(['/treatment/specificTreatment'], { state: { treatmentD: this.treatmentD } });
     }
 
     eliminarTreatment(treatment: any): void {

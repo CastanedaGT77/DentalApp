@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
-import { DomSanitizer } from "@angular/platform-browser";
 import Swal from "sweetalert2";
 import { TreatmentService } from "../treatment.service";
 import { TreatmentTypeService } from "../../treatment-type/treatment-type.service";
 import { PatientService } from "../../patient/patient.service";
+import { UpdateTreatmentDto } from "src/app/data/dtos/treatment/UpdateTreatmentDTO";
 
 @Component({
   selector: "app-create-treatment",
@@ -28,8 +28,7 @@ export class CreateTreatmentComponent implements OnInit {
     private readonly _route: ActivatedRoute,
     private readonly _treatmentService: TreatmentService,
     private readonly _treatmentTypeService: TreatmentTypeService,
-    private readonly _patientService: PatientService,
-    private readonly _sanitizer: DomSanitizer
+    private readonly _patientService: PatientService
   ) {
     this.type = this._route.snapshot.data["type"] ?? "create";
     this.createForm();
@@ -49,11 +48,12 @@ export class CreateTreatmentComponent implements OnInit {
     return this.form.get('treatmentTypes') as FormArray;
   }
 
-  addTreatmentType() {
+  addTreatmentType(id = null, treatmentTypeId = '', price = '', piece = '') {
     const treatmentTypeGroup = this._formBuilder.group({
-      treatmentTypeId: ['', Validators.required],
-      price: ['', Validators.required],
-      piece: ['', Validators.required]
+      id: [id],
+      treatmentTypeId: [treatmentTypeId, Validators.required],
+      price: [price, Validators.required],
+      piece: [piece, Validators.required]
     });
     this.treatmentTypes.push(treatmentTypeGroup);
   }
@@ -65,8 +65,8 @@ export class CreateTreatmentComponent implements OnInit {
   async ngOnInit() {
     this.getPatients();
     this.getTreatmentTypes();
-    if (this.type === "edit" && history.state && history.state.treatment) {
-      this.treatment = history.state.treatment;
+    if (this.type === "edit" && history.state && history.state.treatmentD) {
+      this.treatment = history.state.treatmentD[0];
       await this.initializeForm();
     }
   }
@@ -102,103 +102,102 @@ export class CreateTreatmentComponent implements OnInit {
       this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       return;
     }
-
-    if (this.form.valid) {
+  
+    if (this.type === "edit") {
+      const treatmentDetails = this.form.get('treatmentTypes')?.value.map((treatment: any) => ({
+        id: treatment.id,
+        treatmentTypeId: treatment.treatmentTypeId,
+        piece: treatment.piece,
+        quotation: this.form.get('quotation')?.value,
+        price: treatment.price,
+        description: this.form.get('description')?.value
+      }));
+  
+      console.log('Datos enviados para editar:', treatmentDetails); // Agregar este console.log para ver los datos
+  
+      const requests = treatmentDetails.map(async (detail: UpdateTreatmentDto) => {
+        try {
+          const response = await this._treatmentService.updateTreatment(detail);
+          if (response && response.code !== 200) {
+            const errorMessage = `Error al actualizar el detalle del tratamiento con ID ${detail.id}`;
+            this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+          }
+        } catch (error) {
+          console.error(`Error al actualizar el detalle del tratamiento con ID ${detail.id}:`, error);
+        }
+      });
+  
+      Promise.all(requests).then(() => {
+        const message = "Plan de tratamiento actualizado correctamente";
+        this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+        this.form.reset();
+        this.returnPage();
+      }).catch(() => {
+        const errorMessage = "Error al actualizar el plan de tratamiento";
+        this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+      }).finally(() => {
+        this._spinnerService.hide();
+      });
+    } else if (this.type === "create") {
       const data = {
-        treatmentId: this.treatment ? this.treatment.id : undefined,
         patientId: this.form.get('patientId')?.value,
         name: this.form.get('name')?.value,
         quotation: this.form.get('quotation')?.value,
         treatmentTypes: this.form.get('treatmentTypes')?.value,
         description: this.form.get('description')?.value
       };
-
-      if (this.type === "create") {
-        Swal.fire({
-          title: "",
-          text: "¿Desea finalizar la creación del plan?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Finalizar",
-          cancelButtonText: "Cancelar"
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            this._spinnerService.show();
-            try {
-              const response = await this._treatmentService.createTreatment(data);
-              if (response && response.code === 200) {
-                const message = "Plan de tratamiento creado correctamente";
-                this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-                this.form.reset();
-                this.returnPage();
-              } else {
-                const errorMessage = "Error al crear el plan de tratamiento";
-                this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-              }
-            } catch (error) {
-              console.error("Error al crear el plan de tratamiento:", error);
+  
+      console.log('Datos enviados para crear:', data); // Agregar este console.log para ver los datos
+  
+      Swal.fire({
+        title: "",
+        text: "¿Desea finalizar la creación del plan?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Finalizar",
+        cancelButtonText: "Cancelar"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this._spinnerService.show();
+          try {
+            const response = await this._treatmentService.createTreatment(data);
+            if (response && response.code === 200) {
+              const message = "Plan de tratamiento creado correctamente";
+              this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+              this.form.reset();
+              this.returnPage();
+            } else {
               const errorMessage = "Error al crear el plan de tratamiento";
               this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-            } finally {
-              this._spinnerService.hide();
             }
+          } catch (error) {
+            console.error("Error al crear el plan de tratamiento:", error);
+            const errorMessage = "Error al crear el plan de tratamiento";
+            this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+          } finally {
+            this._spinnerService.hide();
           }
-        });
-      } else if (this.type === "edit") {
-        Swal.fire({
-          title: "",
-          text: "¿Desea finalizar la edición del plan?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Finalizar",
-          cancelButtonText: "Cancelar"
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            this._spinnerService.show();
-            try {
-              const response = await this._treatmentService.updateTreatment(data);
-              if (response && response.code === 200) {
-                const message = "Plan de tratamiento actualizado correctamente";
-                this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-                this.form.reset();
-                this.returnPage();
-              } else {
-                const errorMessage = "Error al actualizar el plan de tratamiento";
-                this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-              }
-            } catch (error) {
-              console.error("Error al actualizar el plan de tratamiento:", error);
-              const errorMessage = "Error al actualizar el plan de tratamiento";
-              this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-            } finally {
-              this._spinnerService.hide();
-            }
-          }
-        });
-      }
+        }
+      });
     }
   }
+  
 
   async returnPage() {
     this._router.navigateByUrl("/treatment/list");
   }
 
   private async initializeForm() {
+    console.log('iniciar edicion', this.treatment)
     this.form.controls["patientId"].setValue(this.treatment.patientId);
     this.form.controls["name"].setValue(this.treatment.name);
     this.form.controls["quotation"].setValue(this.treatment.quotation);
     this.form.controls["description"].setValue(this.treatment.description);
 
-    this.treatment.treatmentTypes.forEach((type: any) => {
-      this.treatmentTypes.push(this._formBuilder.group({
-        treatmentTypeId: [type.treatmentTypeId, Validators.required],
-        price: [type.price, Validators.required],
-        piece: [type.piece, Validators.required]
-      }));
+    this.treatment.treatmentDetails.forEach((detail: any) => {
+      this.addTreatmentType(detail.id, detail.treatmentType.id, detail.realPrice, detail.piece);
     });
   }
 }

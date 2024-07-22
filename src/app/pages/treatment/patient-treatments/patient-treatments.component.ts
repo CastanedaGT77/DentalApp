@@ -13,6 +13,8 @@ export class PatientTreatmentComponent implements OnInit {
   paciente: any;
   treatment = [];
   dataSource = new MatTableDataSource<any>(this.treatment);
+  treatmentD = [];
+  dataSource2 = new MatTableDataSource<any>(this.treatmentD);
   displayedColumns: string[] = ['id', 'name', 'description', 'status', 'paymentStatus', 'quotation', 'actions'];
 
   constructor(
@@ -49,17 +51,35 @@ export class PatientTreatmentComponent implements OnInit {
     }
   }
 
+  async getTreatmentDetail(treatmentId: number) {
+    try {
+      console.log('entra aca')
+        const response = await this._treatment.getTreatmentDetail(treatmentId);
+        if (response && response.data) {
+            this.treatmentD = response.data;
+            console.log('Datos obtenidos all fin:', this.treatmentD);
+            this.dataSource2.data = this.treatmentD;
+            console.log('Datos del dataSource:', this.dataSource2.data);
+        } else {
+            console.error('Error: No se encontraron datos en la respuesta.');
+        }
+    } catch (error) {
+        console.error('Error al obtener datos:', error);
+    }
+  }
+
   async returnPage(){
     this._router.navigateByUrl("/patient/list");
   }
 
-  verTratamiento(treatment: any){
-    this._router.navigate(['/treatment/specificTreatment'], { state: { treatment: treatment } });
-
+  async verTratamiento(treatment: number) {
+    await this.getTreatmentDetail(treatment);
+    console.log('datos que mande', this.treatmentD);
+    this._router.navigate(['/treatment/specificTreatment'], { state: { treatmentD: this.treatmentD } });
   }
 
   editarTreatment(treatment: any) {
-    this._router.navigate(['/treatment/edit'], { state: { treatment: treatment } });
+    // this._router.navigate(['/treatment/edit'], { state: { treatment: treatment } });
   }
 
   eliminarTreatment(treatment: any): void {

@@ -108,7 +108,10 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let treatment">
-            <button mat-icon-button (click)="editarTreatment(treatment)" matTooltip="Editar">
+            <button mat-icon-button (click)="verTratamiento(treatment.id)" matTooltip="Ver tratamiento">
+                <mat-icon [ngStyle]="{'color':'blue'}" fontIcon="assignment">assignment</mat-icon>
+            </button>
+            <button mat-icon-button (click)="editarTreatment(treatment.id)" matTooltip="Editar">
                 <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
             </button>
             <button mat-icon-button (click)="eliminarTreatment(treatment)" matTooltip="Eliminar">

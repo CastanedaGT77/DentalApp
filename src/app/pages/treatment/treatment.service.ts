@@ -31,6 +31,18 @@ export class TreatmentService {
         }
     }
 
+     //detalle de un tratamiento por id
+     async getTreatmentDetail(id: number) {
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get(`/treatment/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener detalle treatment:", error);
+            return null;
+        }
+    }
+
     async createTreatment(requestData: Partial<CreateTreatmentDto>){
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
@@ -46,7 +58,7 @@ export class TreatmentService {
     async updateTreatment(requestData: Partial<UpdateTreatmentDto>){
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
-            const response = await axiosClient.put('/treatment', requestData);
+            const response = await axiosClient.put('/treatment/detail', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
             return response.data;

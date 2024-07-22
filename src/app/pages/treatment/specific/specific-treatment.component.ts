@@ -21,7 +21,7 @@ export class SpecificTreatmentComponent implements OnInit {
   }
   
   async ngOnInit() {
-    this.treatment = history.state.treatment;
+    this.treatment = history.state.treatmentD[0];
     console.log('treatment', this.treatment)
    
   }

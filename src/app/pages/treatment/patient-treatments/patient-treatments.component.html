@@ -80,13 +80,13 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let treatment">
-            <button mat-icon-button (click)="verTratamiento(treatment)" matTooltip="Ver tratamiento">
+            <button mat-icon-button (click)="verTratamiento(treatment.id)" matTooltip="Ver tratamiento">
                 <mat-icon [ngStyle]="{'color':'blue'}" fontIcon="assignment">assignment</mat-icon>
             </button>
-            <button mat-icon-button (click)="editarTreatment(treatment)" matTooltip="Editar">
+            <button mat-icon-button (click)="getTreatmentDetail(treatment.id)" matTooltip="Editar">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button (click)="eliminarTreatment(treatment)" matTooltip="Eliminar">
+            <button mat-icon-button (click)="getTreatmentDetail(treatment.id)" matTooltip="Eliminar">
                 <mat-icon>delete</mat-icon>
             </button>
         </td>
