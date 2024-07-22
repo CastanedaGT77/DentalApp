@@ -53,7 +53,7 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
 
     // Métodos de acción llamada a editar paciente
     editarTreatment(treatment: any) {
-        //console.log('funciona paciente editar', paciente);
+        console.log('funciona paciente editar', treatment);
         this._router.navigate(['/treatment/edit'], { state: { treatment: treatment } });
     
     }

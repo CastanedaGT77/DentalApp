@@ -20,6 +20,9 @@ import { TreatmentService } from './treatment.service';
 import { ListTreatmentComponent } from './list/list-treatment.component';
 import { PatientTreatmentComponent } from './patient-treatments/patient-treatments.component';
 import { SpecificTreatmentComponent } from './specific/specific-treatment.component';
+import { CreateTreatmentComponent } from './create/create-treatment.component';
+import { PatientService } from '../patient/patient.service';
+import { TreatmentTypeService } from '../treatment-type/treatment-type.service';
 
 @NgModule({
     imports: [
@@ -40,12 +43,15 @@ import { SpecificTreatmentComponent } from './specific/specific-treatment.compon
     declarations: [
       ListTreatmentComponent,
       PatientTreatmentComponent,
-      SpecificTreatmentComponent
+      SpecificTreatmentComponent,
+      CreateTreatmentComponent
     //   CreateTreatmentType,
     //   DeleteTreatmentType
     ],
     providers: [
       TreatmentService,
+      PatientService,
+      TreatmentTypeService,
       NgxSpinnerService
     ]
   })

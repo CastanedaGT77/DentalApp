@@ -27,6 +27,7 @@ export class SpecificTreatmentComponent implements OnInit {
   }
 
   async returnPage(){
+    //aca ver como retornar a patientTreatment con el id
     //this._router.navigateByUrl("/treatment/patientTreatment");
     this._router.navigateByUrl("/patient/list");
   }

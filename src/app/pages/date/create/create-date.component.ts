@@ -143,7 +143,14 @@ export class CreateDateComponent implements OnInit {
                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                 this.form.reset();
                 this.returnPage();
-              } else {
+              }
+              else if (response && response.code === 400) {
+                const message = "Horario ocupado";
+                this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+                this.form.reset();
+                this.returnPage();
+              }
+               else {
                 const errorMessage = "Error al crear la cita";
                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
               }
@@ -176,7 +183,14 @@ export class CreateDateComponent implements OnInit {
                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                 this.form.reset();
                 this.returnPage();
-              } else {
+              }
+              else if (response && response.code === 400) {
+                const message = "Horario ocupado";
+                this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+                this.form.reset();
+                this.returnPage();
+              }
+              else {
                 const errorMessage = "Error al actualizar la cita";
                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
               }

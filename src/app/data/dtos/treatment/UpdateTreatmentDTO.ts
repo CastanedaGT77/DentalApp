@@ -1,5 +1,6 @@
 export class UpdateTreatmentDto {
-    //public id: number;
+    public id: number;
+    public patientId: number;
     public name: string;
     public quotation: boolean;
     public treatmentTypes: {

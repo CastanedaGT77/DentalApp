@@ -3,6 +3,7 @@ import { ListTreatmentComponent } from './list/list-treatment.component';
 import { PatientTreatmentComponent } from './patient-treatments/patient-treatments.component';
 // import { CreateTreatmentType } from './create/create-treatment.component';
 import { SpecificTreatmentComponent } from './specific/specific-treatment.component';
+import { CreateTreatmentComponent } from './create/create-treatment.component';
 
 
 export const TreatmentRouting: Routes = [
@@ -20,21 +21,21 @@ export const TreatmentRouting: Routes = [
       {
         path:'specificTreatment',
         component: SpecificTreatmentComponent
-      }
-    //   {
-    //     path: 'create',
-    //     component: CreateTreatment,
-    //     data: {
-    //       type: 'create'
-    //     }
-    //   },
-    //   {
-    //     path: 'edit',
-    //     component: CreateTreatment,
-    //     data: {
-    //       type: 'edit'
-    //     }
-    //   },
+      },
+      {
+        path: 'create',
+        component: CreateTreatmentComponent,
+        data: {
+          type: 'create'
+        }
+      },
+      {
+        path: 'edit',
+        component: CreateTreatmentComponent,
+        data: {
+          type: 'edit'
+        }
+      },
     ],
     
   },
