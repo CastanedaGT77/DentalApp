@@ -53,7 +53,7 @@
             <mat-label>Tipo de Tratamiento</mat-label>
             <mat-select formControlName="treatmentTypeId">
               <mat-option *ngFor="let type of treatmentTypesList" [value]="type.id">
-                {{ type.name }}
+                {{ type.name }} - Precio sugerigo: Q.{{ type.suggestedPrice }}
               </mat-option>
             </mat-select>
             <mat-icon matSuffix>local_hospital</mat-icon>
