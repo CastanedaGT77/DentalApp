@@ -23,6 +23,7 @@
               {{ patient.firstName }} {{ patient.lastName }}
             </mat-option>
           </mat-select>
+          <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Seleccione la Sucursal</mat-label>
@@ -31,6 +32,7 @@
               {{ branch.name }}
             </mat-option>
           </mat-select>
+          <mat-icon matSuffix>location_on</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Encargado</mat-label>
@@ -39,6 +41,7 @@
               {{ user.firstName }} {{ user.lastName }}
             </mat-option>
           </mat-select>
+          <mat-icon matSuffix>assignment_ind</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Fecha de la Cita</mat-label>
@@ -49,14 +52,17 @@
         <mat-form-field appearance="fill">
           <mat-label>Hora de Inicio</mat-label>
           <input matInput type="time" formControlName="startHour">
+          <mat-icon matSuffix>access_time</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Hora de Finalización</mat-label>
           <input matInput type="time" formControlName="endHour">
+          <mat-icon matSuffix>access_time</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="fill" class="sm:col-span-2">
           <mat-label>Observaciones</mat-label>
           <textarea matInput formControlName="observations"></textarea>
+          <mat-icon matSuffix>notes</mat-icon>
         </mat-form-field>
       </div>
       <div class="flex justify-end mt-4">
