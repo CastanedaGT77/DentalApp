@@ -16,10 +16,17 @@
     <p class="sm:col-span-2"><strong class="text-gray-600">Descripción:</strong> {{data.observations}}</p>
   </div>
 </div>
-<div mat-dialog-actions class="flex justify-end mt-4">
-  <button mat-raised-button color="primary" (click)="onNoClick()">Cerrar</button>
-  <button mat-raised-button color="primary" (click)="editarAppointment(data)">Editar</button>
-  <button mat-icon-button (click)="eliminarAppointment(data)" matTooltip="Eliminar">
-    <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
+<div mat-dialog-actions class="flex justify-end mt-4" style="gap: 1rem;">
+  <button mat-raised-button color="primary" (click)="editarAppointment(data)">
+    Editar
+    <mat-icon style="margin-left: 0.5rem;" fontIcon="edit"></mat-icon>
+  </button>
+  <button mat-raised-button color="warn" (click)="eliminarAppointment(data)" matTooltip="Eliminar">
+    Eliminar
+    <mat-icon style="margin-left: 0.5rem;" fontIcon="delete"></mat-icon>
+  </button>
+  <button mat-raised-button color="primary" (click)="onNoClick()">
+    Cerrar
+    <mat-icon style="margin-left: 0.5rem;">close</mat-icon>
   </button>
 </div>
