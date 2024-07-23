@@ -23,6 +23,7 @@ import { SpecificTreatmentComponent } from './specific/specific-treatment.compon
 import { CreateTreatmentComponent } from './create/create-treatment.component';
 import { PatientService } from '../patient/patient.service';
 import { TreatmentTypeService } from '../treatment-type/treatment-type.service';
+import { DeleteTreatment } from './delete/delete-treatment.component';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { TreatmentTypeService } from '../treatment-type/treatment-type.service';
       ListTreatmentComponent,
       PatientTreatmentComponent,
       SpecificTreatmentComponent,
-      CreateTreatmentComponent
+      CreateTreatmentComponent,
+      DeleteTreatment
     //   CreateTreatmentType,
     //   DeleteTreatmentType
     ],

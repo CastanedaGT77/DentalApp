@@ -8,6 +8,8 @@ import { TreatmentService } from "../treatment.service";
 import { TreatmentTypeService } from "../../treatment-type/treatment-type.service";
 import { PatientService } from "../../patient/patient.service";
 import { UpdateTreatmentDto } from "src/app/data/dtos/treatment/UpdateTreatmentDTO";
+import { MatDialog } from "@angular/material/dialog";
+import { CreateTreatmentDetailDTO } from "src/app/data/dtos/treatment/CreateTreatmentDetailDTO";
 
 @Component({
   selector: "app-create-treatment",
@@ -26,6 +28,7 @@ export class CreateTreatmentComponent implements OnInit {
     private readonly _snackBarService: MatSnackBar,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
+    public dialog: MatDialog,
     private readonly _treatmentService: TreatmentService,
     private readonly _treatmentTypeService: TreatmentTypeService,
     private readonly _patientService: PatientService
@@ -59,7 +62,14 @@ export class CreateTreatmentComponent implements OnInit {
   }
 
   removeTreatmentType(index: number) {
-    this.treatmentTypes.removeAt(index);
+    const treatmentTypeId = this.treatmentTypes.at(index).get('id')?.value;
+    if (treatmentTypeId) {
+      this.deleteTreatmentType(treatmentTypeId).then(() => {
+        this.treatmentTypes.removeAt(index);
+      });
+    } else {
+      this.treatmentTypes.removeAt(index);
+    }
   }
 
   async ngOnInit() {
@@ -102,7 +112,7 @@ export class CreateTreatmentComponent implements OnInit {
       this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       return;
     }
-  
+
     if (this.type === "edit") {
       const treatmentDetails = this.form.get('treatmentTypes')?.value.map((treatment: any) => ({
         id: treatment.id,
@@ -110,9 +120,9 @@ export class CreateTreatmentComponent implements OnInit {
         piece: treatment.piece,
         price: treatment.price
       })) as UpdateTreatmentDto[];
-  
-      console.log('Datos enviados para editar:', treatmentDetails); // Agregar este console.log para ver los datos
-  
+
+      console.log('Datos enviados para editar:', treatmentDetails);
+
       const requests = treatmentDetails.map(async (detail: UpdateTreatmentDto) => {
         try {
           const response = await this._treatmentService.updateTreatment(detail);
@@ -124,7 +134,7 @@ export class CreateTreatmentComponent implements OnInit {
           console.error(`Error al actualizar el detalle del tratamiento con ID ${detail.id}:`, error);
         }
       });
-  
+
       Promise.all(requests).then(() => {
         const message = "Plan de tratamiento actualizado correctamente";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
@@ -144,9 +154,9 @@ export class CreateTreatmentComponent implements OnInit {
         treatmentTypes: this.form.get('treatmentTypes')?.value,
         description: this.form.get('description')?.value
       };
-  
-      console.log('Datos enviados para crear:', data); // Agregar este console.log para ver los datos
-  
+
+      console.log('Datos enviados para crear:', data);
+
       Swal.fire({
         title: "",
         text: "¿Desea finalizar la creación del plan?",
@@ -181,7 +191,48 @@ export class CreateTreatmentComponent implements OnInit {
       });
     }
   }
-  
+
+  async saveNewTreatmentType(index: number) {
+    const treatmentTypeGroup = this.treatmentTypes.at(index);
+    if (treatmentTypeGroup.invalid) {
+      this._snackBarService.open('Verifique todos los campos del tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+      return;
+    }
+
+    const treatmentTypeId = treatmentTypeGroup.get('id')?.value;
+    if (!treatmentTypeId) {
+      const requestData: Partial<CreateTreatmentDetailDTO> = {
+        treatmentId: this.treatment.id,
+        treatmentTypeId: treatmentTypeGroup.get('treatmentTypeId')?.value,
+        price: treatmentTypeGroup.get('price')?.value,
+        piece: treatmentTypeGroup.get('piece')?.value
+      };
+      const response = await this._treatmentService.createTreatmentDetail(requestData);
+      if (response && response.code === 201) {
+        this._snackBarService.open('Tratamiento agregado correctamente', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+        treatmentTypeGroup.get('id')?.setValue(response.data.id);  // Assuming the response contains the new id
+      } else {
+        this._snackBarService.open('Error al agregar tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+      }
+    }
+  }
+
+  async deleteTreatmentType(treatmentTypeId: number) {
+    try {
+      const response = await this._treatmentService.deleteTreatmentDetail(treatmentTypeId);
+      if (response && response.code === 200) {
+        const message = `Tratamiento con ID ${treatmentTypeId} eliminado correctamente`;
+        this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+      } else {
+        const errorMessage = `Error al eliminar el tratamiento con ID ${treatmentTypeId}`;
+        this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+      }
+    } catch (error) {
+      console.error(`Error al eliminar el tratamiento con ID ${treatmentTypeId}:`, error);
+      const errorMessage = `Error al eliminar el tratamiento con ID ${treatmentTypeId}`;
+      this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+    }
+  }
 
   async returnPage() {
     this._router.navigateByUrl("/treatment/list");

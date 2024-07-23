@@ -58,6 +58,9 @@
           <button mat-icon-button color="warn" (click)="removeTreatmentType(i)">
             <mat-icon>delete</mat-icon>
           </button>
+          <button mat-icon-button color="primary" *ngIf="type === 'edit' && !treatmentType.get('id')?.value" (click)="saveNewTreatmentType(i)">
+            <mat-icon>save</mat-icon>
+          </button>
         </div>
       </div>
       <button mat-button color="primary" class="mt-4" (click)="addTreatmentType()">Agregar Tratamiento</button>

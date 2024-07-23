@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TreatmentService } from '../treatment.service';
+import { DeleteTreatment } from '../delete/delete-treatment.component';
 // import { DeleteTreatmentType } from '../delete/delete-treatment.component';
 
 
@@ -83,17 +84,7 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
         this._router.navigate(['/treatment/specificTreatment'], { state: { treatmentD: this.treatmentD } });
     }
 
-    eliminarTreatment(treatment: any): void {
-        // console.log('funciona treatment delete', treatment);
-        // this.dialog.open(DeleteTreatment, {
-        //     width: '300px',
-        //     data: { treatment: treatment }
-        // }).afterClosed().subscribe(data => {
-        //     if(data){
-        //         this.getTreatment();
-        //     }
-        // });
-    }
+   
 
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
