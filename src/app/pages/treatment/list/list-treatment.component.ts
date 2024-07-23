@@ -72,6 +72,7 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
   // Métodos de acción llamada a editar tratamiento
   async editarTreatment(treatment: number) {
     await this.getTreatmentDetail(treatment);
+    //aca quiero mandar el treatment.patient.id
     console.log('funciona tratamiento editar', treatment);
     this._router.navigate(['/treatment/edit'], { state: { treatmentD: this.treatmentD } });
   }
