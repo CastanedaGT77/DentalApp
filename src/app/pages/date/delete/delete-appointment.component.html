@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Eliminar Cita</h2>
+<mat-dialog-content>
+  <div>
+    <p>¿Te gustaría eliminar el registro:</p>
+    <br>
+    <p class="text-lg font-semibold">{{ data.appointment.patientId.firstName }} {{ data.appointment.patientId.lastName }}</p>
+    <p><strong class="text-gray-600">Sucursal:</strong> {{data.appointment.branchId}}</p>
+    <p><strong class="text-gray-600">Encargado:</strong> {{data.appointment.assignedUser}}</p>
+    <p><strong class="text-gray-600">Fecha:</strong> {{data.appointment.appointmentDate}}</p>
+    <p><strong class="text-gray-600">Hora de Inicio:</strong> {{data.appointment.startHour}}</p>
+    <p><strong class="text-gray-600">Hora de Finalización:</strong> {{data.appointment.endHour}}</p>
+    <p class="sm:col-span-2"><strong class="text-gray-600">Descripción:</strong> {{data.appointment.observations}}</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button (click)="closeDialog()" color="whiteLetter" mat-flat-button>No</button>
+  <!-- <button (click)="eliminarIllnessDetail(data.illnessDetail.id)" color="primary" mat-flat-button cdkFocusInitial>Eliminar</button> -->
+</mat-dialog-actions>

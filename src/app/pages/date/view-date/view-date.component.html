@@ -19,4 +19,7 @@
 <div mat-dialog-actions class="flex justify-end mt-4">
   <button mat-raised-button color="primary" (click)="onNoClick()">Cerrar</button>
   <button mat-raised-button color="primary" (click)="editarAppointment(data)">Editar</button>
+  <button mat-icon-button (click)="eliminarAppointment(data)" matTooltip="Eliminar">
+    <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
+  </button>
 </div>

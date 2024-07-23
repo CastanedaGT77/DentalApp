@@ -4,6 +4,7 @@ import { axiosClient } from "src/app/axios/axiosConfig";
 import { createAppointmentDTO } from "src/app/data/dtos/appointment/createAppointmentDTO";
 import { HttpStatusCode } from "axios";
 import { updateAppointmentDTO } from "src/app/data/dtos/appointment/updateAppointmentDTO";
+import { DeleteAppointment } from "./delete/delete-appointment.component";
 
 
 
@@ -42,5 +43,15 @@ export class DateService {
     } catch(error){
         return null;
     }
-}
+  }
+
+  async deleteAppointment(id: number): Promise<boolean|null> {
+    try {
+        axiosClient.defaults.headers.common['Authorization'] = 'Bearer 1031283sdasdsa';
+        await axiosClient.delete('/appointment', { data: {id} });
+        return true;
+    } catch (error) {
+        return null;
+    }
+  }       
 }

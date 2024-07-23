@@ -108,10 +108,8 @@ export class CreateTreatmentComponent implements OnInit {
         id: treatment.id,
         treatmentTypeId: treatment.treatmentTypeId,
         piece: treatment.piece,
-        quotation: this.form.get('quotation')?.value,
-        price: treatment.price,
-        description: this.form.get('description')?.value
-      }));
+        price: treatment.price
+      })) as UpdateTreatmentDto[];
   
       console.log('Datos enviados para editar:', treatmentDetails); // Agregar este console.log para ver los datos
   

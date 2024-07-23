@@ -27,6 +27,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PatientService } from '../patient/patient.service';
 import { BranchService } from '../branch/branch.service';
 import { UserService } from '../user/user.service';
+import { DeleteAppointment } from './delete/delete-appointment.component';
 
 // Registrar los datos de localización en español
 registerLocaleData(localeEs);
@@ -54,7 +55,8 @@ registerLocaleData(localeEs);
   declarations: [
     CalendarComponent,
     CreateDateComponent,
-    AppointmentDetailsDialog
+    AppointmentDetailsDialog,
+    DeleteAppointment
   ],
   providers: [
     PatientService,
