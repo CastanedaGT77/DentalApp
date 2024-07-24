@@ -45,11 +45,11 @@
                   <mat-error *ngIf="form.controls['suggestedPrice'].hasError('pattern')">Número de Teléfono inválido ingrese solo números</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill" [style.width.px]=400>
-                  <mat-label>Precio Estimado</mat-label>
+                  <mat-label>Tiempo Estimado</mat-label>
                   <input autocomplete="nope" type="number" matInput formControlName="estimatedTime" pattern="[0-9]*">
-                  <mat-icon matSuffix>money</mat-icon>
-                  <mat-error *ngIf="form.controls['estimatedTime'].hasError('required')">Teléfono Celular <strong>requerido</strong></mat-error>
-                  <mat-error *ngIf="form.controls['estimatedTime'].hasError('pattern')">Teléfono Celular inválido ingrese solo números</mat-error>
+                  <mat-icon matSuffix>access_time</mat-icon>
+                  <mat-error *ngIf="form.controls['estimatedTime'].hasError('required')">Tiempo Estimado <strong>requerido</strong></mat-error>
+                  <mat-error *ngIf="form.controls['estimatedTime'].hasError('pattern')">Tiempo Estamado inválido ingrese solo números</mat-error>
                 </mat-form-field>
             </div>
             <div class="flex grow">
