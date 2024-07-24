@@ -68,7 +68,7 @@ export class CreateDateComponent implements OnInit {
         this.appointment = history.state.appointment;
         await this.initializeForm();
       } else {
-        console.error('No appointment data found in history.state');
+        console.error('No hay datos de citas');
       }
     }
   }
@@ -91,7 +91,7 @@ export class CreateDateComponent implements OnInit {
     if (response) {
       this.branches = response;
     } else {
-      console.error('Error: No se encontraron datos en la respuesta.');
+      console.error('Error: No se encontraron datos se sucursales en la respuesta.');
     }
   }
 

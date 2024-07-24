@@ -27,11 +27,11 @@ export class DeleteBranch {
     console.log('id borrar', id)
       const deleted = await this._branchService.deleteBranch(id);
       if(deleted){
-        const message = "branch eliminado correctamente.";
+        const message = "Sucursal eliminada correctamente.";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         this.dialogRef.close(true);
       } else {
-        const message = "Error. No se ha podido eliminar el branch.";
+        const message = "Error. No se ha podido eliminar la Sucursal";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       }
   }

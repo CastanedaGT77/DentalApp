@@ -26,11 +26,11 @@ export class DeleteTreatmentType {
   async eliminarTreatmentType(id: number) {
       const deleted = await this._treatmentTypeService.deleteTreatmentType(id);
       if(deleted){
-        const message = "treatmentType eliminado correctamente.";
+        const message = "Tipo de Tratamiento eliminado correctamente.";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         this.dialogRef.close(true);
       } else {
-        const message = "Error. No se ha podido eliminar el treatmentType.";
+        const message = "Error. No se ha podido eliminar el Tipo de Tratamiento.";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       }
   }

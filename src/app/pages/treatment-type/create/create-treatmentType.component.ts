@@ -79,7 +79,7 @@ export class CreateTreatmentType implements OnInit {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la creación de treatmentType?",
+                    text: "¿Desea finalizar la creación de Tipo de Tratamiento?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -98,19 +98,19 @@ export class CreateTreatmentType implements OnInit {
                             if (response && response.code === 201) {
                                 
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "treatmentType creada correctamente";
+                                const message = "Tipo de Tratamiento creada correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
                                 // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al crear el treatmentType";
+                                const errorMessage = "Error al crear el Tipo de Tratamiento";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al crear el treatmentType:", error);
-                            const errorMessage = "Error al crear el treatmentType";
+                            console.error("Error al crear el Tipo de Tratamiento:", error);
+                            const errorMessage = "Error al crear el Tipo de Tratamiento";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             // Oculta el spinner después de realizar la operación
@@ -122,7 +122,7 @@ export class CreateTreatmentType implements OnInit {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la edición de treatmentType?",
+                    text: "¿Desea finalizar la edición de Tipo de Tratamiento?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -141,19 +141,19 @@ export class CreateTreatmentType implements OnInit {
                             if (response && response.code === 201) {
                                
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "treatmentType editado correctamente";
+                                const message = "Tipo de Tratamiento editado correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
                                 // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al editar el treatmentType";
+                                const errorMessage = "Error al editar el Tipo de Tratamiento";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al editar el treatmentType:", error);
-                            const errorMessage = "Error al editar el treatmentType";
+                            console.error("Error al editar el Tipo de Tratamiento:", error);
+                            const errorMessage = "Error al editar el Tipo de Tratamiento";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             // Oculta el spinner después de realizar la operación
@@ -164,8 +164,6 @@ export class CreateTreatmentType implements OnInit {
             }
         }
     }
-
-    
 
     async returnPage(){
         this._router.navigateByUrl("/treatmentType/list");

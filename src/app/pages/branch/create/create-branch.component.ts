@@ -44,7 +44,7 @@ export class CreateBranchComponent {
 
     private async initializeForm(){
         this.branchId = this.branch.id;
-        console.log('illness para iniciar edit',this.branch.name)
+        console.log('Sucursal para iniciar edit',this.branch.name)
         this.form.controls["name"].setValue(this.branch.name);
     }
 
@@ -71,7 +71,7 @@ export class CreateBranchComponent {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la creación de treatmentType?",
+                    text: "¿Desea finalizar la creación de Sucursal?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -90,19 +90,19 @@ export class CreateBranchComponent {
                             if (response && response.code === 201) {
                                 
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "branch creada correctamente";
+                                const message = "Sucursal creada correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
                                 // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al crear el branch";
+                                const errorMessage = "Error al crear la Sucursal";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al crear el branch:", error);
-                            const errorMessage = "Error al crear el branch";
+                            console.error("Error al crear la Sucursal:", error);
+                            const errorMessage = "Error al crear la Sucursal";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             // Oculta el spinner después de realizar la operación
@@ -114,7 +114,7 @@ export class CreateBranchComponent {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la edición de treatmentType?",
+                    text: "¿Desea finalizar la edición de la Sucursal?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -133,19 +133,19 @@ export class CreateBranchComponent {
                             if (response && response.code === 201) {
                                
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "branch editado correctamente";
+                                const message = "Sucursal editada correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
                                 // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al editar el branch";
+                                const errorMessage = "Error al editar la Sucursal";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al editar el branch:", error);
-                            const errorMessage = "Error al editar el branch";
+                            console.error("Error al editar la Sucursal:", error);
+                            const errorMessage = "Error al editar la Sucursal";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             // Oculta el spinner después de realizar la operación

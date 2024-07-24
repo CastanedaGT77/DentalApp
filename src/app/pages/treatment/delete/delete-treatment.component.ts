@@ -26,11 +26,11 @@ export class DeleteTreatment {
   async eliminarTreatment(id: number) {
       const deleted = await this._treatmentService.deleteTreatment(id);
       if(deleted){
-        const message = "treatment eliminado correctamente.";
+        const message = "Plan de Tratamiento eliminado correctamente.";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         this.dialogRef.close(true);
       } else {
-        const message = "Error. No se ha podido eliminar el treatment.";
+        const message = "Error. No se ha podido eliminar el Plan de Tratamiento.";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       }
   }

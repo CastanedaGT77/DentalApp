@@ -72,7 +72,7 @@ export class CreateIllnessDetailComponent implements OnInit {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la creación de illnessdetail?",
+                    text: "¿Desea finalizar la creación de Detalle de Diagnóstico?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -91,19 +91,19 @@ export class CreateIllnessDetailComponent implements OnInit {
                             if (response && response.code === 201) {
                                 
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "Illness creada correctamente";
+                                const message = " Detalle de Diagnóstico creado correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
                                 // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al crear el Illness";
+                                const errorMessage = "Error al crear el  Detalle de Diagnóstico";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al crear el Illness:", error);
-                            const errorMessage = "Error al crear el Illness";
+                            console.error("Error al crear el  Detalle de Diagnóstico:", error);
+                            const errorMessage = "Error al crear el  Detalle de Diagnóstico";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             // Oculta el spinner después de realizar la operación
@@ -115,7 +115,7 @@ export class CreateIllnessDetailComponent implements OnInit {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la edición de illnessdetail?",
+                    text: "¿Desea finalizar la edición de Detalle de Diagnóstico?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -134,19 +134,19 @@ export class CreateIllnessDetailComponent implements OnInit {
                             if (response && response.code === 201) {
                                
                                 // Si la creación es exitosa, muestra un mensaje de éxito y realiza acciones adicionales si es necesario
-                                const message = "illnessdetail editado correctamente";
+                                const message = " Detalle de Diagnóstico editado correctamente";
                                 this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                                 this.form.reset();
                                 this.returnPage();
                             } else {
                                 // Si la creación falla, muestra un mensaje de error
-                                const errorMessage = "Error al editar el illnessdetail";
+                                const errorMessage = "Error al editar el  Detalle de Diagnóstico";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la creación del paciente
-                            console.error("Error al editar el illnessdetail:", error);
-                            const errorMessage = "Error al editar el illnessdetail";
+                            console.error("Error al editar el  Detalle de Diagnóstico:", error);
+                            const errorMessage = "Error al editar el  Detalle de Diagnóstico";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             // Oculta el spinner después de realizar la operación

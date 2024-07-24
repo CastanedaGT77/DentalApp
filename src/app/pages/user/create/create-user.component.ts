@@ -96,7 +96,7 @@ export class CreateUserComponent implements OnInit {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la creación de illnessdetail?",
+                    text: "¿Desea finalizar la creación de Usuario?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -113,7 +113,7 @@ export class CreateUserComponent implements OnInit {
                 // Muestra el diálogo de confirmación
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la edición de illnessdetail?",
+                    text: "¿Desea finalizar la edición de Usuario?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",

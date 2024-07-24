@@ -38,7 +38,7 @@ export class AddImage {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Tamaño de foto incorrecto, por favor verifique que la foto pese menos de 4MB',
+        text: 'Tamaño de imagen incorrecto, por favor verifique que la imagen pese menos de 4MB',
       });
       // Limpiar
       //foto = "";

@@ -168,7 +168,7 @@ export class CreatePatientComponent implements OnInit {
             if (this.type === "create") {
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la creación de usuario?",
+                    text: "¿Desea finalizar la creación de Paciente?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -191,12 +191,12 @@ export class CreatePatientComponent implements OnInit {
                                 this.form.reset();
                                 this.returnPage();
                             } else {
-                                const errorMessage = "Error al crear el paciente";
+                                const errorMessage = "Error al crear el Paciente";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
-                            console.error("Error al crear el paciente:", error);
-                            const errorMessage = "Error al crear el paciente";
+                            console.error("Error al crear el Paciente:", error);
+                            const errorMessage = "Error al crear el Paciente";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             this._spinnerService.hide();
@@ -206,7 +206,7 @@ export class CreatePatientComponent implements OnInit {
             } else if (this.type === "edit") {
                 Swal.fire({
                     title: "",
-                    text: "¿Desea finalizar la edición de usuario?",
+                    text: "¿Desea finalizar la edición de Paciente?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -229,12 +229,12 @@ export class CreatePatientComponent implements OnInit {
                                 this.form.reset();
                                 this.returnPage();
                             } else {
-                                const errorMessage = "Error al editar el paciente";
+                                const errorMessage = "Error al editar el Paciente";
                                 this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                             }
                         } catch (error) {
-                            console.error("Error al editar el paciente:", error);
-                            const errorMessage = "Error al editar el paciente";
+                            console.error("Error al editar el Paciente:", error);
+                            const errorMessage = "Error al editar el Paciente";
                             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
                         } finally {
                             this._spinnerService.hide();

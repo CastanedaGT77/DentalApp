@@ -26,7 +26,7 @@ export class DeleteAppointment {
   async eliminarAppointment(id: number) {
       const deleted = await this._dateService.deleteAppointment(id);
       if(deleted){
-        const message = "cita eliminado correctamente.";
+        const message = "Cita eliminada correctamente.";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         this.dialogRef.close(true);
       } else {

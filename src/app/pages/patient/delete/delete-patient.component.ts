@@ -30,7 +30,7 @@ export class DeletePatient {
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         this.dialogRef.close(true);
       } else {
-        const message = "Error. No se ha podido eliminar el paciente.";
+        const message = "Error. No se ha podido eliminar el Paciente.";
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       }
   }
