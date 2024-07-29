@@ -41,7 +41,6 @@ export class RoleService {
         }
     }
 
-
     async updateRole(requestData: Partial<UpdateRoleDto>){
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
@@ -53,4 +52,14 @@ export class RoleService {
             return null;
         }
     }
+
+    async deleteRole(id: number): Promise<boolean|null> {
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = 'Bearer 1031283sdasdsa';
+            await axiosClient.delete('/roles', { data: {id} });
+            return true;
+        } catch (error) {
+            return null;
+        }
+    }     
 }

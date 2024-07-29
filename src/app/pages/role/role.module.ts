@@ -17,6 +17,7 @@ import { RoleListComponent } from './list/role-list.component';
 import { CreateRoleComponent } from './create/create-role.component';
 import { RoleRouting } from './role.routing';
 import { RoleService } from './role.service';
+import { DeleteRole } from './delete/delete-role.component';
 
 @NgModule({
     imports: [
@@ -36,7 +37,8 @@ import { RoleService } from './role.service';
     ],
     declarations: [
       RoleListComponent,
-      CreateRoleComponent
+      CreateRoleComponent,
+      DeleteRole
     ],
     providers: [
       RoleService,

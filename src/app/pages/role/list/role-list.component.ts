@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RoleService } from '../role.service';
+import { DeleteRole } from '../delete/delete-role.component';
 
 @Component({
   selector: "app-role-user",
@@ -48,8 +49,16 @@ export class RoleListComponent implements OnInit, AfterViewInit {
   }
 
   deleteRole(role: any): void {
-    console.log('Eliminar rol:', role);
-  }
+    console.log('funciona treatmentTYPE delete', role);
+    this.dialog.open(DeleteRole, {
+        width: '300px',
+        data: { role: role }
+    }).afterClosed().subscribe(data => {
+        if(data){
+            this.getRoles();
+        }
+    });
+}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
