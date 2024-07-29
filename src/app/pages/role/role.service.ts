@@ -33,26 +33,23 @@ export class RoleService {
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.post('/roles', requestData);
-            if(response && response.status !== HttpStatusCode.Created) {
-                throw new Error("Error al crear el rol");
-            }
+            if(response && response.data.code === HttpStatusCode.InternalServerError)
+                throw Error();
             return response.data;
         } catch(error){
-            console.error("Error al crear rol:", error);
             return null;
         }
     }
+
 
     async updateRole(requestData: Partial<UpdateRoleDto>){
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.put('/roles', requestData);
-            if(response && response.status !== HttpStatusCode.Created) {
-                throw new Error("Error al crear el rol");
-            }
+            if(response && response.data.code === HttpStatusCode.InternalServerError)
+                throw Error();
             return response.data;
         } catch(error){
-            console.error("Error al crear rol:", error);
             return null;
         }
     }

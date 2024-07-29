@@ -7,6 +7,8 @@ import { MatTreeNestedDataSource } from "@angular/material/tree";
 import { RoleService } from "../role.service";
 import { CreateRoleDto } from "src/app/data/dtos/role/CreateRoleDTO";
 import { UpdateRoleDto } from "src/app/data/dtos/role/UpdateRoleDTO";
+import { NgxSpinnerService } from "ngx-spinner";
+import Swal from "sweetalert2";
 
 interface Permission {
   id: number;
@@ -36,6 +38,7 @@ export class CreateRoleComponent implements OnInit {
   constructor(
     private readonly _formBuilder: FormBuilder,
     private readonly _snackBarService: MatSnackBar,
+    private readonly _spinnerService: NgxSpinnerService,
     private readonly _router: Router,
     private readonly _route: ActivatedRoute,
     private readonly _roleService: RoleService
@@ -152,39 +155,65 @@ export class CreateRoleComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.form.invalid) {
-      this._snackBarService.open('Complete todos los campos.', '', { duration: 3000 });
+      const errorMessage = "Verifique todos los campos del formulario.";
+      this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       return;
     }
-
-    const selectedPermissions = this.getSelectedPermissions(this.dataSource.data);
-    const roleData = {
-      name: this.form.controls['name'].value,
-      permissions: selectedPermissions
-    };
-
-    if (this.type === 'create') {
-      this._roleService.createRole(roleData as CreateRoleDto).then(response => {
-        if (response && response.code === 201) {
-          this._snackBarService.open('Rol creado correctamente.', '', { duration: 3000 });
-          this.returnPage();
-        } else {
-          this._snackBarService.open('Error al crear el rol.', '', { duration: 3000 });
-        }
-      });
-    } else if (this.type === 'edit') {
-      const updatedRole: UpdateRoleDto = {
-        id: this.roleToEdit.id,
-        ...roleData
-      };
-
-      this._roleService.updateRole(updatedRole).then(response => {
-        if (response && response.code === 200) {
-          this._snackBarService.open('Rol actualizado correctamente.', '', { duration: 3000 });
-          this.returnPage();
-        } else {
-          this._snackBarService.open('Error al actualizar el rol.', '', { duration: 3000 });
+  
+    // Verifica si el formulario es válido
+    if (this.form.valid) {
+      const confirmText = this.type === "create" ? "¿Desea finalizar la creación del Rol?" : "¿Desea finalizar la edición del Rol?";
+      const successMessage = this.type === "create" ? "Rol creado correctamente" : "Rol actualizado correctamente";
+      const errorMessage = this.type === "create" ? "Error al crear el rol" : "Error al actualizar el rol";
+  
+      // Muestra el diálogo de confirmación
+      Swal.fire({
+        title: "",
+        text: confirmText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Finalizar",
+        cancelButtonText: "Cancelar"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          // Muestra un mensaje para indicar que se está procesando la solicitud
+          this._spinnerService.show();
+  
+          const selectedPermissions = this.getSelectedPermissions(this.dataSource.data);
+          const roleData = {
+            name: this.form.controls['name'].value,
+            permissions: selectedPermissions
+          };
+  
+          try {
+            let response;
+            if (this.type === 'create') {
+              response = await this._roleService.createRole(roleData as CreateRoleDto);
+            } else if (this.type === 'edit') {
+              const updatedRole: UpdateRoleDto = {
+                id: this.roleToEdit.id,
+                ...roleData
+              };
+              response = await this._roleService.updateRole(updatedRole);
+            }
+  
+            if (response && ((this.type === 'create' && response.code === 201) || (this.type === 'edit' && response.code === 200))) {
+              this._snackBarService.open(successMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+              this.form.reset();
+              this.returnPage();
+            } else {
+              this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+            }
+          } catch (error) {
+            console.error(errorMessage, error);
+            this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+          } finally {
+            this._spinnerService.hide();
+          }
         }
       });
     }
