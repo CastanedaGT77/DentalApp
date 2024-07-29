@@ -18,18 +18,47 @@
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="mb-4">
       <mat-nested-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         <div class="mat-tree-node">
-          <button mat-icon-button (click)="toggleNodeExpansion(node, $event)">
+          <button mat-icon-button (click)="toggleNodeExpansion(node, $event)" *ngIf="node.children && node.children.length > 0">
             <mat-icon>{{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
           </button>
           <mat-checkbox [checked]="node.checked" (change)="onCheckChange(node, $event.checked)">
             {{ node.name }}
           </mat-checkbox>
         </div>
-        <div *ngIf="treeControl.isExpanded(node)">
+        <div [ngClass]="{'hidden': !treeControl.isExpanded(node)}">
           <mat-tree-node *ngFor="let child of node.children" matTreeNodePadding>
-            <mat-checkbox [checked]="child.checked" (change)="onCheckChange(child, $event.checked)">
-              {{ child.name }}
-            </mat-checkbox>
+            <div class="mat-tree-node" style="padding-left: 40px;">
+              <button mat-icon-button (click)="toggleNodeExpansion(child, $event)" *ngIf="child.children && child.children.length > 0">
+                <mat-icon>{{ treeControl.isExpanded(child) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+              </button>
+              <mat-checkbox [checked]="child.checked" (change)="onCheckChange(child, $event.checked)">
+                {{ child.name }}
+              </mat-checkbox>
+              <div [ngClass]="{'hidden': !treeControl.isExpanded(child)}" *ngIf="child.children && child.children.length > 0">
+                <mat-tree-node *ngFor="let grandchild of child.children" matTreeNodePadding>
+                  <div class="mat-tree-node" style="padding-left: 40px;">
+                    <button mat-icon-button (click)="toggleNodeExpansion(grandchild, $event)" *ngIf="grandchild.children && grandchild.children.length > 0">
+                      <mat-icon>{{ treeControl.isExpanded(grandchild) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+                    </button>
+                    <mat-checkbox [checked]="grandchild.checked" (change)="onCheckChange(grandchild, $event.checked)">
+                      {{ grandchild.name }}
+                    </mat-checkbox>
+                    <div [ngClass]="{'hidden': !treeControl.isExpanded(grandchild)}" *ngIf="grandchild.children && grandchild.children.length > 0">
+                      <mat-tree-node *ngFor="let greatgrandchild of grandchild.children" matTreeNodePadding>
+                        <div class="mat-tree-node" style="padding-left: 40px;">
+                          <button mat-icon-button (click)="toggleNodeExpansion(greatgrandchild, $event)" *ngIf="greatgrandchild.children && greatgrandchild.children.length > 0">
+                            <mat-icon>{{ treeControl.isExpanded(greatgrandchild) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+                          </button>
+                          <mat-checkbox [checked]="greatgrandchild.checked" (change)="onCheckChange(greatgrandchild, $event.checked)">
+                            {{ greatgrandchild.name }}
+                          </mat-checkbox>
+                        </div>
+                      </mat-tree-node>
+                    </div>
+                  </div>
+                </mat-tree-node>
+              </div>
+            </div>
           </mat-tree-node>
         </div>
       </mat-nested-tree-node>
