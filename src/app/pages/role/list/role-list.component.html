@@ -51,7 +51,7 @@
 
 <ng-container *ngFor="let role of roles">
   <div *ngIf="role.expanded" class="ml-6">
-    <h4>Permisos de {{ role.name }}</h4>
+    <h4> <strong> Permisos de: </strong> {{ role.name }}</h4>
     <ul>
       <li *ngFor="let permission of role.permissions">{{ permission.name }}</li>
     </ul>
