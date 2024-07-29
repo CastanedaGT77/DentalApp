@@ -16,7 +16,14 @@ export const RoleRouting: Routes = [
         data: {
           type: 'create'
         }
-      }
+      },
+      {
+        path: 'edit',
+        component: CreateRoleComponent,
+        data: {
+          type: 'edit'
+        }
+      },
     ],
   },
 ];

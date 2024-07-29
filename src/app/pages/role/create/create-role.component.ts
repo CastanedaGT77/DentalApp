@@ -6,6 +6,7 @@ import { NestedTreeControl } from "@angular/cdk/tree";
 import { MatTreeNestedDataSource } from "@angular/material/tree";
 import { RoleService } from "../role.service";
 import { CreateRoleDto } from "src/app/data/dtos/role/CreateRoleDTO";
+import { UpdateRoleDto } from "src/app/data/dtos/role/UpdateRoleDTO";
 
 interface Permission {
   id: number;
@@ -30,6 +31,7 @@ export class CreateRoleComponent implements OnInit {
   type: "create" | "edit";
   treeControl: NestedTreeControl<TreeNode>;
   dataSource: MatTreeNestedDataSource<TreeNode>;
+  roleToEdit: any;
 
   constructor(
     private readonly _formBuilder: FormBuilder,
@@ -54,6 +56,12 @@ export class CreateRoleComponent implements OnInit {
     const perms = await this._roleService.getPermissions();
     this.dataSource.data = this.buildTree(perms);
     this.treeControl.collapseAll();
+
+    if (history.state && history.state.role) {
+      this.roleToEdit = history.state.role;
+      this.type = 'edit';
+      this.initializeForm();
+    }
   }
 
   buildTree(permissions: Permission[]): TreeNode[] {
@@ -128,6 +136,22 @@ export class CreateRoleComponent implements OnInit {
     return null;
   }
 
+  initializeForm() {
+    this.form.controls['name'].setValue(this.roleToEdit.name);
+    this.checkPermissions(this.dataSource.data, this.roleToEdit.permissions);
+  }
+
+  checkPermissions(nodes: TreeNode[], permissions: Permission[]) {
+    for (const node of nodes) {
+      if (permissions.some(p => p.id === node.id)) {
+        node.checked = true;
+      }
+      if (node.children) {
+        this.checkPermissions(node.children, permissions);
+      }
+    }
+  }
+
   onSubmit() {
     if (this.form.invalid) {
       this._snackBarService.open('Complete todos los campos.', '', { duration: 3000 });
@@ -135,21 +159,35 @@ export class CreateRoleComponent implements OnInit {
     }
 
     const selectedPermissions = this.getSelectedPermissions(this.dataSource.data);
-    const newRole: CreateRoleDto = {
+    const roleData = {
       name: this.form.controls['name'].value,
       permissions: selectedPermissions
     };
 
-    // console.log('rol guardar',newRole)
+    if (this.type === 'create') {
+      this._roleService.createRole(roleData as CreateRoleDto).then(response => {
+        if (response && response.code === 201) {
+          this._snackBarService.open('Rol creado correctamente.', '', { duration: 3000 });
+          this.returnPage();
+        } else {
+          this._snackBarService.open('Error al crear el rol.', '', { duration: 3000 });
+        }
+      });
+    } else if (this.type === 'edit') {
+      const updatedRole: UpdateRoleDto = {
+        id: this.roleToEdit.id,
+        ...roleData
+      };
 
-    this._roleService.createRole(newRole).then(response => {
-      if (response) {
-        this._snackBarService.open('Rol creado exitosamente.', '', { duration: 3000 });
-        this.returnPage();
-      } else {
-        this._snackBarService.open('Error al crear el rol.', '', { duration: 3000 });
-      }
-    });
+      this._roleService.updateRole(updatedRole).then(response => {
+        if (response && response.code === 200) {
+          this._snackBarService.open('Rol actualizado correctamente.', '', { duration: 3000 });
+          this.returnPage();
+        } else {
+          this._snackBarService.open('Error al actualizar el rol.', '', { duration: 3000 });
+        }
+      });
+    }
   }
 
   getSelectedPermissions(nodes: TreeNode[]): number[] {
