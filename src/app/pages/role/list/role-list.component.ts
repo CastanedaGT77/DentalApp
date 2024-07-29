@@ -64,6 +64,6 @@ export class RoleListComponent implements OnInit, AfterViewInit {
     }
 
     redirectCreate(){
-        this._router.navigateByUrl("/user/create");
+        this._router.navigateByUrl("/role/create");
     }
 }
