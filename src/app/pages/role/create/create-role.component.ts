@@ -140,7 +140,6 @@ export class CreateRoleComponent implements OnInit {
       permissions: selectedPermissions
     };
 
-    // Aquí llamas al servicio para crear el rol
     this._roleService.createRole(newRole).then(response => {
       if (response) {
         this._snackBarService.open('Rol creado exitosamente.', '', { duration: 3000 });

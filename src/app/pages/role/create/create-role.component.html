@@ -1,14 +1,12 @@
 <mat-card class="cardWithShadow">
   <mat-card-content>
-    <div class="flex justify-between">
+    <div class="flex justify-between items-center mb-4">
+      <button mat-icon-button (click)="returnPage()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
       <div>
-        <div class="flex mb-5 cursor-pointer hover:underline" (click)="returnPage()">
-          <mat-icon fontIcon="west"></mat-icon>
-          <p class="ml-2">Regresar</p>
-        </div>
-        <mat-card-title>{{ type === 'create' ? 'Creación de Rol' : 'Edición de Rol' }}</mat-card-title>
-        <mat-card-subtitle *ngIf="type === 'create'" class="mat-body-1">Creación</mat-card-subtitle>
-        <mat-card-subtitle *ngIf="type === 'edit'" class="mat-body-1">Edición</mat-card-subtitle>
+        <h2 class="text-xl font-bold">{{ type === 'create' ? 'Creación de Rol' : 'Edición de Rol' }}</h2>
+        <p class="text-sm text-gray-500">{{ type === 'create' ? 'Creación' : 'Edición' }}</p>
       </div>
     </div>
   </mat-card-content>
@@ -16,38 +14,29 @@
 
 <mat-card class="cardWithShadow">
   <mat-card-content>
-
-    <h3 class="text-lg font-semibold m-5">Listado de Permisos</h3>
-      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-          <button mat-icon-button matTreeNodeToggle (click)="toggleNodeExpansion(node, $event)">
-            <mat-icon>{{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}</mat-icon>
+    <h3 class="text-lg font-semibold mb-4">Listado de Permisos</h3>
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="mb-4">
+      <mat-nested-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <div class="mat-tree-node">
+          <button mat-icon-button (click)="toggleNodeExpansion(node, $event)">
+            <mat-icon>{{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
           </button>
           <mat-checkbox [checked]="node.checked" (change)="onCheckChange(node, $event.checked)">
-            {{node.name}}
+            {{ node.name }}
           </mat-checkbox>
-        </mat-tree-node>
-        <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-          <div class="mat-tree-node">
-            <button mat-icon-button matTreeNodeToggle (click)="toggleNodeExpansion(node, $event)">
-              <mat-icon>{{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}</mat-icon>
-            </button>
-            <mat-checkbox [checked]="node.checked" (change)="onCheckChange(node, $event.checked)">
-              {{node.name}}
+        </div>
+        <div *ngIf="treeControl.isExpanded(node)">
+          <mat-tree-node *ngFor="let child of node.children" matTreeNodePadding>
+            <mat-checkbox [checked]="child.checked" (change)="onCheckChange(child, $event.checked)">
+              {{ child.name }}
             </mat-checkbox>
-          </div>
-          <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
-            <mat-tree-node *ngFor="let child of node.children" matTreeNodePadding>
-              <mat-checkbox [checked]="child.checked" (change)="onCheckChange(child, $event.checked)">
-                {{child.name}}
-              </mat-checkbox>
-            </mat-tree-node>
-          </div>
-        </mat-nested-tree-node>
-      </mat-tree>
-      
+          </mat-tree-node>
+        </div>
+      </mat-nested-tree-node>
+    </mat-tree>
+
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill" [style.width.px]=400>
+      <mat-form-field appearance="fill" class="w-full">
         <mat-label>Nombre de Rol</mat-label>
         <input matInput formControlName="name" minlength="1" maxlength="255" required>
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
@@ -55,8 +44,6 @@
         <mat-error *ngIf="form.controls['name'].hasError('minlength') || form.controls['name'].hasError('maxlength')">Nombre inválido</mat-error>
       </mat-form-field>
 
-      
-      
       <div class="flex justify-end mt-4">
         <button mat-raised-button color="primary" type="submit">{{ type === 'create' ? 'Crear' : 'Actualizar' }}</button>
       </div>
