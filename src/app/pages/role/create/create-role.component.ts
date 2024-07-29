@@ -140,6 +140,8 @@ export class CreateRoleComponent implements OnInit {
       permissions: selectedPermissions
     };
 
+    // console.log('rol guardar',newRole)
+
     this._roleService.createRole(newRole).then(response => {
       if (response) {
         this._snackBarService.open('Rol creado exitosamente.', '', { duration: 3000 });
