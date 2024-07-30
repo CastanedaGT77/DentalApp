@@ -1,14 +1,14 @@
-<mat-card class="cardWithShadow">
+<mat-card class="cardWithShadow mb-4">
     <mat-card-content>
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center mb-4">
             <div>
-              <div class="flex  mb-5 cursor-pointer hover:underline" (click)="returnPage()">
-                <mat-icon fontIcon="west"></mat-icon>
-                <p class="ml-2">Regresar</p>
-              </div>
+                <div class="flex items-center mb-5 cursor-pointer hover:underline" (click)="returnPage()">
+                    <mat-icon fontIcon="west"></mat-icon>
+                    <p class="ml-2">Regresar</p>
+                </div>
                 <mat-card-title>Usuario</mat-card-title>
-                <mat-card-subtitle *ngIf="type === 'create' " class="mat-body-1">Creación</mat-card-subtitle>
-                <mat-card-subtitle *ngIf="type === 'edit' " class="mat-body-1">Edición</mat-card-subtitle>
+                <mat-card-subtitle *ngIf="type === 'create'" class="mat-body-1">Creación</mat-card-subtitle>
+                <mat-card-subtitle *ngIf="type === 'edit'" class="mat-body-1">Edición</mat-card-subtitle>
             </div>
         </div>
     </mat-card-content>
@@ -16,55 +16,56 @@
 
 <mat-card class="cardWithShadow">
     <mat-card-content>
-        <!-- FORM -->
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full shadow-md">
-            <div>
-                <p class="text-lg font-semibold m-5">Información General</p>
-                <div class="flex justify-around mb-10">
-                    <mat-form-field appearance="fill" [style.width.px]=400>
-                      <mat-label>Nombre</mat-label>
-                      <input autocomplete="nope" matInput formControlName="firstName" minlength maxlength pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-                      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                      <mat-error *ngIf="form.controls['firstName'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
-                      <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" [style.width.px]=400>
-                        <mat-label>Apellido</mat-label>
-                        <input autocomplete="nope" matInput formControlName="lastName" minlength maxlength pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-                        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                        <mat-error *ngIf="form.controls['lastName'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
-                        <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="flex justify-around mb-10">
-                    <mat-form-field appearance="fill" [style.width.px]=400>
-                        <mat-label>Correo Electrónico</mat-label>
-                        <input autocomplete="nope" type="email" matInput formControlName="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
-                        <mat-icon matSuffix>email</mat-icon>
-                        <mat-error *ngIf="form.controls['email'].hasError('required')">Email <strong>requerido</strong></mat-error>
-                        <mat-error *ngIf="form.controls['email'].hasError('pattern')">Email inválido ingrese una dirección correcta</mat-error>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" [style.width.px]=400>
-                        <mat-label>Contraseña</mat-label>
-                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
-                        <div mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        </div>
-                    </mat-form-field>
-                </div>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+            <p class="text-lg font-semibold m-5">Información General</p>
+            <div class="flex flex-wrap justify-around mb-10">
+                <mat-form-field appearance="fill" class="w-96 mb-4">
+                    <mat-label>Nombre</mat-label>
+                    <input autocomplete="off" matInput formControlName="firstName" minlength="1" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-error *ngIf="form.controls['firstName'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
+                    <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Nombre inválido, ingrese solo letras</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="w-96 mb-4">
+                    <mat-label>Apellido</mat-label>
+                    <input autocomplete="off" matInput formControlName="lastName" minlength="1" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-error *ngIf="form.controls['lastName'].hasError('required')">Apellido <strong>requerido</strong></mat-error>
+                    <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Apellido inválido, ingrese solo letras</mat-error>
+                </mat-form-field>
             </div>
-            <div>
-                <p class="text-lg font-semibold m-5">Roles</p>
-                    <mat-list-option *ngFor="let role of roles" [value]="role.id" (click)="selectRole(role.id)">
-                      <mat-checkbox [checked]="selectedRoleId === role.id">{{ role.name }}</mat-checkbox>
-                    </mat-list-option>
+            <div class="flex flex-wrap justify-around mb-10">
+                <mat-form-field appearance="fill" class="w-96 mb-4">
+                    <mat-label>Correo Electrónico</mat-label>
+                    <input autocomplete="off" type="email" matInput formControlName="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                    <mat-icon matSuffix>email</mat-icon>
+                    <mat-error *ngIf="form.controls['email'].hasError('required')">Email <strong>requerido</strong></mat-error>
+                    <mat-error *ngIf="form.controls['email'].hasError('pattern')">Email inválido, ingrese una dirección correcta</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="w-96 mb-4">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
             </div>
-            <div class="flex grow">
-                <br>
-                <br>
-                <button (click)="onSubmit()" mat-raised-button color="primary" type="submit" class="grow h-14">Guardar</button>
+            <p class="text-lg font-semibold m-5">Roles</p>
+            <div class="flex flex-wrap justify-around mb-10">
+                <mat-form-field appearance="fill" class="w-96 mb-4">
+                    <mat-label>Seleccionar Rol</mat-label>
+                    <mat-select formControlName="role" required>
+                        <mat-option *ngFor="let role of roles" [value]="role.id">
+                            {{ role.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.controls['role'].hasError('required')">Rol <strong>requerido</strong></mat-error>
+                </mat-form-field>
             </div>
-          </form>
-        </mat-card-content>
-    </mat-card>
+            <div class="flex justify-end">
+                <button mat-raised-button color="primary" type="submit" class="h-14">Guardar</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>

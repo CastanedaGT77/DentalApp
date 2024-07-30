@@ -44,11 +44,8 @@ export class ListUserComponent implements OnInit, AfterViewInit {
         }
     }
 
-    // Métodos de acción llamada a editar paciente
-    editUser(illnessDetail: any) {
-        //console.log('funciona paciente editar', paciente);
-        this._router.navigate(['/illnessDetail/edit'], { state: { illnessDetail: illnessDetail } });
-    
+    editUser(user: any) {
+        this._router.navigate(['/user/edit'], { state: { user } });
     }
     
     deleteUser(illnessDetail: any): void {

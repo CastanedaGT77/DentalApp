@@ -61,11 +61,11 @@
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
-        <td mat-cell *matCellDef="let treatmentType">
-            <button mat-icon-button (click)="editUser(treatmentType)" matTooltip="Editar">
+        <td mat-cell *matCellDef="let user">
+            <button mat-icon-button (click)="editUser(user)" matTooltip="Editar">
                 <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
             </button>
-            <button mat-icon-button (click)="deleteUser(treatmentType)" matTooltip="Eliminar">
+            <button mat-icon-button (click)="deleteUser(user.id)" matTooltip="Eliminar">
                 <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
             </button>
         </td>

@@ -12,8 +12,18 @@ export const UserRouting : Routes = [
         },
         {
           path: 'create',
-          component: CreateUserComponent
-        }
+          component: CreateUserComponent,
+          data: {
+            type: 'create'
+          }
+        },
+        {
+          path: 'edit',
+          component: CreateUserComponent,
+          data: {
+            type: 'edit'
+          }
+        },
       ],
       
     },
