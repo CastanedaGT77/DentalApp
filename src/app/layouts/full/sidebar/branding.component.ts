@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <div class="branding">
       <a href="/">
         <img
-          src="./assets/images/logos/cast.JPG"
+          src="./assets/images/logos/dark-logo.svg"
           class="align-middle m-2 rounded-lg opacity-2"
           alt="logo"
         />
