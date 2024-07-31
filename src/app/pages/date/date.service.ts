@@ -21,6 +21,18 @@ export class DateService {
       return [];
     }
   }
+
+  //citas por paciente
+  async getAppointmentPacient(id: number) {
+    try {
+        axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+        const response = await axiosClient.get(`/appointment/patient/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener citas:", error);
+        return null;
+    }
+  }
   
   async createAppointment(data: Partial<createAppointmentDTO>) {
     try {

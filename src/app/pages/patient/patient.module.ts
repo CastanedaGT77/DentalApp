@@ -25,6 +25,7 @@ import { IllnessDetailService } from '../illnessDetail/illnessDetail.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PatientTreatmentComponent } from '../treatment/patient-treatments/patient-treatments.component';
 import { TreatmentService } from '../treatment/treatment.service';
+import { DateService } from '../date/date.service';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { TreatmentService } from '../treatment/treatment.service';
     PatientService,
     IllnessDetailService,
     TreatmentService,
+    DateService,
     NgxSpinnerService
   ]
 })
