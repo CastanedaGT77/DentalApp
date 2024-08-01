@@ -10,7 +10,7 @@ export class UserService {
     async getUsers(){
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
-            const response = await axiosClient.get('/user/all');
+            const response = await axiosClient.get('/user');
             return response.data;
         } catch (error) {
             console.error("Error al obtener users:", error);
