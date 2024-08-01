@@ -128,6 +128,18 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
     this.calculateTotal();
   }
 
+  isAnyTreatmentSelected() {
+    return this.dataSource.data.some(data => data.selected);
+  }
+
+  formValid() {
+    return this.receiptControl.valid && this.isAnyTreatmentSelected() && this.allAmountsValid();
+  }
+
+  allAmountsValid() {
+    return this.dataSource.data.every(data => data.enteredAmount <= data.pendingAmount);
+  }
+
   async createPayment() {
     const selectedDetails = this.dataSource.data
       .filter((data: any) => data.selected)
