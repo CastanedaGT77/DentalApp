@@ -27,6 +27,7 @@ interface TreatmentDetail {
   paymentStatus: boolean;
   piece: string;
   status: boolean;
+  pendingAmount: number;
   created_at: string;
   updated_at: string;
   treatmentType: TreatmentType;
@@ -68,7 +69,7 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
   treatmentDataSource: MatTableDataSource<Treatment>;
   appointmentDataSource: MatTableDataSource<Appointment>;
 
-  displayedTreatmentColumns: string[] = ['name', 'description', 'actions'];
+  displayedTreatmentColumns: string[] = ['treatment', 'description', 'date', 'details'];
   displayedAppointmentColumns: string[] = ['appointmentDate', 'startHour', 'endHour', 'status'];
 
   @ViewChild('treatmentPaginator') treatmentPaginator: MatPaginator;
