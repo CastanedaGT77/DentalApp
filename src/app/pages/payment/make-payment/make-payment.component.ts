@@ -19,9 +19,8 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   payment: any[] = [];
   totalAmount = 0;
   form: FormGroup;
-  displayedColumns: string[] = ['select', 'piece', 'realPrice', 'pendingAmount', 'created_at', 'status'];
+  displayedColumns: string[] = ['select', 'piece', 'realPrice', 'enteredAmount', 'pendingAmount', 'created_at', 'status'];
   dataSource = new MatTableDataSource<any>(this.payment);
-
 
   @ViewChild('stepper') stepper: MatStepper;
 
@@ -96,6 +95,7 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
                         patientId: detail.patientId,
                         created_at: detail.created_at,
                         updated_at: detail.updated_at,
+                        enteredAmount: detail.pendingAmount,
                         selected: false
                     });
                 });
@@ -115,7 +115,17 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   calculateTotal() {
     this.totalAmount = this.dataSource.data
       .filter((data: any) => data.selected)
-      .reduce((sum: number, data: any) => sum + data.realPrice, 0);
+      .reduce((sum: number, data: any) => {
+        const amount = data.enteredAmount > data.pendingAmount ? data.pendingAmount : data.enteredAmount;
+        return sum + amount;
+      }, 0);
+  }
+
+  validateAmount(data: any) {
+    if (data.enteredAmount > data.pendingAmount) {
+      data.enteredAmount = data.pendingAmount;
+    }
+    this.calculateTotal();
   }
 
   async createPayment() {
@@ -123,7 +133,7 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
       .filter((data: any) => data.selected)
       .map((data: any) => ({
         patientTreatmentDetailId: data.id,
-        amount: data.realPrice,
+        amount: data.enteredAmount > data.pendingAmount ? data.pendingAmount : data.enteredAmount,
       }));
 
     const requestData: Partial<CreatePaymentDto> = {

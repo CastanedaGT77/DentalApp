@@ -67,6 +67,13 @@
                         <mat-header-cell *matHeaderCellDef> Finalizado </mat-header-cell>
                         <mat-cell *matCellDef="let element"> {{element.status ? 'Sí' : 'No'}} </mat-cell>
                     </ng-container>
+
+                    <ng-container matColumnDef="enteredAmount">
+                        <mat-header-cell *matHeaderCellDef> Cantidad Ingresada </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <input matInput type="number" [(ngModel)]="element.enteredAmount" (ngModelChange)="validateAmount(element)">
+                        </mat-cell>
+                    </ng-container>
             
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
