@@ -77,6 +77,8 @@
                       </mat-expansion-panel-header>
                       <div *ngFor="let detail of element.treatmentDetails">
                           <p>Id: {{detail.id}}</p>
+                          <p>Nombre: {{detail.treatmentType.name}}</p>
+                          <p>Descripción: {{detail.treatmentType.description}}</p>
                           <p>Pieza: {{detail.piece}}</p>
                           <p>Precio Sugerido Q: {{detail.suggestedPrice }}</p>
                           <p>Precio Real Q: {{detail.realPrice }}</p>
