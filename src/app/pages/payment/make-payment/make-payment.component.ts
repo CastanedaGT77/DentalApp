@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatTableDataSource } from '@angular/material/table';
 import { PaymentService } from '../payment.service';
 import { PatientService } from '../../patient/patient.service';
 import { CreatePaymentDto } from 'src/app/data/dtos/payment/CreatePaymentDTO';
@@ -15,10 +16,12 @@ import { CreatePaymentDto } from 'src/app/data/dtos/payment/CreatePaymentDTO';
 export class MakePaymentComponent implements OnInit, AfterViewInit {
 
   patients: any[] = [];
-  payment = [];
+  payment: any[] = [];
   totalAmount = 0;
   form: FormGroup;
   displayedColumns: string[] = ['select', 'piece', 'realPrice', 'pendingAmount', 'created_at', 'status'];
+  dataSource = new MatTableDataSource<any>(this.payment);
+
 
   @ViewChild('stepper') stepper: MatStepper;
 
@@ -37,9 +40,6 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
         name: ['', Validators.required],
         phoneNumber: ['', Validators.required],
         address: ['', Validators.required],
-        paymentMethod: ['', Validators.required],
-        amount: [0, Validators.required],
-        change: [0, Validators.required],
       })
     });
   }
@@ -77,53 +77,53 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   async getPendingPayment(patientId: number) {
     this.spinnerService.show();
     try {
-      const response = await this._paymentService.getPatientPendingPayment(patientId);
-      console.log('response', response);
-      if (response && response.data) {
-        this.payment = response.data.pendingTreatments;
-        this.paymentDetails.clear();
-        this.payment.forEach((treatment: any) => {
-          treatment.treatmentDetails.forEach((detail: any) => {
-            this.paymentDetails.push(this._formBuilder.group({
-              id: [detail.id],
-              suggestedPrice: [detail.suggestedPrice],
-              realPrice: [detail.realPrice],
-              paymentStatus: [detail.paymentStatus],
-              pendingAmount: [detail.pendingAmount],
-              piece: [detail.piece],
-              status: [detail.status],
-              patientId: [detail.patientId],
-              created_at: [detail.created_at],
-              updated_at: [detail.updated_at],
-              selected: [false]
-            }));
-          });
-        });
-        console.log('paymentDetails', this.paymentDetails.value);
-        // Ensure that the table dataSource is updated
-        this.form.controls['paymentDetails'].updateValueAndValidity();
-      } else {
-        console.error('Error: No se encontraron datos en la respuesta.');
-      }
+        const response = await this._paymentService.getPatientPendingPayment(patientId);
+        console.log('response', response);
+        if (response && response.data) {
+            this.payment = response.data.pendingTreatments;
+            this.paymentDetails.clear();
+            const paymentDetailsArray: any[] = [];
+            this.payment.forEach((treatment: any) => {
+                treatment.treatmentDetails.forEach((detail: any) => {
+                    paymentDetailsArray.push({
+                        id: detail.id,
+                        suggestedPrice: detail.suggestedPrice,
+                        realPrice: detail.realPrice,
+                        paymentStatus: detail.paymentStatus,
+                        pendingAmount: detail.pendingAmount,
+                        piece: detail.piece,
+                        status: detail.status,
+                        patientId: detail.patientId,
+                        created_at: detail.created_at,
+                        updated_at: detail.updated_at,
+                        selected: false
+                    });
+                });
+            });
+            this.dataSource.data = paymentDetailsArray;
+            console.log('paymentDetails', this.dataSource.data);
+        } else {
+            console.error('Error: No se encontraron datos en la respuesta.');
+        }
     } catch (error) {
-      console.error('Error al obtener datos:', error);
+        console.error('Error al obtener datos:', error);
     } finally {
-      this.spinnerService.hide();
+        this.spinnerService.hide();
     }
   }
 
   calculateTotal() {
-    this.totalAmount = this.paymentDetails.controls
-      .filter((control: AbstractControl) => control.get('selected')?.value)
-      .reduce((sum: number, control: AbstractControl) => sum + control.get('realPrice')?.value, 0);
+    this.totalAmount = this.dataSource.data
+      .filter((data: any) => data.selected)
+      .reduce((sum: number, data: any) => sum + data.realPrice, 0);
   }
 
   async createPayment() {
-    const selectedDetails = this.paymentDetails.controls
-      .filter((control: AbstractControl) => control.get('selected')?.value)
-      .map((control: AbstractControl) => ({
-        patientTreatmentDetailId: control.get('id')?.value,
-        amount: control.get('realPrice')?.value,
+    const selectedDetails = this.dataSource.data
+      .filter((data: any) => data.selected)
+      .map((data: any) => ({
+        patientTreatmentDetailId: data.id,
+        amount: data.realPrice,
       }));
 
     const requestData: Partial<CreatePaymentDto> = {
@@ -142,6 +142,7 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
         this.stepper.reset();
         this.form.reset();
         this.totalAmount = 0;
+        this.dataSource.data = [];
       } else {
         throw new Error('Error en el pago');
       }

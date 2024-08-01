@@ -35,37 +35,37 @@
 
             <mat-step label="Seleccionar Pagos Pendientes">
                 <ng-template matStepLabel>Seleccionar Pagos Pendientes</ng-template>
-                <table mat-table [dataSource]="paymentDetails.controls" class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
                     <ng-container matColumnDef="select">
                         <mat-header-cell *matHeaderCellDef> Seleccionar </mat-header-cell>
-                        <mat-cell *matCellDef="let element" [formGroup]="element">
-                            <mat-checkbox (change)="calculateTotal()" formControlName="selected"></mat-checkbox>
+                        <mat-cell *matCellDef="let element">
+                            <mat-checkbox (change)="calculateTotal()" [(ngModel)]="element.selected"></mat-checkbox>
                         </mat-cell>
                     </ng-container>
             
                     <ng-container matColumnDef="piece">
                         <mat-header-cell *matHeaderCellDef> Pieza </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.get('piece')?.value}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{element.piece}} </mat-cell>
                     </ng-container>
             
                     <ng-container matColumnDef="realPrice">
                         <mat-header-cell *matHeaderCellDef> Precio Real </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> Q{{element.get('realPrice')?.value}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> Q{{element.realPrice}} </mat-cell>
                     </ng-container>
             
                     <ng-container matColumnDef="pendingAmount">
                         <mat-header-cell *matHeaderCellDef> Monto Pendiente </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> Q{{element.get('pendingAmount')?.value}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> Q{{element.pendingAmount}} </mat-cell>
                     </ng-container>
             
                     <ng-container matColumnDef="created_at">
                         <mat-header-cell *matHeaderCellDef> Fecha de Creación </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.get('created_at')?.value | date}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{element.created_at | date}} </mat-cell>
                     </ng-container>
             
                     <ng-container matColumnDef="status">
                         <mat-header-cell *matHeaderCellDef> Finalizado </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.get('status')?.value ? 'Sí' : 'No'}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{element.status ? 'Sí' : 'No'}} </mat-cell>
                     </ng-container>
             
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -79,6 +79,7 @@
                     <button mat-button matStepperNext>Siguiente</button>
                 </div>
             </mat-step>
+            
 
             <mat-step [stepControl]="receiptControl" label="Información del Recibo">
                 <form [formGroup]="receiptControl" class="w-full shadow-md">
@@ -95,18 +96,6 @@
                         <mat-form-field appearance="fill">
                             <mat-label>Dirección</mat-label>
                             <input matInput formControlName="address">
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Método de pago</mat-label>
-                            <input matInput formControlName="paymentMethod">
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Cantidad</mat-label>
-                            <input matInput formControlName="amount">
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Cambio</mat-label>
-                            <input matInput formControlName="change">
                         </mat-form-field>
                     </div>
                     <div class="flex justify-end mt-4">
