@@ -71,7 +71,10 @@
                     <ng-container matColumnDef="enteredAmount">
                         <mat-header-cell *matHeaderCellDef> Cantidad Ingresada </mat-header-cell>
                         <mat-cell *matCellDef="let element">
-                            <input matInput type="number" [(ngModel)]="element.enteredAmount" (ngModelChange)="validateAmount(element)">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Ingresa el valor deseado a pagar</mat-label>
+                                <input matInput type="number" [(ngModel)]="element.enteredAmount" (ngModelChange)="validateAmount(element)" min="0" [max]="element.pendingAmount">
+                            </mat-form-field>
                         </mat-cell>
                     </ng-container>
             

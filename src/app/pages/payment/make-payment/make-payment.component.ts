@@ -19,7 +19,7 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   payment: any[] = [];
   totalAmount = 0;
   form: FormGroup;
-  displayedColumns: string[] = ['select', 'piece', 'realPrice', 'enteredAmount', 'pendingAmount', 'created_at', 'status'];
+  displayedColumns: string[] = ['select', 'piece', 'realPrice',  'pendingAmount', 'created_at', 'status', 'enteredAmount'];
   dataSource = new MatTableDataSource<any>(this.payment);
 
   @ViewChild('stepper') stepper: MatStepper;
