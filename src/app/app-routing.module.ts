@@ -85,6 +85,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'payment',
+        loadChildren: () =>
+          import('./pages/payment/payment.module').then(
+            (m) => m.PaymentModule
+          ),
+      },
+      {
         path: 'extra',
         loadChildren: () =>
           import('./pages/extra/extra.module').then((m) => m.ExtraModule),

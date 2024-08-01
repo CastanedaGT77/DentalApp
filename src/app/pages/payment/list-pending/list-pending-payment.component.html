@@ -1,0 +1,62 @@
+<mat-card class="cardWithShadow p-6">
+    <div class="flex items-center mb-5 cursor-pointer hover:underline" (click)="returnPage()">
+        <mat-icon>west</mat-icon>
+        <p class="ml-2">Regresar</p>
+    </div>
+    <mat-card-content>
+        <div class="flex justify-between items-center">
+            <div>
+                <mat-card-title>Pagos Pendientes de {{paciente?.firstName}} {{paciente?.lastName}}</mat-card-title>
+                <mat-card-subtitle class="mat-body-1">Listado</mat-card-subtitle>
+            </div>
+            <div>
+                <img mat-card-image [src]="sanitizedImage" alt="Foto del paciente" style="width: 100px; height: 100px; border-radius: 50%;">
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" class="mat-table" matSort>
+
+        <ng-container matColumnDef="treatment">
+            <mat-header-cell *matHeaderCellDef> Tratamiento </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.created_at | date}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+            <mat-header-cell *matHeaderCellDef> Detalles </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Ver Detalles
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngFor="let detail of element.treatmentDetails">
+                        <p>Id: {{detail.id}}</p>
+                        <p>Pieza: {{detail.piece}}</p>
+                        <p>Precio Sugerido Q: {{detail.suggestedPrice }}</p>
+                        <p>Precio Real Q: {{detail.realPrice }}</p>
+                        <p>Monto Pendiente Q: {{detail.pendingAmount }}</p>
+                        <br>
+                    </div>
+                </mat-expansion-panel>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

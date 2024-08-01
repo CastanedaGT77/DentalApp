@@ -131,4 +131,9 @@ export class ListPatientComponent {
     redirectCreate(){
         this._router.navigateByUrl("/patient/create");
     }
+
+    redirectPendingPayment(paciente: any){
+        this._router.navigate(['/payment/list'], { state: { paciente: paciente } });
+
+    }
 }
