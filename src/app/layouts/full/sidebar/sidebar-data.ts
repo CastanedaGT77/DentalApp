@@ -55,6 +55,11 @@ export const navItems: NavItem[] = [
     iconName: "user",
     route: "treatment/list"
   },
+  {
+    displayName: "Pagos de Tratamientos",
+    iconName: "brand-visa",
+    route: "payment/makePayment"
+  },
   // {
   //   navCap: 'Usuarios',
   // },

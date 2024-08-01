@@ -18,6 +18,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PaymentRouting } from './payment.routing';
 import { PaymentService } from './payment.service';
 import { ListPendingPaymentComponent } from './list-pending/list-pending-payment.component';
+import { MakePaymentComponent } from './make-payment/make-payment.component';
+import { PatientService } from '../patient/patient.service';
+import { TreatmentService } from '../treatment/treatment.service';
 
 @NgModule({
     imports: [
@@ -33,14 +36,18 @@ import { ListPendingPaymentComponent } from './list-pending/list-pending-payment
       MatInputModule,
       FormsModule,
       MatButtonModule,
-      MatTooltipModule
+      MatTooltipModule,
+    
     ],
     declarations: [
-      ListPendingPaymentComponent
+      ListPendingPaymentComponent,
+      MakePaymentComponent
       
     ],
     providers: [
       PaymentService,
+      PatientService,
+      TreatmentService,
       NgxSpinnerService
     ]
   })
