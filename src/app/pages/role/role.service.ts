@@ -10,7 +10,7 @@ export class RoleService {
     async getPermissions() {
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
-            const response = await axiosClient.get('/roles/permissions');
+            const response = await axiosClient.get('/roles/permission');
             return response.data;
         } catch (error) {
             console.error("Error al obtener permisos:", error);
