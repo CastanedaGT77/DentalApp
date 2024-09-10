@@ -92,6 +92,13 @@ const routes: Routes = [
           ),
       },
       {
+      path: 'report',
+      loadChildren: () =>
+        import('./pages/report/report.module').then(
+          (m) => m.ReportModule
+        ),
+      },
+      {
         path: 'extra',
         loadChildren: () =>
           import('./pages/extra/extra.module').then((m) => m.ExtraModule),

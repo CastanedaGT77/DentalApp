@@ -60,6 +60,11 @@ export const navItems: NavItem[] = [
     iconName: "brand-visa",
     route: "payment/makePayment"
   },
+  {
+    displayName: "Reportes",
+    iconName: "report",
+    route: "report/general"
+  },
   // {
   //   navCap: 'Usuarios',
   // },
