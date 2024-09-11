@@ -96,11 +96,11 @@ export const navItems: NavItem[] = [
   // {
   //   navCap: 'Autenticación',
   // },
-  // {
-  //   displayName: 'Login',
-  //   iconName: 'lock',
-  //   route: '/authentication/login',
-  // },
+  {
+    displayName: 'Login',
+    iconName: 'lock',
+    route: '/authentication/login',
+  },
   // {
   //   displayName: 'Register',
   //   iconName: 'user-plus',
