@@ -10,6 +10,11 @@ export const navItems: NavItem[] = [
     route: '/dashboard',
   },
   {
+    displayName: 'Login',
+    iconName: 'lock',
+    route: '/authentication/login',
+  },
+  {
     navCap: "Administración"
   },
   {
@@ -96,11 +101,7 @@ export const navItems: NavItem[] = [
   // {
   //   navCap: 'Autenticación',
   // },
-  {
-    displayName: 'Login',
-    iconName: 'lock',
-    route: '/authentication/login',
-  },
+
   // {
   //   displayName: 'Register',
   //   iconName: 'user-plus',

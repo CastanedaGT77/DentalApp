@@ -16,6 +16,8 @@ import { AuthenticationRoutes } from './authentication.routing';
 
 import { AppSideLoginComponent } from './login/login.component';
 import { AppSideRegisterComponent } from './register/register.component';
+import { AuthenticationService } from './authentication.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -34,5 +36,9 @@ import { AppSideRegisterComponent } from './register/register.component';
     AppSideLoginComponent,
     AppSideRegisterComponent,
   ],
+  providers: [
+    NgxSpinnerService,
+    AuthenticationService
+  ]
 })
 export class AuthenticationModule {}
