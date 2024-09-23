@@ -1,4 +1,6 @@
 <mat-toolbar class="topbar">
+
+
   <!-- Mobile Menu -->
   <button mat-icon-button (click)="toggleMobileNav.emit()" *ngIf="!showToggle">
     <i-tabler name="menu-2" class="icon-20 d-flex"></i-tabler>
@@ -9,6 +11,8 @@
   <!-- Notification Dropdown -->
   <!-- --------------------------------------------------------------- -->
 
+ 
+
   <button mat-icon-button aria-label="Notifications">
     <i-tabler
       class="d-flex"
@@ -17,5 +21,14 @@
       matBadgeColor="primary"
     ></i-tabler>
   </button>
+
+  <button mat-icon-button aria-label="Notifications" (click)="logout()" matTooltip="Cerrar sesión">
+    <i-tabler
+      class="d-flex"
+      name="logout"
+      matBadgeColor="primary"
+    ></i-tabler>
+  </button>
+
   
 </mat-toolbar>

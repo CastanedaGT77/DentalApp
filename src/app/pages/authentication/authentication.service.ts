@@ -36,5 +36,10 @@ export class AuthenticationService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('access_token');
   }
+
+  // Cerrar sesión
+  logout() {
+    localStorage.removeItem('access_token');
+  }
   
 }
