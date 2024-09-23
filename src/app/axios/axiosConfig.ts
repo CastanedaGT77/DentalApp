@@ -32,7 +32,7 @@ axiosClient.interceptors.response.use(
     },
     (error) => {
         // Si recibimos un 401 o 403, el token puede haber expirado
-        if (error.response && (error.response.status === 501 || error.response.status === 403)) {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
             // Limpiamos el token de localStorage y redirigimos al login
             localStorage.removeItem('access_token');
             if (router) {
