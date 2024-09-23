@@ -31,4 +31,10 @@ export class AuthenticationService {
       throw error;
     }
   }
+
+  // Comprobar si el usuario está autenticado
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('access_token');
+  }
+  
 }
