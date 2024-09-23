@@ -9,11 +9,11 @@ export const navItems: NavItem[] = [
     iconName: 'layout-dashboard',
     route: '/dashboard',
   },
-  {
-    displayName: 'Login',
-    iconName: 'lock',
-    route: '/authentication/login',
-  },
+  // {
+  //   displayName: 'Login',
+  //   iconName: 'lock',
+  //   route: '/authentication/login',
+  // },
   {
     navCap: "Administración"
   },
