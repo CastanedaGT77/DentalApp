@@ -28,6 +28,8 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppSideLoginComponent } from './pages/authentication/login/login.component';
+import { Router } from '@angular/router';
+import { setAxiosClientRouter } from './axios/axiosConfig';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,4 +54,10 @@ import { AppSideLoginComponent } from './pages/authentication/login/login.compon
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(router: Router) {
+    // Aquí configuramos el Router para axios
+    setAxiosClientRouter(router);
+  }
+
+}
