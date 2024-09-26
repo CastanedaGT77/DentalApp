@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { axiosClient } from "src/app/axios/axiosConfig";
 
 @Injectable({
@@ -6,12 +7,13 @@ import { axiosClient } from "src/app/axios/axiosConfig";
 })
 export class AuthenticationService {
 
+  constructor(private router: Router) {}
+
   async login(credentials: { userName: string; password: string }) {
     try {
       const response = await axiosClient.post('/auth', credentials);
       const userData = response.data;
       
-      // Aquí podemos procesar el arreglo bonito de la respuesta del backend
       const userInfo = {
         id: userData.id,
         firstName: userData.firstName,
@@ -20,10 +22,13 @@ export class AuthenticationService {
         role: userData.rol.name,
         company: userData.company.name,
         token: userData.access_token,
-        permissions: userData.permissions,
+        permissions: [...new Set(userData.permissions)], // Limpia duplicados
       };
       
-      // Retorna el usuario para ser guardado en localStorage
+      // Almacenar el token y los permisos en localStorage
+      localStorage.setItem('access_token', userInfo.token);
+      localStorage.setItem('user_permissions', JSON.stringify(userInfo.permissions));
+
       return userInfo;
 
     } catch (error) {
@@ -32,14 +37,27 @@ export class AuthenticationService {
     }
   }
 
-  // Comprobar si el usuario está autenticado
+  // Verificar si el usuario está autenticado
   isLoggedIn(): boolean {
     return !!localStorage.getItem('access_token');
+  }
+
+  // Obtener los permisos del usuario
+  getUserPermissions(): string[] {
+    const permissions = localStorage.getItem('user_permissions');
+    return permissions ? JSON.parse(permissions) : [];
   }
 
   // Cerrar sesión
   logout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user_permissions');
+    this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
   }
-  
+
+  // Redirigir al login si el token expira
+  handleTokenExpiration() {
+    this.logout(); // Ejecuta el logout y redirige al login
+    this.router.navigate(['/login']);
+  }
 }

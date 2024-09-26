@@ -8,6 +8,7 @@ export const navItems: NavItem[] = [
     displayName: 'Dashboard',
     iconName: 'layout-dashboard',
     route: '/dashboard',
+    permissions: ["Dashboard:Listar"] 
   },
   // {
   //   displayName: 'Login',
@@ -20,17 +21,20 @@ export const navItems: NavItem[] = [
   {
     displayName: "Roles",
     iconName: "user",
-    route: "role/list"
+    route: "role/list",
+    permissions: ["Roles:Listar"] // Sin restricciones
   },
   {
     displayName: "Usuarios",
     iconName: "user",
-    route: "user/list"
+    route: "user/list",
+    permissions: ["Usuarios:Listar"] // Sin restricciones
   },
   {
     displayName: "Sucursales",
     iconName: "home",
-    route: "branch/list"
+    route: "branch/list",
+    permissions: ["Sucursales:Listar"] // Sin restricciones
   },
   {
     navCap: "Información General"
@@ -38,86 +42,43 @@ export const navItems: NavItem[] = [
   {
     displayName: "Pacientes",
     iconName: "user",
-    route: "patient/list"
+    route: "patient/list",
+    permissions: ["Pacientes:Listar"]
   },
   {
     displayName: "Detalles de Diagnóstico",
     iconName: "user",
-    route: "illnessDetail/list"
+    route: "illnessDetail/list",
+    permissions: ["Diágnosticos:Listar"]
   },
   {
     displayName: "Tipos de Tratamiento",
     iconName: "user",
-    route: "treatmentType/list"
+    route: "treatmentType/list",
+    permissions: ["TipoTratamientos:Listar"]
   },
   {
     displayName: "Citas",
     iconName: "calendar",
-    route: "date/calendar"
+    route: "date/calendar",
+    permissions: ["Citas:Listar"] 
   },
   {
     displayName: "Tratamientos",
     iconName: "user",
-    route: "treatment/list"
+    route: "treatment/list",
+    permissions: ["Tratamientos:Listar"] 
   },
   {
     displayName: "Pagos de Tratamientos",
     iconName: "brand-visa",
-    route: "payment/makePayment"
+    route: "payment/makePayment",
+    permissions: ["Pagos:Listar"] 
   },
   {
     displayName: "Reportes",
     iconName: "report",
-    route: "report/general"
+    route: "report/general",
+    permissions: ["Reportes:Listar"] 
   },
-  // {
-  //   navCap: 'Usuarios',
-  // },
-  // {
-  //   displayName: 'Badge',
-  //   iconName: 'rosette',
-  //   route: '/ui-components/badge',
-  // },
-  // {
-  //   displayName: 'Chips',
-  //   iconName: 'poker-chip',
-  //   route: '/ui-components/chips',
-  // },
-  // {
-  //   displayName: 'Lists',
-  //   iconName: 'list',
-  //   route: '/ui-components/lists',
-  // },
-  // {
-  //   displayName: 'Menu',
-  //   iconName: 'layout-navbar-expand',
-  //   route: '/ui-components/menu',
-  // },
-  // {
-  //   displayName: 'Tooltips',
-  //   iconName: 'tooltip',
-  //   route: '/ui-components/tooltips',
-  // },
-  // {
-  //   navCap: 'Autenticación',
-  // },
-
-  // {
-  //   displayName: 'Register',
-  //   iconName: 'user-plus',
-  //   route: '/authentication/register',
-  // },
-  // {
-  //   navCap: 'Extra',
-  // },
-  // {
-  //   displayName: 'Icons',
-  //   iconName: 'mood-smile',
-  //   route: '/extra/icons',
-  // },
-  // {
-  //   displayName: 'Sample Page',
-  //   iconName: 'aperture',
-  //   route: '/extra/sample-page',
-  // },
 ];
