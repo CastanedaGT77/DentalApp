@@ -11,6 +11,9 @@ export const RoleRouting: Routes = [
         path: 'list',
         component: RoleListComponent,
         canActivate: [AuthGuard],
+        data: {
+          permissions: ['Roles:Listar'] // Define el permiso necesario para acceder a esta ruta
+        }
       },
       {
         path: 'create',

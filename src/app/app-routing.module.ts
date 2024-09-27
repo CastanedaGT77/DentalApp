@@ -37,6 +37,9 @@ const routes: Routes = [
             (m) => m.RoleModule
           ),
           canActivate: [AuthGuard],
+          data: {
+            permissions: ['Roles:Listar'], // Definir permisos generales si es necesario
+          },
       },
       {
         path: 'user',
