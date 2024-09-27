@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-access-denied',
+  selector: 'app-access',
   templateUrl: './access.component.html',
 })
 export class AccessDeniedComponent {

@@ -82,4 +82,5 @@ export const navItems: NavItem[] = [
     route: "report/general",
     permissions: ["Reportes:Listar"] 
   },
+  
 ];
