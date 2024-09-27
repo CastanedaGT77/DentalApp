@@ -6,7 +6,6 @@ import {
   UrlTree,
   Router,
 } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AuthenticationService } from '../pages/authentication/authentication.service';
 
 @Injectable({
@@ -23,11 +22,31 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean | UrlTree {
     const isLoggedIn = this.authService.isLoggedIn();
-
+    
+    // Si el usuario está logueado
     if (isLoggedIn) {
-      return true;
+      // Obtener los permisos requeridos desde la ruta
+      const requiredPermissions = route.data['permissions'] as string[];
+      
+      // Si no se requieren permisos o el usuario tiene los permisos necesarios, se permite el acceso
+      if (!requiredPermissions || requiredPermissions.length === 0) {
+        return true;
+      }
+
+      // Verificar si el usuario tiene los permisos necesarios
+      const userPermissions = this.authService.getUserPermissions();
+      const hasPermission = requiredPermissions.some(permission => 
+        userPermissions.includes(permission)
+      );
+
+      if (hasPermission) {
+        return true;
+      } else {
+        // Redirigir a una página de acceso denegado o similar si no tiene permisos
+        return this.router.createUrlTree(['/access-denied']);
+      }
     } else {
-      // Redirigir al login si no está autenticado
+      // Si no está autenticado, redirigir al login
       return this.router.createUrlTree(['/authentication/login']);
     }
   }

@@ -35,7 +35,8 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/role/role.module').then(
             (m) => m.RoleModule
-          )
+          ),
+          canActivate: [AuthGuard],
       },
       {
         path: 'user',
