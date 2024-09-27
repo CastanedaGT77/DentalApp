@@ -6,7 +6,7 @@ export const AccessRouting: Routes = [
       path: '',
       children: [
         {
-          path: 'denied/denied',
+          path: 'denied',
           component: AccessDeniedComponent
         },
       ],
