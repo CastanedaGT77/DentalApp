@@ -43,6 +43,7 @@ export class AuthGuard implements CanActivate {
         return true;
       } else {
         // Redirigir a una página de acceso denegado o similar si no tiene permisos
+        console.log('chinga tu madre, acceso denegado')
         return this.router.createUrlTree(['/access-denied']);
       }
     } else {
