@@ -109,6 +109,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/extra/extra.module').then((m) => m.ExtraModule),
       },
+      {
+        path: 'denied',
+        loadChildren: () =>
+          import('./pages/access/access.module').then((m) => m.AccessDeniedModule),
+      },
     ],
   },
   {
