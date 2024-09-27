@@ -22,7 +22,8 @@ export const navItems: NavItem[] = [
     displayName: "Roles",
     iconName: "user",
     route: "role/list",
-    permissions: ["Roles:Listar"] // Sin restricciones
+    permissions: ["Roles:Listar"], // Sin restricciones
+    
   },
   {
     displayName: "Usuarios",
