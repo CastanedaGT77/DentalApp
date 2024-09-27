@@ -36,7 +36,7 @@ const routes: Routes = [
           import('./pages/role/role.module').then(
             (m) => m.RoleModule
           ),
-          canActivate: [AuthGuard],
+          canActivate: [AuthGuard], /// meter siempre el guard
           data: {
             permissions: ['Roles:Listar'], // Definir permisos generales si es necesario
           },
