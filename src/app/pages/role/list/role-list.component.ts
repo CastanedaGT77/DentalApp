@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RoleService } from '../role.service';
 import { DeleteRole } from '../delete/delete-role.component';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 interface Role {
   id: number;
@@ -33,6 +34,9 @@ export class RoleListComponent implements OnInit, AfterViewInit {
   roles: Role[] = [];
   dataSource = new MatTableDataSource<Role>(this.roles);
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  crearRolPermiso: Array<EPermissions>;
+  actualizarRolPermiso: Array<EPermissions>;
+  eliminarRolPermiso: Array<EPermissions>;
 
   displayedColumns: string[] = ['id', 'name', 'permissions', 'actions'];
 
@@ -42,7 +46,11 @@ export class RoleListComponent implements OnInit, AfterViewInit {
     private _roleService: RoleService,
     private spinnerService: NgxSpinnerService,
     private readonly _sanitizer: DomSanitizer
-  ) {}
+  ) {
+    this.crearRolPermiso = [EPermissions.CREAR_ROLES] || [];
+    this.actualizarRolPermiso = [EPermissions.ACTUALIZAR_ROLES] || [];
+    this.eliminarRolPermiso = [EPermissions.ELIMINAR_ROLES] || [];
+  }
 
   async ngOnInit() {
     this.spinnerService.show();

@@ -5,7 +5,9 @@
         <mat-card-title>Roles</mat-card-title>
         <mat-card-subtitle>Listado</mat-card-subtitle>
       </div>
-      <button mat-raised-button color="primary" (click)="redirectCreate()">Crear Rol</button>
+      <button mat-raised-button color="primary" (click)="redirectCreate()" *appHasPermission="crearRolPermiso">
+        Crear Rol
+      </button>
     </div>
     <mat-form-field class="w-full mb-4">
       <mat-label>Buscar</mat-label>
@@ -47,10 +49,10 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let role">
-          <button mat-icon-button (click)="editRole(role)" matTooltip="Editar">
+          <button mat-icon-button (click)="editRole(role)" matTooltip="Editar" *appHasPermission="actualizarRolPermiso">
             <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteRole(role)" matTooltip="Eliminar">
+          <button mat-icon-button (click)="deleteRole(role)" matTooltip="Eliminar" *appHasPermission="eliminarRolPermiso">
             <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
           </button>
         </td>

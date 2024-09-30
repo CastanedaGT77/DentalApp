@@ -19,6 +19,7 @@ import { ListUserComponent } from './list/list-user.component';
 import { UserService } from './user.service';
 import { CreateUserComponent } from './create/create-user.component';
 import { RoleService } from '../role/role.service';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { RoleService } from '../role/role.service';
       MatInputModule,
       FormsModule,
       MatButtonModule,
-      MatTooltipModule
+      MatTooltipModule,
+      SharedModule
     ],
     declarations: [
         ListUserComponent,

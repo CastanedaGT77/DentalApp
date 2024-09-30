@@ -1,3 +1,4 @@
+import { EPermissions } from 'src/app/utils/permissionEnum';
 import { NavItem } from './nav-item/nav-item';
 
 export const navItems: NavItem[] = [
@@ -16,20 +17,21 @@ export const navItems: NavItem[] = [
   //   route: '/authentication/login',
   // },
   {
-    navCap: "Administración"
+    navCap: "Administración",
+    permissions: [EPermissions.ADMIN_MODULE]
   },
   {
     displayName: "Roles",
     iconName: "user",
     route: "role/list",
-    permissions: ["Roles:Listar"], // Sin restricciones
+    permissions: [EPermissions.LISTAR_ROLES], // Sin restricciones
     
   },
   {
     displayName: "Usuarios",
     iconName: "user",
     route: "user/list",
-    permissions: ["Usuarios:Listar"] // Sin restricciones
+    permissions: [EPermissions.LISTAR_USUARIOS] // Sin restricciones
   },
   {
     displayName: "Sucursales",

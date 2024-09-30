@@ -18,6 +18,7 @@ import { CreateRoleComponent } from './create/create-role.component';
 import { RoleRouting } from './role.routing';
 import { RoleService } from './role.service';
 import { DeleteRole } from './delete/delete-role.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { DeleteRole } from './delete/delete-role.component';
       MatInputModule,
       FormsModule,
       MatButtonModule,
-      MatTooltipModule
+      MatTooltipModule,
+      SharedModule
     ],
     declarations: [
       RoleListComponent,

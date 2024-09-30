@@ -5,6 +5,7 @@ import { FullComponent } from './layouts/full/full.component';
 import { PatientModule } from './pages/patient/patient.module';
 import { UserModule } from './pages/user/user.module';
 import { AuthGuard } from './guards/auth.guard';
+import { EPermissions } from './utils/permissionEnum';
 
 const routes: Routes = [
   {
@@ -38,7 +39,7 @@ const routes: Routes = [
           ),
           canActivate: [AuthGuard], /// meter siempre el guard
           data: {
-            permissions: ['Roles:Listar'], // Definir permisos generales si es necesario
+            permissions: [EPermissions.LISTAR_ROLES], // Definir permisos generales si es necesario
           },
       },
       {

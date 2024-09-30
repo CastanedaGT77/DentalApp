@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UserService } from '../user.service';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 @Component({
     selector: "app-list-user",
@@ -16,6 +17,9 @@ export class ListUserComponent implements OnInit, AfterViewInit {
     users = [];
     dataSource = new MatTableDataSource<any>(this.users);
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    crearUsuarioPermiso: Array<EPermissions>;
+    actualizarUsuarioPermiso: Array<EPermissions>;
+    eliminarUsuarioPermiso: Array<EPermissions>;
 
     displayedColumns: string[] = ['id', 'firstName','lastName','email','userName','isActive','actions'];
     
@@ -25,7 +29,11 @@ export class ListUserComponent implements OnInit, AfterViewInit {
         private _userService: UserService,
         private spinnerService: NgxSpinnerService,
         private readonly _sanitizer: DomSanitizer
-    ) {}
+    ) {
+        this.crearUsuarioPermiso = [EPermissions.CREAR_USUARIOS] || [];
+        this.actualizarUsuarioPermiso = [EPermissions.ACTUALIZAR_USUARIOS] || [];
+        this.eliminarUsuarioPermiso = [EPermissions.ELIMINAR_USUARIOS] || [];
+    }
 
     async ngOnInit(){
         this.spinnerService.show();

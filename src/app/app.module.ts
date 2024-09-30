@@ -30,7 +30,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppSideLoginComponent } from './pages/authentication/login/login.component';
 import { Router } from '@angular/router';
 import { setAxiosClientRouter } from './axios/axiosConfig';
-import { HasPermissionDirective } from './directives/has-permission.directive';
+import { SharedModule } from './shared.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +40,6 @@ import { HasPermissionDirective } from './directives/has-permission.directive';
     HeaderComponent,
     BrandingComponent,
     AppNavItemComponent,
-    HasPermissionDirective
   ],
   imports: [
     BrowserModule,
@@ -52,8 +51,9 @@ import { HasPermissionDirective } from './directives/has-permission.directive';
     MaterialModule,
     TablerIconsModule.pick(TablerIcons),
     NgxSpinnerModule,
+    SharedModule
   ],
-  exports: [TablerIconsModule, HasPermissionDirective],
+  exports: [TablerIconsModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {

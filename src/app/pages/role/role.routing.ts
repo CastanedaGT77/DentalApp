@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { RoleListComponent } from './list/role-list.component';
 import { CreateRoleComponent } from './create/create-role.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 export const RoleRouting: Routes = [
   {
@@ -12,14 +13,15 @@ export const RoleRouting: Routes = [
         component: RoleListComponent,
         canActivate: [AuthGuard],
         data: {
-          permissions: ['Roles:Listar'] // Define el permiso necesario para acceder a esta ruta
+          permissions: [EPermissions.LISTAR_ROLES] // Define el permiso necesario para acceder a esta ruta
         }
       },
       {
         path: 'create',
         component: CreateRoleComponent,
         data: {
-          type: 'create'
+          type: 'create',
+          permissions: [EPermissions.CREAR_ROLES]
         }, 
         canActivate: [AuthGuard],
       },
@@ -27,7 +29,8 @@ export const RoleRouting: Routes = [
         path: 'edit',
         component: CreateRoleComponent,
         data: {
-          type: 'edit'
+          type: 'edit',
+          permissions: [EPermissions.ACTUALIZAR_ROLES]
         },
         canActivate: [AuthGuard],
       },

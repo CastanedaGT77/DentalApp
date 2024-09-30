@@ -27,7 +27,7 @@ export class AuthenticationService {
       
       // Almacenar el token y los permisos en localStorage
       localStorage.setItem('access_token', userInfo.token);
-      localStorage.setItem('user_permissions', JSON.stringify(userInfo.permissions));
+      localStorage.setItem('list', JSON.stringify(userInfo.permissions));
 
       return userInfo;
 
@@ -44,14 +44,14 @@ export class AuthenticationService {
 
   // Obtener los permisos del usuario
   getUserPermissions(): string[] {
-    const permissions = localStorage.getItem('user_permissions');
+    const permissions = localStorage.getItem('list');
     return permissions ? JSON.parse(permissions) : [];
   }
 
   // Cerrar sesión
   logout() {
     localStorage.removeItem('access_token');
-    localStorage.removeItem('user_permissions');
+    localStorage.removeItem('list');
     this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
   }
 
