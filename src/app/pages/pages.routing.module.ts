@@ -3,6 +3,7 @@ import { AppDashboardComponent } from './dashboard/dashboard.component';
 
 export const PagesRoutes: Routes = [
   {
+    //aca va el componente que se abrira primero
     path: '',
     component: AppDashboardComponent,
     data: {
