@@ -37,6 +37,9 @@ axiosClient.interceptors.response.use(
             || error.response.status === 401 || error.response.status === 403)) {
             // Limpiamos el token de localStorage y redirigimos al login
             localStorage.removeItem('access_token');
+            localStorage.removeItem('list');
+            localStorage.removeItem('name');
+
             if (router) {
                 router.navigate(['/authentication/login']);
             }
