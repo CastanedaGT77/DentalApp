@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
@@ -13,7 +13,7 @@ import { EPermissions } from "src/app/utils/permissionEnum";
     selector: "app-branch-list",
     templateUrl: "./branch-list.component.html"
 })
-export class BranchListComponent{
+export class BranchListComponent implements OnInit,AfterViewInit{
     branches = [];
     dataSource = new MatTableDataSource<any>(this.branches);
     @ViewChild(MatPaginator) paginator: MatPaginator;
