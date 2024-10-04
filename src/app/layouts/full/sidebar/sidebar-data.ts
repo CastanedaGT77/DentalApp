@@ -9,13 +9,8 @@ export const navItems: NavItem[] = [
     displayName: 'Dashboard',
     iconName: 'layout-dashboard',
     route: '/dashboard',
-    permissions: ["Dashboard:Listar"] 
+    permissions: [EPermissions.ADMIN_MODULE] //  módulo de administración
   },
-  // {
-  //   displayName: 'Login',
-  //   iconName: 'lock',
-  //   route: '/authentication/login',
-  // },
   {
     navCap: "Administración",
     permissions: [EPermissions.ADMIN_MODULE]
@@ -24,20 +19,19 @@ export const navItems: NavItem[] = [
     displayName: "Roles",
     iconName: "user",
     route: "role/list",
-    permissions: [EPermissions.LISTAR_ROLES], // Sin restricciones
-    
+    permissions: [EPermissions.LISTAR_ROLES] // Rol de listar roles
   },
   {
     displayName: "Usuarios",
     iconName: "user",
     route: "user/list",
-    permissions: [EPermissions.LISTAR_USUARIOS] // Sin restricciones
+    permissions: [EPermissions.LISTAR_USUARIOS] // Rol de listar usuarios
   },
   {
     displayName: "Sucursales",
     iconName: "home",
     route: "branch/list",
-    permissions: ["Sucursales:Listar"] // Sin restricciones
+    permissions: [EPermissions.LISTAR_SUCURSALES] // Rol de listar sucursales
   },
   {
     navCap: "Información General"
@@ -46,43 +40,42 @@ export const navItems: NavItem[] = [
     displayName: "Pacientes",
     iconName: "user",
     route: "patient/list",
-    permissions: ["Pacientes:Listar"]
+    permissions: [EPermissions.LISTAR_PACIENTES] // Rol de listar pacientes
   },
   {
     displayName: "Detalles de Diagnóstico",
     iconName: "user",
     route: "illnessDetail/list",
-    permissions: ["Diágnosticos:Listar"]
+    permissions: [EPermissions.LISTAR_DETALLES_DE_ENFERMEDAD] // Rol de listar detalles de enfermedad
   },
   {
     displayName: "Tipos de Tratamiento",
     iconName: "user",
     route: "treatmentType/list",
-    permissions: ["TipoTratamientos:Listar"]
+    permissions: [EPermissions.LISTAR_TIPOS_DE_TRATAMIENTO] // Rol de listar tipos de tratamiento
   },
   {
     displayName: "Citas",
     iconName: "calendar",
     route: "date/calendar",
-    permissions: ["Citas:Listar"] 
+    permissions: [EPermissions.LISTAR_CITAS] // Rol de listar citas
   },
   {
     displayName: "Tratamientos",
     iconName: "user",
     route: "treatment/list",
-    permissions: ["Tratamientos:Listar"] 
+    permissions: [EPermissions.LISTAR_TRATAMIENTOS] // Rol de listar tratamientos
   },
   {
     displayName: "Pagos de Tratamientos",
     iconName: "brand-visa",
     route: "payment/makePayment",
-    permissions: ["Pagos:Listar"] 
+    permissions: [EPermissions.LISTAR_PAGOS] // Rol de listar pagos
   },
   {
     displayName: "Reportes",
     iconName: "report",
     route: "report/general",
-    permissions: ["Reportes:Listar"] 
+    permissions: [EPermissions.REPORT_XQ90] // Rol de ver reportes
   },
-  
 ];
