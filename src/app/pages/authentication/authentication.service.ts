@@ -58,6 +58,9 @@ export class AuthenticationService {
 
   // Redirigir al login si el token expira
   handleTokenExpiration() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('name');
+    localStorage.removeItem('list');
     this.logout(); // Ejecuta el logout y redirige al login
     this.router.navigate(['/login']);
   }
