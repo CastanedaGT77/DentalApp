@@ -21,7 +21,7 @@ export class ListUserComponent implements OnInit, AfterViewInit {
     actualizarUsuarioPermiso: Array<EPermissions>;
     eliminarUsuarioPermiso: Array<EPermissions>;
 
-    displayedColumns: string[] = ['id', 'firstName','lastName','email','userName','isActive','actions'];
+    displayedColumns: string[] = ['id', 'firstName','lastName','email','userName', 'role', 'isActive','actions'];
     
     constructor(
         private readonly _router: Router,

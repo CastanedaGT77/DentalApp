@@ -7,6 +7,7 @@ import { BranchService } from "../branch.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { DomSanitizer } from "@angular/platform-browser";
 import { DeleteBranch } from "../delete/delete-branch.component";
+import { EPermissions } from "src/app/utils/permissionEnum";
 
 @Component({
     selector: "app-branch-list",
@@ -16,6 +17,9 @@ export class BranchListComponent{
     branches = [];
     dataSource = new MatTableDataSource<any>(this.branches);
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    crearSucursal: Array<EPermissions>;
+    actualizarSucursal: Array<EPermissions>;
+    eliminarSucursal: Array<EPermissions>;
 
     displayedColumns: string[] = ['id', 'name', 'isActive', 'actions'];
     
@@ -25,7 +29,11 @@ export class BranchListComponent{
         private _branchService: BranchService,
         private spinnerService: NgxSpinnerService,
         private readonly _sanitizer: DomSanitizer
-    ) {}
+    ) {
+        this.crearSucursal = [EPermissions.CREAR_SUCURSALES] || [];
+        this.actualizarSucursal = [EPermissions.ACTUALIZAR_SUCURSALES] || [];
+        this.eliminarSucursal = [EPermissions.ELIMINAR_SUCURSALES] || [];
+    }
 
     async ngOnInit(){
         this.spinnerService.show();

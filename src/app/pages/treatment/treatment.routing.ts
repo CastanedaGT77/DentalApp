@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { ListTreatmentComponent } from './list/list-treatment.component';
 import { PatientTreatmentComponent } from './patient-treatments/patient-treatments.component';
-// import { CreateTreatmentType } from './create/create-treatment.component';
 import { SpecificTreatmentComponent } from './specific/specific-treatment.component';
 import { CreateTreatmentComponent } from './create/create-treatment.component';
-
+import { AuthGuard } from 'src/app/guards/auth.guard';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 export const TreatmentRouting: Routes = [
   {
@@ -12,31 +12,46 @@ export const TreatmentRouting: Routes = [
     children: [
       {
         path: 'list',
-        component: ListTreatmentComponent
+        component: ListTreatmentComponent,
+        canActivate: [AuthGuard],
+        data: {
+          permissions: [EPermissions.LISTAR_TRATAMIENTOS]
+        }
       },
       {
-        path:'patientTreatment',
-        component: PatientTreatmentComponent
+        path: 'patientTreatment',
+        component: PatientTreatmentComponent,
+        canActivate: [AuthGuard],
+        data: {
+          permissions: [EPermissions.VISUALIZAR_TRATAMIENTOS]
+        }
       },
       {
-        path:'specificTreatment',
-        component: SpecificTreatmentComponent
+        path: 'specificTreatment',
+        component: SpecificTreatmentComponent,
+        canActivate: [AuthGuard],
+        data: {
+          permissions: [EPermissions.VISUALIZAR_TRATAMIENTOS]
+        }
       },
       {
         path: 'create',
         component: CreateTreatmentComponent,
+        canActivate: [AuthGuard],
         data: {
-          type: 'create'
+          type: 'create',
+          permissions: [EPermissions.CREAR_TRATAMIENTOS]
         }
       },
       {
         path: 'edit',
         component: CreateTreatmentComponent,
+        canActivate: [AuthGuard],
         data: {
-          type: 'edit'
+          type: 'edit',
+          permissions: [EPermissions.ACTUALIZAR_TRATAMIENTOS]
         }
-      },
-    ],
-    
-  },
+      }
+    ]
+  }
 ];

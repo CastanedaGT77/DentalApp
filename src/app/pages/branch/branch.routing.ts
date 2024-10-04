@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { BranchListComponent } from './list/branch-list.component';
 import { CreateBranchComponent } from './create/create-branch.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 export const BranchRouting: Routes = [
     {
@@ -8,23 +10,31 @@ export const BranchRouting: Routes = [
       children: [
         {
           path: 'list',
-          component: BranchListComponent
+          component: BranchListComponent,
+          canActivate: [AuthGuard],
+          data: {
+            permissions: [EPermissions.LISTAR_SUCURSALES]
+          }
         },
         {
           path: 'create',
           component: CreateBranchComponent,
+          canActivate: [AuthGuard],
           data: {
-            type: 'create'
+            type: 'create',
+            permissions: [EPermissions.CREAR_SUCURSALES]
           }
         },
         {
           path: 'edit',
           component: CreateBranchComponent,
+          canActivate: [AuthGuard],
           data: {
-            type: 'edit'
+            type: 'edit',
+            permissions: [EPermissions.ACTUALIZAR_SUCURSALES]
           }
         },
       ],
       
     },
-  ];
+];
