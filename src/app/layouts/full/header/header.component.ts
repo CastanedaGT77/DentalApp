@@ -23,6 +23,7 @@ export class HeaderComponent {
   @Output() toggleCollapsed = new EventEmitter<void>();
 
   showFiller = false;
+  userName = localStorage.getItem('name');
 
   constructor(public dialog: MatDialog, private authService: AuthenticationService,
     private router: Router) {}

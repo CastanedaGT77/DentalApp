@@ -51,6 +51,7 @@ export class AuthenticationService {
   // Cerrar sesión
   logout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('name');
     localStorage.removeItem('list');
     this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
   }

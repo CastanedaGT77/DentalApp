@@ -36,6 +36,7 @@ export class AppSideLoginComponent {
         this.snackBar.open('Acceso exitoso, bienvenido'+ ' ' + response.firstName + ' ' + response.lastName, 'Cerrar', { duration: 3000 });
         // Guardar el token en el localStorage
         // console.log(response)
+        localStorage.setItem('name',response.firstName+ ' ' + response.lastName);
         localStorage.setItem('access_token', response.token);
         this.router.navigate(['/dashboard']);
       }

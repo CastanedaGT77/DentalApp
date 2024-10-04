@@ -7,6 +7,15 @@
   </button>
   <!-- --------------------------------------------------------------- -->
 
+
+  <!-- Espacio flexible para empujar el contenido hacia la derecha -->
+  <span class="flex-grow"></span>
+
+  <!-- Mostrar el nombre del usuario -->
+  <span class="user-name" *ngIf="userName">
+    {{ userName }}
+  </span>
+
   <!-- --------------------------------------------------------------- -->
   <!-- Notification Dropdown -->
   <!-- --------------------------------------------------------------- -->
