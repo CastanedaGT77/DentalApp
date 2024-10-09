@@ -85,6 +85,8 @@ export class CreateUserComponent implements OnInit {
                     const userData: Partial<CreateUserDto> = {
                         ...this.form.value
                     };
+                    // QUEME ESTO ACA PARA PODER INSERTAR USUARIOS
+                    userData.allowBranchView = true;
                     try {
                         const response = this.type === 'create' ?
                             await this._userService.createUser(userData) :

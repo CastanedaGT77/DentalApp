@@ -4,4 +4,5 @@ export class CreateUserDto {
 	password: string;
 	email: string;
 	role: number;
+	allowBranchView: boolean
 }
