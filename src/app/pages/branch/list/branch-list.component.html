@@ -47,7 +47,7 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let branch">
-            <button mat-icon-button (click)="editBranch(branch)" matTooltip="Editar"  *appHasPermission="editarSucursal">
+            <button mat-icon-button (click)="editBranch(branch)" matTooltip="Editar"  *appHasPermission="actualizarSucursal">
                 <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
             </button>
             <button mat-icon-button (click)="deleteBranch(branch)" matTooltip="Eliminar"  *appHasPermission="eliminarSucursal">

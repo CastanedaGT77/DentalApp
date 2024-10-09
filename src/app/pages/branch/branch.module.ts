@@ -20,6 +20,7 @@ import { BranchListComponent } from './list/branch-list.component';
 import { CreateBranchComponent } from './create/create-branch.component';
 import { BranchService } from './branch.service';
 import { DeleteBranch } from './delete/delete-branch.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { DeleteBranch } from './delete/delete-branch.component';
       MatInputModule,
       FormsModule,
       MatButtonModule,
-      MatTooltipModule
+      MatTooltipModule,
+      SharedModule
     ],
     declarations: [
         BranchListComponent,
