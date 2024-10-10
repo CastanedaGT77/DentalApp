@@ -7,6 +7,7 @@ import { DeletePatient } from '../delete/delete-patient.component';
 import { PatientService } from '../patient.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 @Component({
     selector: "app-list-patient",
@@ -25,6 +26,14 @@ export class ListPatientComponent {
   
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    visualizarPaciente: Array<EPermissions>;
+    crearPaciente: Array<EPermissions>;
+    actualizarPaciente: Array<EPermissions>;
+    eliminarPacientes: Array<EPermissions>;
+
+    verTratamiento: Array<EPermissions>;
+    verPago: Array<EPermissions>;
+
     constructor(
         private readonly _router: Router,
         public dialog: MatDialog,
@@ -32,6 +41,12 @@ export class ListPatientComponent {
         private spinnerService: NgxSpinnerService,
         private readonly _sanitizer: DomSanitizer
     ){
+        this.visualizarPaciente = [EPermissions.VISUALIZAR_PACIENTES] || [];
+        this.crearPaciente = [EPermissions.CREAR_PACIENTES] || [];
+        this.actualizarPaciente = [EPermissions.ACTUALIZAR_PACIENTES] || [];
+        this.eliminarPacientes = [EPermissions.ELIMINAR_PACIENTES] || [];
+        this.verTratamiento = [EPermissions.LISTAR_TRATAMIENTOS] || [];
+        this.verPago = [EPermissions.LISTAR_PAGOS] || [];
     }
 
     async ngOnInit(){

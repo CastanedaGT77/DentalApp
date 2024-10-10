@@ -26,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PatientTreatmentComponent } from '../treatment/patient-treatments/patient-treatments.component';
 import { TreatmentService } from '../treatment/treatment.service';
 import { DateService } from '../date/date.service';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { DateService } from '../date/date.service';
     MatInputModule,
     FormsModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    SharedModule
   ],
   declarations: [
     ListPatientComponent,
