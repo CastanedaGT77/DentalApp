@@ -90,7 +90,7 @@ const routes: Routes = [
             ),
             canActivate: [AuthGuard], /// meter siempre el guard
             data: {
-              permissions: [EPermissions.LISTAR_TIPOS_DE_TRATAMIENTO], // Definir permisos generales si es necesario
+              permissions: [EPermissions.LISTAR_TIPOS_TRATAMIENTO], // Definir permisos generales si es necesario
             },
       },
       {

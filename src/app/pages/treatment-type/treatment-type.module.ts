@@ -20,6 +20,7 @@ import { TreatmentTypeRouting } from './treatment-type.routing';
 import { ListTreatmentTypeComponent } from './list/list-treatmentType.component';
 import { CreateTreatmentType } from './create/create-treatmentType.component';
 import { DeleteTreatmentType } from './delete/delete-treatmentType.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { DeleteTreatmentType } from './delete/delete-treatmentType.component';
       MatInputModule,
       FormsModule,
       MatButtonModule,
-      MatTooltipModule
+      MatTooltipModule,
+      SharedModule
     ],
     declarations: [
       ListTreatmentTypeComponent,

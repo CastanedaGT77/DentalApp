@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TreatmentTypeService } from '../treatment-type.service';
 import { DeleteTreatmentType } from '../delete/delete-treatmentType.component';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 
 @Component({
@@ -20,6 +21,11 @@ export class ListTreatmentTypeComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     displayedColumns: string[] = ['id', 'name', 'description', 'suggestedPrice', 'estimatedTime', 'active', 'actions'];
+
+    listarTipoTratamiento: Array<EPermissions>;
+    crearTipoTratamiento: Array<EPermissions>;
+    actualizarTipoTratamiento: Array<EPermissions>;
+    eliminarTipoTratamiento: Array<EPermissions>;
     
     constructor(
         private readonly _router: Router,
@@ -27,7 +33,12 @@ export class ListTreatmentTypeComponent implements OnInit, AfterViewInit {
         private _treatmentType: TreatmentTypeService,
         private spinnerService: NgxSpinnerService,
         private readonly _sanitizer: DomSanitizer
-    ) {}
+    ) {
+        this.listarTipoTratamiento = [EPermissions.LISTAR_TIPOS_TRATAMIENTO] || [];
+        this.crearTipoTratamiento = [EPermissions.CREAR_TIPOS_TRATAMIENTO] || [];
+        this.actualizarTipoTratamiento = [EPermissions.ACTUALIZAR_TIPOS_TRATAMIENTO] || [];
+        this.eliminarTipoTratamiento = [EPermissions.ELIMINAR_TIPOS_TRATAMIENTO] || [];
+    }
 
     async ngOnInit(){
         this.spinnerService.show();

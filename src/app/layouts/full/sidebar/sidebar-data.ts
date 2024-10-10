@@ -52,7 +52,7 @@ export const navItems: NavItem[] = [
     displayName: "Tipos de Tratamiento",
     iconName: "user",
     route: "treatmentType/list",
-    permissions: [EPermissions.LISTAR_TIPOS_DE_TRATAMIENTO] // Rol de listar tipos de tratamiento
+    permissions: [EPermissions.LISTAR_TIPOS_TRATAMIENTO] // Rol de listar tipos de tratamiento
   },
   {
     displayName: "Citas",
