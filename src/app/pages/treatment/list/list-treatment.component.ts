@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TreatmentService } from '../treatment.service';
 import { DeleteTreatment } from '../delete/delete-treatment.component';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 @Component({
   selector: "app-list-treatment",
@@ -20,13 +21,25 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['id', 'name', 'description', 'firstName', 'phoneNumber', 'email', 'status', 'paymentStatus', 'quotation', 'actions'];
 
+  listarTratamiento: Array<EPermissions>;
+  visualizarTratamiento: Array<EPermissions>;
+  crearTratamiento: Array<EPermissions>;
+  actualizarTratamiento: Array<EPermissions>;
+  eliminarTratamiento: Array<EPermissions>;
+  
   constructor(
     private readonly _router: Router,
     public dialog: MatDialog,
     private _treatment: TreatmentService,
     private spinnerService: NgxSpinnerService,
     private readonly _sanitizer: DomSanitizer
-  ) {}
+  ) {
+    this.listarTratamiento = [EPermissions.LISTAR_TRATAMIENTOS] || [];
+    this.visualizarTratamiento = [EPermissions.VISUALIZAR_TRATAMIENTOS] || [];
+    this.crearTratamiento = [EPermissions.CREAR_TRATAMIENTOS] || [];
+    this.actualizarTratamiento = [EPermissions.ACTUALIZAR_TRATAMIENTOS] || [];
+    this.eliminarTratamiento = [EPermissions.ELIMINAR_TRATAMIENTOS] || [];
+  }
 
   async ngOnInit(){
     this.spinnerService.show();
