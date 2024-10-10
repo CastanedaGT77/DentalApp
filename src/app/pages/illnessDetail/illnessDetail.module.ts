@@ -19,6 +19,7 @@ import { IllnessDetailRouting } from './illnessDetail.routing';
 import { ListIllnessDetailComponent } from './list/list-illnessDetail.component';
 import { CreateIllnessDetailComponent } from './create/create-illnessDetail.component';
 import { DeleteIllnessDetail } from './delete/delete-IllnessDetail.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { DeleteIllnessDetail } from './delete/delete-IllnessDetail.component';
       MatInputModule,
       FormsModule,
       MatButtonModule,
-      MatTooltipModule
+      MatTooltipModule,
+      SharedModule
     ],
     declarations: [
       ListIllnessDetailComponent,

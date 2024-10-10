@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { IllnessDetailService } from '../illnessDetail.service';
 import { DeleteIllnessDetail } from '../delete/delete-IllnessDetail.component';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 @Component({
     selector: "app-list-illnessDetail",
@@ -19,6 +20,10 @@ export class ListIllnessDetailComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     displayedColumns: string[] = ['id', 'name', 'description', 'active','actions'];
+
+    crearDetallesEnfermedad: Array<EPermissions>;
+    actualizarDetallesEnfermedad: Array<EPermissions>;
+    eliminarDetallesEnfermedad: Array<EPermissions>;
     
     constructor(
         private readonly _router: Router,
@@ -26,7 +31,11 @@ export class ListIllnessDetailComponent implements OnInit, AfterViewInit {
         private _illnessDetail: IllnessDetailService,
         private spinnerService: NgxSpinnerService,
         private readonly _sanitizer: DomSanitizer
-    ) {}
+    ) {
+        this.crearDetallesEnfermedad = [EPermissions.CREAR_DETALLES_DE_ENFERMEDAD] || [];
+        this.actualizarDetallesEnfermedad = [EPermissions.ACTUALIZAR_DETALLES_DE_ENFERMEDAD] || [];
+        this.eliminarDetallesEnfermedad = [EPermissions.ELIMINAR_DETALLES_DE_ENFERMEDAD] || [];
+    }
 
     async ngOnInit(){
         this.spinnerService.show();

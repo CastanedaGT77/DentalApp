@@ -17,6 +17,7 @@ export class BranchListComponent implements OnInit,AfterViewInit{
     branches = [];
     dataSource = new MatTableDataSource<any>(this.branches);
     @ViewChild(MatPaginator) paginator: MatPaginator;
+
     crearSucursal: Array<EPermissions>;
     actualizarSucursal: Array<EPermissions>;
     eliminarSucursal: Array<EPermissions>;

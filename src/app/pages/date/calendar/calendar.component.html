@@ -5,7 +5,7 @@
         <mat-card-title>Calendario de Citas</mat-card-title>
       </div>
       <div>
-        <button mat-flat-button color="primary" (click)="redirectCreate()">
+        <button mat-flat-button color="primary" (click)="redirectCreate()" *appHasPermission="crearCitas">
           Agregar cita
         </button>
       </div>
@@ -38,13 +38,12 @@
   </div>
 </div>
 
-<div class="flex justify-center space-x-4 mt-4">
+<div class="flex justify-center space-x-4 mt-4" >
   <h3 class="text-lg font-semibold">{{ viewDate | calendarDate:(view + 'ViewTitle'):'es' | titlecase }}</h3>
 </div>
-
 <br />
 
-<div [ngSwitch]="view" class="w-full h-full overflow-hidden">
+<div [ngSwitch]="view" class="w-full h-full overflow-hidden" *appHasPermission="visualizarCitas">
   <mwl-calendar-month-view
     *ngSwitchCase="CalendarView.Month"
     [viewDate]="viewDate"

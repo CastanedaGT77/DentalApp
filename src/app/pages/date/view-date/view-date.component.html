@@ -17,11 +17,11 @@
   </div>
 </div>
 <div mat-dialog-actions class="flex justify-end mt-4" style="gap: 1rem;">
-  <button mat-raised-button color="primary" (click)="editarAppointment(data)">
+  <button mat-raised-button color="primary" (click)="editarAppointment(data)" *appHasPermission="actualizarCitas">
     Editar
     <mat-icon style="margin-left: 0.5rem;" fontIcon="edit"></mat-icon>
   </button>
-  <button mat-raised-button color="warn" (click)="eliminarAppointment(data)" matTooltip="Eliminar">
+  <button mat-raised-button color="warn" (click)="eliminarAppointment(data)" matTooltip="Eliminar" *appHasPermission="eliminarCitas">
     Eliminar
     <mat-icon style="margin-left: 0.5rem;" fontIcon="delete"></mat-icon>
   </button>
