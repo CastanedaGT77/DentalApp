@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PaymentService } from '../payment.service';
+import { EPermissions } from 'src/app/utils/permissionEnum';
 
 @Component({
   selector: "app-list-payment",
@@ -20,6 +21,10 @@ export class ListPendingPaymentComponent implements OnInit, AfterViewInit {
   sanitizedImage: SafeResourceUrl | null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  listarPago: Array<EPermissions>;
+  crearPago: Array<EPermissions>;
+  actualizarPago: Array<EPermissions>;
+  eliminarPago: Array<EPermissions>;
 
   constructor(
     private readonly _router: Router,
@@ -29,6 +34,10 @@ export class ListPendingPaymentComponent implements OnInit, AfterViewInit {
     private readonly _sanitizer: DomSanitizer
   ) {
     this.sanitizedImage = null;
+    this.listarPago = [EPermissions.LISTAR_PAGOS] || [];
+    this.crearPago = [EPermissions.CREAR_PAGOS] || [];
+    this.actualizarPago = [EPermissions.ACTUALIZAR_PAGOS] || [];
+    this.eliminarPago = [EPermissions.ELIMINAR_PAGOS] || [];
   }
 
   async ngOnInit() {

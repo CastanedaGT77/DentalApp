@@ -21,6 +21,7 @@ import { ListPendingPaymentComponent } from './list-pending/list-pending-payment
 import { MakePaymentComponent } from './make-payment/make-payment.component';
 import { PatientService } from '../patient/patient.service';
 import { TreatmentService } from '../treatment/treatment.service';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
     imports: [
@@ -37,7 +38,7 @@ import { TreatmentService } from '../treatment/treatment.service';
       FormsModule,
       MatButtonModule,
       MatTooltipModule,
-    
+      SharedModule
     ],
     declarations: [
       ListPendingPaymentComponent,

@@ -17,7 +17,7 @@
 </mat-card>
 
 <div class="mat-elevation-z8">
-    <mat-table [dataSource]="dataSource" class="mat-table" matSort>
+    <mat-table [dataSource]="dataSource" class="mat-table" matSort *appHasPermission="listarPago">
 
         <ng-container matColumnDef="treatment">
             <mat-header-cell *matHeaderCellDef> Tratamiento </mat-header-cell>

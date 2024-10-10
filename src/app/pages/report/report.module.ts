@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReportService } from './report.service';
 import { ReportRouting } from './report.routing';
 import { GeneralComponent } from './general/general.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { GeneralComponent } from './general/general.component';
       MatInputModule,
       FormsModule,
       MatButtonModule,
-      MatTooltipModule
+      MatTooltipModule,
+      SharedModule
     ],
     declarations: [
       GeneralComponent
