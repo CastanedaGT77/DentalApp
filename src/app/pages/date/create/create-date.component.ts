@@ -111,6 +111,7 @@ export class CreateDateComponent implements OnInit {
       this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       return;
     }
+  
     if (this.form.valid) {
       const data = {
         appointmentId: this.appointment ? this.appointment.id : undefined,
@@ -122,88 +123,51 @@ export class CreateDateComponent implements OnInit {
         startHour: this.form.get('startHour')?.value,
         endHour: this.form.get('endHour')?.value
       };
-
-      if (this.type === "create") {
-        Swal.fire({
-          title: "",
-          text: "¿Desea finalizar la creación de la cita?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Finalizar",
-          cancelButtonText: "Cancelar"
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            this._spinnerService.show();
-            try {
-              const response = await this._dateService.createAppointment(data);
-              if (response && response.code === 201) {
-                const message = "Cita creada correctamente";
-                this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-                this.form.reset();
-                this.returnPage();
-              }
-              else if (response && response.code === 400) {
-                const message = "Horario ocupado";
-                this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-                this.form.reset();
-                this.returnPage();
-              }
-               else {
-                const errorMessage = "Error al crear la cita";
-                this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-              }
-            } catch (error) {
-              console.error("Error al crear la cita:", error);
-              const errorMessage = "Error al crear la cita";
-              this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-            } finally {
-              this._spinnerService.hide();
+  
+      const confirmationText = this.type === "create" ? "¿Desea finalizar la creación de la cita?" : "¿Desea finalizar la edición de la cita?";
+      Swal.fire({
+        title: "",
+        text: confirmationText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Finalizar",
+        cancelButtonText: "Cancelar"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this._spinnerService.show();
+          try {
+            let response;
+            if (this.type === "create") {
+              response = await this._dateService.createAppointment(data);
+            } else {
+              response = await this._dateService.updateAppointment(data);
             }
-          }
-        });
-      } else if (this.type === "edit") {
-        Swal.fire({
-          title: "",
-          text: "¿Desea finalizar la edición de la cita?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Finalizar",
-          cancelButtonText: "Cancelar"
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            this._spinnerService.show();
-            try {
-              const response = await this._dateService.updateAppointment(data);
-              if (response && response.code === 201) {
-                const message = "Cita actualizada correctamente";
-                this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-                this.form.reset();
-                this.returnPage();
-              }
-              else if (response && response.code === 400) {
-                const message = "Horario ocupado";
-                this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-                this.form.reset();
-                this.returnPage();
-              }
-              else {
-                const errorMessage = "Error al actualizar la cita";
-                this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-              }
-            } catch (error) {
-              console.error("Error al actualizar la cita:", error);
-              const errorMessage = "Error al actualizar la cita";
-              this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-            } finally {
-              this._spinnerService.hide();
+  
+            if (response && response.code === 201) {
+              const message = this.type === "create" ? "Cita creada correctamente" : "Cita actualizada correctamente";
+              this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+              this.form.reset();
+              this.returnPage();
             }
+            else if (response && response.code === 400) {
+              const message = "La cita no puede ser asignada en la fecha y hora seleccionada porque ya existe una, por favor seleccione un nuevo horario!";
+              this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+              // Mantener al usuario en el formulario sin limpiar los datos, para que pueda modificar el horario
+            } else {
+              const errorMessage = this.type === "create" ? "Error al crear la cita" : "Error al actualizar la cita";
+              this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+            }
+          } catch (error) {
+            console.error(`Error al ${this.type === 'create' ? 'crear' : 'actualizar'} la cita:`, error);
+            const errorMessage = this.type === "create" ? "Error al crear la cita" : "Error al actualizar la cita";
+            this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+          } finally {
+            this._spinnerService.hide();
           }
-        });
-      }
+        }
+      });
     }
   }
 

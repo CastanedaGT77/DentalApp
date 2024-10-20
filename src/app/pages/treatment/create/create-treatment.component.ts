@@ -98,6 +98,7 @@ export class CreateTreatmentComponent implements OnInit {
       const response = await this._treatmentTypeService.getTreatmentTypes();
       if (response) {
         this.treatmentTypesList = response;
+        console.log('tipos', response)
       } else {
         console.error('Error: No se encontraron datos en la respuesta.');
       }
@@ -231,6 +232,18 @@ export class CreateTreatmentComponent implements OnInit {
       console.error(`Error al eliminar el tratamiento con ID ${treatmentTypeId}:`, error);
       const errorMessage = `Error al eliminar el tratamiento con ID ${treatmentTypeId}`;
       this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+    }
+  }
+
+  onTreatmentTypeChange(index: number) {
+    const selectedTreatmentTypeId = this.treatmentTypes.at(index).get('treatmentTypeId')?.value;
+    
+    // Busca el tratamiento seleccionado en la lista de tratamientos
+    const selectedTreatmentType = this.treatmentTypesList.find(type => type.id === selectedTreatmentTypeId);
+  
+    if (selectedTreatmentType) {
+      // Establece el precio sugerido en el campo de 'price'
+      this.treatmentTypes.at(index).get('price')?.setValue(selectedTreatmentType.suggestedPrice);
     }
   }
 

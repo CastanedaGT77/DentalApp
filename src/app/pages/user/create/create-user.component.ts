@@ -45,7 +45,8 @@ export class CreateUserComponent implements OnInit {
             lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255)]],
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required],
-            role: [null, Validators.required]
+            role: [null, Validators.required],
+            allowBranchView: [true, Validators.required]
         });
     }
 
@@ -85,8 +86,6 @@ export class CreateUserComponent implements OnInit {
                     const userData: Partial<CreateUserDto> = {
                         ...this.form.value
                     };
-                    // QUEME ESTO ACA PARA PODER INSERTAR USUARIOS
-                    userData.allowBranchView = true;
                     try {
                         const response = this.type === 'create' ?
                             await this._userService.createUser(userData) :

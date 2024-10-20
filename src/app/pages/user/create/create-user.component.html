@@ -22,14 +22,14 @@
                 <mat-form-field appearance="fill" class="w-96 mb-4">
                     <mat-label>Nombre</mat-label>
                     <input autocomplete="off" matInput formControlName="firstName" minlength="1" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-icon matSuffix>person</mat-icon>
                     <mat-error *ngIf="form.controls['firstName'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
                     <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Nombre inválido, ingrese solo letras</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill" class="w-96 mb-4">
                     <mat-label>Apellido</mat-label>
                     <input autocomplete="off" matInput formControlName="lastName" minlength="1" maxlength="255" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                    <mat-icon matSuffix>person</mat-icon>
                     <mat-error *ngIf="form.controls['lastName'].hasError('required')">Apellido <strong>requerido</strong></mat-error>
                     <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Apellido inválido, ingrese solo letras</mat-error>
                 </mat-form-field>
@@ -44,7 +44,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="fill" class="w-96 mb-4">
                     <mat-label>Contraseña</mat-label>
-                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                    <input autocomplete="off" matInput [type]="hide ? 'password' : 'text'" formControlName="password">
                     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
@@ -61,6 +61,12 @@
                     </mat-select>
                     <mat-error *ngIf="form.controls['role'].hasError('required')">Rol <strong>requerido</strong></mat-error>
                 </mat-form-field>
+            </div>
+            <p class="text-lg font-semibold m-5">Vista de Sucursales</p>
+            <div class="flex flex-wrap justify-around mb-10">
+            <mat-slide-toggle formControlName="allowBranchView" color="primary">
+                ¿Desea permitir vista de sucursales?
+            </mat-slide-toggle>
             </div>
             <div class="flex justify-end">
                 <button mat-raised-button color="primary" type="submit" class="h-14">Guardar</button>

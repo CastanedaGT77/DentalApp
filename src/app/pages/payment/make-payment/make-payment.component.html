@@ -25,6 +25,8 @@
                                     {{ patient.firstName }} {{ patient.lastName }}
                                 </mat-option>
                             </mat-select>
+                            <!-- Icono para Paciente -->
+                            <mat-icon matSuffix>person</mat-icon>
                         </mat-form-field>
                     </div>
                     <div>
@@ -35,76 +37,106 @@
 
             <mat-step [stepControl]="paymentDetails" label="Seleccionar Pagos Pendientes">
                 <ng-template matStepLabel>Seleccionar Pagos Pendientes</ng-template>
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              
+                <!-- Mostrar la tabla si hay pagos pendientes -->
+                <div *ngIf="hasPendingPayments; else noPaymentsMessage">
+                  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <!-- Definición de columnas -->
                     <ng-container matColumnDef="select">
-                        <mat-header-cell *matHeaderCellDef> Seleccionar </mat-header-cell>
-                        <mat-cell *matCellDef="let element">
-                            <mat-checkbox (change)="calculateTotal()" [(ngModel)]="element.selected"></mat-checkbox>
-                        </mat-cell>
+                      <mat-header-cell *matHeaderCellDef> Seleccionar </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <mat-checkbox (change)="calculateTotal()" [(ngModel)]="element.selected"></mat-checkbox>
+                      </mat-cell>
                     </ng-container>
-            
+                
+                    <!-- Pieza -->
                     <ng-container matColumnDef="piece">
-                        <mat-header-cell *matHeaderCellDef> Pieza </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.piece}} </mat-cell>
+                      <mat-header-cell *matHeaderCellDef> Pieza </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.piece}} </mat-cell>
                     </ng-container>
-            
+              
+                    <!-- Precio Real -->
                     <ng-container matColumnDef="realPrice">
-                        <mat-header-cell *matHeaderCellDef> Precio Real </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> Q{{element.realPrice}} </mat-cell>
+                      <mat-header-cell *matHeaderCellDef> Precio Real </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> Q{{element.realPrice}} </mat-cell>
                     </ng-container>
-            
+              
+                    <!-- Monto Pendiente -->
                     <ng-container matColumnDef="pendingAmount">
-                        <mat-header-cell *matHeaderCellDef> Monto Pendiente </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> Q{{element.pendingAmount}} </mat-cell>
+                      <mat-header-cell *matHeaderCellDef> Monto Pendiente </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> Q{{element.pendingAmount}} </mat-cell>
                     </ng-container>
-            
+              
+                    <!-- Fecha de Creación -->
                     <ng-container matColumnDef="created_at">
-                        <mat-header-cell *matHeaderCellDef> Fecha de Creación </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.created_at | date}} </mat-cell>
+                      <mat-header-cell *matHeaderCellDef> Fecha de Creación </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.created_at | date}} </mat-cell>
                     </ng-container>
-            
+              
+                    <!-- Status -->
                     <ng-container matColumnDef="status">
-                        <mat-header-cell *matHeaderCellDef> Finalizado </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.status ? 'Sí' : 'No'}} </mat-cell>
+                      <mat-header-cell *matHeaderCellDef> Finalizado </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.status ? 'Sí' : 'No'}} </mat-cell>
                     </ng-container>
-
+              
+                    <!-- Cantidad Ingresada -->
                     <ng-container matColumnDef="enteredAmount">
-                        <mat-header-cell *matHeaderCellDef> Cantidad Ingresada </mat-header-cell>
-                        <mat-cell *matCellDef="let element">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Ingresa el valor deseado a pagar</mat-label>
-                                <input matInput type="number" [(ngModel)]="element.enteredAmount" (ngModelChange)="validateAmount(element)" min="0" [max]="element.pendingAmount">
-                            </mat-form-field>
-                        </mat-cell>
+                      <mat-header-cell *matHeaderCellDef> Cantidad Ingresada </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Ingresa el valor deseado a pagar</mat-label>
+                          <input matInput type="number" [(ngModel)]="element.enteredAmount" (ngModelChange)="validateAmount(element)" min="0" [max]="element.pendingAmount">
+                          <mat-icon matSuffix>attach_money</mat-icon>
+                        </mat-form-field>
+                      </mat-cell>
                     </ng-container>
-            
+              
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                </table>
-                <div class="flex justify-end mt-4">
+                  </table>
+                  <div class="flex justify-end mt-4">
                     <h3>Total a pagar: Q{{totalAmount}}</h3>
-                </div>
-                <div>
+                  </div>
+                  <div>
                     <button mat-button matStepperPrevious>Anterior</button>
                     <button mat-button matStepperNext [disabled]="!isAnyTreatmentSelected() || !allAmountsValid()">Siguiente</button>
+                  </div>
                 </div>
+              
+                <!-- Mostrar mensaje si no hay pagos pendientes -->
+                <ng-template #noPaymentsMessage>
+                  <div class="flex justify-center items-center h-32">
+                    <p class="text-lg text-gray-500">No existen pagos pendientes</p>
+                  </div>
+                </ng-template>
             </mat-step>
             
             <mat-step [stepControl]="receiptControl" label="Información del Recibo">
                 <form [formGroup]="receiptControl" class="w-full shadow-md">
                     <p class="text-lg font-semibold m-5">Información del Recibo</p>
                     <div class="flex justify-around mb-5">
+                        <!-- Nombre -->
                         <mat-form-field appearance="fill">
                             <mat-label>Nombre</mat-label>
                             <input matInput formControlName="name">
+                            <!-- Icono de persona para Nombre -->
+                            <mat-icon matSuffix>person</mat-icon>
                         </mat-form-field>
+
+                        <!-- Teléfono -->
                         <mat-form-field appearance="fill">
                             <mat-label>Teléfono</mat-label>
                             <input matInput formControlName="phoneNumber">
+                            <!-- Icono de teléfono para número de contacto -->
+                            <mat-icon matSuffix>phone</mat-icon>
                         </mat-form-field>
+
+                        <!-- Dirección -->
                         <mat-form-field appearance="fill">
                             <mat-label>Dirección</mat-label>
                             <input matInput formControlName="address">
+                            <!-- Icono de ubicación para Dirección -->
+                            <mat-icon matSuffix>place</mat-icon>
                         </mat-form-field>
                     </div>
                     <div class="flex justify-end mt-4">

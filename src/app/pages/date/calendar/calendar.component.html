@@ -5,7 +5,7 @@
         <mat-card-title>Calendario de Citas</mat-card-title>
       </div>
       <div>
-        <button mat-flat-button color="primary" (click)="redirectCreate()" *appHasPermission="crearCitas">
+        <button mat-flat-button color="primary" (click)="redirectCreate()">
           Agregar cita
         </button>
       </div>
@@ -43,7 +43,7 @@
 </div>
 <br />
 
-<div [ngSwitch]="view" class="w-full h-full overflow-hidden" *appHasPermission="visualizarCitas">
+<div [ngSwitch]="view" class="w-full h-full overflow-hidden">
   <mwl-calendar-month-view
     *ngSwitchCase="CalendarView.Month"
     [viewDate]="viewDate"

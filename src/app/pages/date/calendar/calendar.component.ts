@@ -163,7 +163,7 @@ export class CalendarComponent implements OnInit {
 
   openAppointmentDetails(appointment: CitaModel): void {
     this.dialog.open(AppointmentDetailsDialog, {
-      width: '300px',
+      width: '600px',
       data: appointment
     });
   }

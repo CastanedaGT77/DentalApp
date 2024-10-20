@@ -21,6 +21,7 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   displayedColumns: string[] = ['select', 'piece', 'realPrice',  'pendingAmount', 'created_at', 'status', 'enteredAmount'];
   dataSource = new MatTableDataSource<any>(this.payment);
+  hasPendingPayments = true; 
 
   @ViewChild('stepper') stepper: MatStepper;
 
@@ -76,41 +77,44 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   async getPendingPayment(patientId: number) {
     this.spinnerService.show();
     try {
-        const response = await this._paymentService.getPatientPendingPayment(patientId);
-        console.log('response', response);
-        if (response && response.data) {
-            this.payment = response.data.pendingTreatments;
-            this.paymentDetails.clear();
-            const paymentDetailsArray: any[] = [];
-            this.payment.forEach((treatment: any) => {
-                treatment.treatmentDetails.forEach((detail: any) => {
-                    paymentDetailsArray.push({
-                        id: detail.id,
-                        suggestedPrice: detail.suggestedPrice,
-                        realPrice: detail.realPrice,
-                        paymentStatus: detail.paymentStatus,
-                        pendingAmount: detail.pendingAmount,
-                        piece: detail.piece,
-                        status: detail.status,
-                        patientId: detail.patientId,
-                        created_at: detail.created_at,
-                        updated_at: detail.updated_at,
-                        enteredAmount: detail.pendingAmount,
-                        selected: false
-                    });
-                });
+      const response = await this._paymentService.getPatientPendingPayment(patientId);
+      console.log('response', response);
+      if (response && response.data && response.data.pendingTreatments.length > 0) {
+        this.payment = response.data.pendingTreatments;
+        this.paymentDetails.clear();
+        const paymentDetailsArray: any[] = [];
+        this.payment.forEach((treatment: any) => {
+          treatment.treatmentDetails.forEach((detail: any) => {
+            paymentDetailsArray.push({
+              id: detail.id,
+              suggestedPrice: detail.suggestedPrice,
+              realPrice: detail.realPrice,
+              paymentStatus: detail.paymentStatus,
+              pendingAmount: detail.pendingAmount,
+              piece: detail.piece,
+              status: detail.status,
+              patientId: detail.patientId,
+              created_at: detail.created_at,
+              updated_at: detail.updated_at,
+              enteredAmount: detail.pendingAmount,
+              selected: false
             });
-            this.dataSource.data = paymentDetailsArray;
-            console.log('paymentDetails', this.dataSource.data);
-        } else {
-            console.error('Error: No se encontraron datos en la respuesta.');
-        }
+          });
+        });
+        this.dataSource.data = paymentDetailsArray;
+        this.hasPendingPayments = true;  // Tiene pagos pendientes
+        console.log('paymentDetails', this.dataSource.data);
+      } else {
+        this.hasPendingPayments = false;  // No tiene pagos pendientes
+      }
     } catch (error) {
-        console.error('Error al obtener datos:', error);
+      console.error('Error al obtener datos:', error);
+      this.hasPendingPayments = false;  // En caso de error, no mostrar pagos
     } finally {
-        this.spinnerService.hide();
+      this.spinnerService.hide();
     }
   }
+  
 
   calculateTotal() {
     this.totalAmount = this.dataSource.data

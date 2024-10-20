@@ -19,28 +19,24 @@
   </mat-card-content>
 </mat-card>
 
-<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-</button> -->
 <mat-card class="cardWithShadow">
   <mat-card-content>
     <mat-stepper [linear]="isLinear" #stepper>
       <mat-step [stepControl]="form" label="Información General">
-        <!-- FORM -->
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full shadow-md">
           <p class="text-lg font-semibold m-5">Información General</p>
           <div class="flex justify-around mb-5">
               <mat-form-field appearance="fill" [style.width.px]=400>
                 <mat-label>Nombre</mat-label>
                 <input autocomplete="nope" matInput formControlName="firstName" minlength maxlength pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-icon matSuffix>person</mat-icon>
                 <mat-error *ngIf="form.controls['firstName'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
                 <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
               </mat-form-field>
               <mat-form-field appearance="fill" [style.width.px]=400>
                 <mat-label>Apellido</mat-label>
                 <input autocomplete="nope" matInput formControlName="lastName" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-icon matSuffix>person</mat-icon>
                 <mat-error *ngIf="form.controls['lastName'].hasError('required')">Apellidos <strong>requerido</strong></mat-error>
                 <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Apellidos inválido ingrese solo letras</mat-error>
               </mat-form-field>
@@ -57,7 +53,7 @@
               <mat-form-field appearance="fill" [style.width.px]=400>
                 <mat-label>Teléfono Celular</mat-label>
                 <input autocomplete="nope" type="number" matInput formControlName="cellPhoneNumber" pattern="[0-9]*">
-                <mat-icon matSuffix>phone</mat-icon>
+                <mat-icon matSuffix>smartphone</mat-icon>
                 <mat-error *ngIf="form.controls['cellPhoneNumber'].hasError('required')">Teléfono Celular <strong>requerido</strong></mat-error>
                 <mat-error *ngIf="form.controls['cellPhoneNumber'].hasError('pattern')">Teléfono Celular inválido ingrese solo números</mat-error>
               </mat-form-field>
@@ -66,7 +62,7 @@
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Ciudad</mat-label>
               <input autocomplete="nope" matInput formControlName="city" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-              <mat-icon matSuffix>place</mat-icon>
+              <mat-icon matSuffix>location_city</mat-icon>
               <mat-error *ngIf="form.controls['city'].hasError('required')">Ciudad <strong>requerido</strong></mat-error>
               <mat-error *ngIf="form.controls['city'].hasError('pattern')">Ciudad inválida ingrese una dirección correcta</mat-error>
             </mat-form-field>
@@ -97,7 +93,7 @@
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Recomendado por</mat-label>
               <input autocomplete="nope" matInput formControlName="recommendedBy" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-              <mat-icon matSuffix>person</mat-icon>
+              <mat-icon matSuffix>group</mat-icon>
               <mat-error *ngIf="form.controls['recommendedBy'].hasError('required')">Recomendación <strong>requerida</strong></mat-error>
               <mat-error *ngIf="form.controls['recommendedBy'].hasError('pattern')">Recomendación inválida ingrese una correcta</mat-error>
             </mat-form-field>
@@ -116,12 +112,13 @@
                   <mat-option value="Soltero">Soltero</mat-option>
                   <mat-option value="Casado">Casado</mat-option>
               </mat-select>
+              <mat-icon matSuffix>favorite</mat-icon>
               <mat-error *ngIf="form.controls['maritalStatus'].hasError('required')">Estado civil <strong>requerido</strong></mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" [style.width.px]=400>
               <mat-label>Ocupación</mat-label>
               <input autocomplete="nope" matInput formControlName="occupation">
-              <mat-icon matSuffix>person</mat-icon>
+              <mat-icon matSuffix>work</mat-icon>
               <mat-error *ngIf="form.controls['occupation'].hasError('required')">Ocupación <strong>requerida</strong></mat-error>
               <mat-error *ngIf="form.controls['occupation'].hasError('pattern')">Ocupación inválida ingrese una correcta</mat-error>
             </mat-form-field>
@@ -138,8 +135,8 @@
               <mat-label>Doctor Personal</mat-label>
               <input autocomplete="nope" matInput formControlName="personalDoctor" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
               <mat-icon matSuffix>person</mat-icon>
-              <mat-error *ngIf="form.controls['personalDoctor'].hasError('required')">Personal doctor <strong>requerido</strong></mat-error>
-              <mat-error *ngIf="form.controls['personalDoctor'].hasError('pattern')">Personal doctor inválido, ingrese uno correcto</mat-error>
+              <mat-error *ngIf="form.controls['personalDoctor'].hasError('required')">Doctor personal <strong>requerido</strong></mat-error>
+              <mat-error *ngIf="form.controls['personalDoctor'].hasError('pattern')">Doctor personal inválido, ingrese uno correcto</mat-error>
             </mat-form-field>
           </div>
         </form>

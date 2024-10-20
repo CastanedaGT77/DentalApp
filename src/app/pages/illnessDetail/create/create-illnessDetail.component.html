@@ -23,14 +23,14 @@
                 <mat-form-field appearance="fill" [style.width.px]=400>
                   <mat-label>Nombre</mat-label>
                   <input autocomplete="nope" matInput formControlName="name" minlength maxlength pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-icon matSuffix>assignment</mat-icon>
                   <mat-error *ngIf="form.controls['name'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
                   <mat-error *ngIf="form.controls['name'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill" [style.width.px]=400>
                   <mat-label>Descripción</mat-label>
                   <input autocomplete="nope" matInput formControlName="description" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
-                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-icon matSuffix>description</mat-icon>
                   <mat-error *ngIf="form.controls['description'].hasError('required')">Apellidos <strong>requerido</strong></mat-error>
                   <mat-error *ngIf="form.controls['description'].hasError('pattern')">Apellidos inválido ingrese solo letras</mat-error>
                 </mat-form-field>

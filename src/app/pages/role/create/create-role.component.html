@@ -68,7 +68,7 @@
       <mat-form-field appearance="fill" class="w-full">
         <mat-label>Nombre de Rol</mat-label>
         <input matInput formControlName="name" minlength="1" maxlength="255" required>
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        <mat-icon matSuffix>admin_panel_settings</mat-icon>
         <mat-error *ngIf="form.controls['name'].hasError('required')">Nombre <strong>requerido</strong></mat-error>
         <mat-error *ngIf="form.controls['name'].hasError('minlength') || form.controls['name'].hasError('maxlength')">Nombre inválido</mat-error>
       </mat-form-field>
