@@ -138,6 +138,17 @@ const routes: Routes = [
           },
       },
       {
+        path: 'document',
+        loadChildren: () =>
+          import('./pages/document/document.module').then(
+            (m) => m.DocumentModule
+            ),
+            canActivate: [AuthGuard], /// meter siempre el guard
+            data: {
+              permissions: [EPermissions.REPORT_MODULE], // ver permiso de documento
+            },
+        },
+      {
         path: 'extra',
         loadChildren: () =>
           import('./pages/extra/extra.module').then((m) => m.ExtraModule),
