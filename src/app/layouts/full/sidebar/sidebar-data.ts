@@ -67,10 +67,16 @@ export const navItems: NavItem[] = [
     permissions: [EPermissions.LISTAR_TRATAMIENTOS] // Rol de listar tratamientos
   },
   {
-    displayName: "Pagos de Tratamientos",
+    displayName: "Pagos",
     iconName: "brand-visa",
     route: "payment/makePayment",
     permissions: [EPermissions.LISTAR_PAGOS] // Rol de listar pagos
+  },
+  {
+    displayName: "Archivos",
+    iconName: "report",
+    route: "document/list-all",
+    permissions: [EPermissions.REPORT_XQ90] // Rol de ver archivos pero pendiente
   },
   {
     displayName: "Reportes",
