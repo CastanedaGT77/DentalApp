@@ -4,7 +4,7 @@ import { Router } from '@angular/router'; // Necesitamos inyectar el Router
 export const axiosClient = axios.create({
     //baseURL: 'http://localhost:3000/api',
     baseURL: 'https://castaguate.duckdns.org/api',
-    timeout: 6000
+    timeout: 5000
 });
 
 let router: Router;
