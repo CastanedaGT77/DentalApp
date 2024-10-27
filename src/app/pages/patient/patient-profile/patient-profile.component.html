@@ -14,7 +14,7 @@
             <img mat-card-image [src]="sanitizedImage" alt="Foto del paciente" style="width: 100px; height: 100px; border-radius: 50%;">
         </div>
     </div>
-</mat-card-content>
+  </mat-card-content>
 
   <mat-card-content class="space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -34,10 +34,14 @@
 
 <mat-card class="cardWithShadow mb-4">
   <mat-card-content>
-    <h3 class="text-lg font-semibold mb-2">Detalle de Enfermedad:</h3>
-    <div *ngFor="let detail of paciente.illnessDetails; let i = index" class="mb-4">
-      <p class="text-gray-700"><strong>{{ i + 1 }}. Nombre:</strong> {{ detail.name }}</p>
-      <p class="text-gray-500"><strong>Descripción:</strong> {{ detail.description }}</p>
+    <h3 class="text-lg font-semibold mb-2">Detalles de Enfermedad</h3>
+    <mat-form-field class="w-full mb-4">
+      <mat-label>Buscar</mat-label>
+      <input matInput (keyup)="applyFilter($event)">
+    </mat-form-field>
+    <div class="mat-elevation-z8">
+      
+      <mat-paginator #treatmentPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>
@@ -109,7 +113,7 @@
         <!-- Fecha Column -->
         <ng-container matColumnDef="appointmentDate">
           <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
-          <mat-cell *matCellDef="let appointment"> {{ appointment.appointmentDate | date: 'dd/MM/yyyy' }} </mat-cell>
+          <mat-cell *matCellDef="let appointment"> {{ appointment.appointmentDate }} </mat-cell>
         </ng-container>
         <!-- Hora de Inicio Column -->
         <ng-container matColumnDef="startHour">
@@ -134,6 +138,67 @@
         <mat-row *matRowDef="let row; columns: displayedAppointmentColumns;"></mat-row>
       </mat-table>
       <mat-paginator #appointmentPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow mb-4">
+  <mat-card-content>
+    <h3 class="text-lg font-semibold mb-2">Documentos del Paciente</h3>
+    <mat-form-field class="w-full mb-4">
+      <mat-label>Buscar</mat-label>
+      <input matInput (keyup)="applyDocumentFilter($event)">
+    </mat-form-field>
+    <div class="mat-elevation-z8">
+      <mat-table [dataSource]="documentDataSource" class="mat-table" matSort>
+
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> Subido por </mat-header-cell>
+          <mat-cell *matCellDef="let document"> {{ document.id }} </mat-cell>
+        </ng-container>
+
+        <!-- Icon Column -->
+        <ng-container matColumnDef="icon">
+          <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+          <mat-cell *matCellDef="let document">
+              <mat-icon [ngStyle]="{'color': getFileIcon(document.fileCode).color}">
+                  {{ getFileIcon(document.fileCode).name }}
+              </mat-icon>
+          </mat-cell>
+        </ng-container>
+
+        <!-- File Name Column -->
+        <ng-container matColumnDef="fileName">
+          <mat-header-cell *matHeaderCellDef> Nombre del archivo </mat-header-cell>
+          <mat-cell *matCellDef="let document"> {{ getDecodedFileName(document.fileName) }} </mat-cell>
+        </ng-container>
+
+        <!-- Uploaded By Column -->
+        <ng-container matColumnDef="uploadedBy">
+          <mat-header-cell *matHeaderCellDef> Subido por </mat-header-cell>
+          <mat-cell *matCellDef="let document"> {{ document.uploadedBy }} </mat-cell>
+        </ng-container>
+
+        <!-- Created At Column -->
+        <ng-container matColumnDef="created_at">
+          <mat-header-cell *matHeaderCellDef> Fecha de creación </mat-header-cell>
+          <mat-cell *matCellDef="let document"> {{ document.created_at | date }} </mat-cell>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+          <mat-cell *matCellDef="let document">
+            <button mat-icon-button (click)="downloadDocument(document.fileCode)">
+              <mat-icon [ngStyle]="{'color':'blue'}" matTooltip="Descargar">download</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedDocumentColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedDocumentColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #documentPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>

@@ -27,6 +27,7 @@ import { PatientTreatmentComponent } from '../treatment/patient-treatments/patie
 import { TreatmentService } from '../treatment/treatment.service';
 import { DateService } from '../date/date.service';
 import { SharedModule } from 'src/app/shared.module';
+import { DocumentService } from '../document/document.service';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { SharedModule } from 'src/app/shared.module';
     IllnessDetailService,
     TreatmentService,
     DateService,
-    NgxSpinnerService
+    NgxSpinnerService,
+    DocumentService
   ]
 })
 export class PatientModule {}

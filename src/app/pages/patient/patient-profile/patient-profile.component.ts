@@ -6,6 +6,7 @@ import { TreatmentService } from '../../treatment/treatment.service';
 import { DateService } from '../../date/date.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { DocumentService } from '../../document/document.service';
 
 interface Treatment {
   id: number;
@@ -66,14 +67,19 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
   sanitizedImage: SafeResourceUrl | null;
   treatments: Treatment[] = [];
   appointments: Appointment[] = [];
+  documents: any[] = [];
+  
   treatmentDataSource: MatTableDataSource<Treatment>;
   appointmentDataSource: MatTableDataSource<Appointment>;
+  documentDataSource: MatTableDataSource<any>;
 
   displayedTreatmentColumns: string[] = ['treatment', 'description', 'date', 'details'];
   displayedAppointmentColumns: string[] = ['appointmentDate', 'startHour', 'endHour', 'status'];
+  displayedDocumentColumns: string[] = ['id', 'icon', 'fileName', 'uploadedBy', 'created_at', 'actions'];
 
   @ViewChild('treatmentPaginator') treatmentPaginator: MatPaginator;
   @ViewChild('appointmentPaginator') appointmentPaginator: MatPaginator;
+  @ViewChild('documentPaginator') documentPaginator: MatPaginator;
 
   constructor(
     private readonly _router: Router,
@@ -81,24 +87,30 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
     private readonly _patientService: PatientService,
     private readonly _treatmentService: TreatmentService,
     private readonly _appointmentService: DateService,
+    private readonly _documentService: DocumentService,
     private readonly _sanitizer: DomSanitizer
   ) {
     this.sanitizedImage = null;
     this.treatmentDataSource = new MatTableDataSource<Treatment>([]);
     this.appointmentDataSource = new MatTableDataSource<Appointment>([]);
+    this.documentDataSource = new MatTableDataSource<any>([]);
   }
   
   async ngOnInit() {
     this.paciente = history.state.paciente;
+    console.log('paciente', this.paciente)
     await this._getImage(this.paciente?.id);
     await this._getTreatments(this.paciente?.id);
     this.appointments = await this._appointmentService.getAppointmentPacient(this.paciente?.id);
     this.appointmentDataSource.data = this.appointments;
+    console.log('citas', this.appointments)
+    await this._getPatientDocuments(this.paciente?.id);
   }
 
   ngAfterViewInit() {
     this.treatmentDataSource.paginator = this.treatmentPaginator;
     this.appointmentDataSource.paginator = this.appointmentPaginator;
+    this.documentDataSource.paginator = this.documentPaginator;
   }
 
   private async _getImage(patientId: number) {
@@ -120,6 +132,65 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
+  private async _getPatientDocuments(patientId: number) {
+    if (patientId) {
+      const response = await this._documentService.getPatientDocuments(patientId);
+      if (response) {
+        this.documents = response;
+        this.documentDataSource.data = this.documents;
+      }
+    }
+  }
+
+  downloadDocument(fileCode: string) {
+    this._documentService.getDocument(fileCode).then(fileBlob => {
+        if (fileBlob) {
+            const blobUrl = window.URL.createObjectURL(fileBlob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = decodeURIComponent(escape(fileCode)); // Decodificar el nombre correctamente
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(blobUrl);
+        } else {
+            console.error('Error: No se pudo obtener el archivo.');
+        }
+    }).catch(error => {
+        console.error('Error al descargar el archivo:', error);
+    });
+  }
+
+  getDecodedFileName(fileName: string): string {
+    try {
+        return decodeURIComponent(escape(fileName));
+    } catch (e) {
+        return fileName; // Si ocurre un error, devuelve el nombre original
+    }
+  }
+
+  getFileIcon(fileName: string) {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'doc':
+      case 'docx':
+        return { name: 'description', color: '#2a72b5' };
+      case 'xls':
+      case 'csv':
+      case 'xlsx':
+        return { name: 'table_chart', color: '#1c8b24' };
+      case 'pdf':
+        return { name: 'picture_as_pdf', color: '#e23e57' };
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return { name: 'image', color: '#fbbd08' };
+      default:
+        return { name: 'insert_drive_file', color: '#6c757d' };
+    }
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.treatmentDataSource.filter = filterValue;
@@ -128,6 +199,11 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
   applyFilter2(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.appointmentDataSource.filter = filterValue;
+  }
+
+  applyDocumentFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.documentDataSource.filter = filterValue;
   }
 
   async returnPage() {
