@@ -9,10 +9,10 @@ export class DocumentService {
     async getFileCategories() {
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
-            const response = await axiosClient.get('/files');
+            const response = await axiosClient.get('/fileCategory');
             return response.data;
         } catch (error) {
-            console.error("Error al obtener documents:", error);
+            console.error("Error al obtener categories:", error);
             return null;
         }
     }
@@ -40,15 +40,14 @@ export class DocumentService {
         }
     }
 
-    async cargarDocumento(request: FormData){
+    async cargarDocumento(request: FormData) {
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.post('/files', request);
-            if(response && response.data.code === HttpStatusCode.InternalServerError)
-                throw Error();
-            return response.data.id;
-        } catch(error){
-            return null;
+            return response.data; // Devuelve la respuesta completa del backend
+        } catch (error) {
+            console.error("Error al cargar el documento:", error);
+            throw error; // Lanza el error para que sea manejado en el componente
         }
     }
     

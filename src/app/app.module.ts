@@ -31,6 +31,7 @@ import { AppSideLoginComponent } from './pages/authentication/login/login.compon
 import { Router } from '@angular/router';
 import { setAxiosClientRouter } from './axios/axiosConfig';
 import { SharedModule } from './shared.module';
+
 @NgModule({
   declarations: [
     AppComponent,

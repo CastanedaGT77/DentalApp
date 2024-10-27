@@ -159,6 +159,7 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
 
     try {
       const response = await this._paymentService.createPayment(requestData);
+      console.log('pago',response)
       if (response && response.code === 200) {
         this._snackBarService.open('Pago realizado con éxito', '', {
           duration: 3000,

@@ -20,8 +20,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     FormsModule,
     NgApexchartsModule,
     RouterModule.forChild(PagesRoutes),
-    TablerIconsModule.pick(TablerIcons),
-    
+    TablerIconsModule.pick(TablerIcons)
 
   ],
   exports: [TablerIconsModule],

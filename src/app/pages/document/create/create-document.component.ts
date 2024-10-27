@@ -62,7 +62,7 @@ export class CreateDocumentComponent implements OnInit {
     async getFileCategories() {
         try {
             const response = await this._documentService.getFileCategories();
-            this.fileCategories = response.categories; 
+            this.fileCategories = response; 
         } catch (error) {
             console.error("Error al obtener categorías de archivo", error);
         }
@@ -72,6 +72,9 @@ export class CreateDocumentComponent implements OnInit {
         const input = event.target as HTMLInputElement;
         if (input.files && input.files.length > 0) {
             this.fileToUpload = input.files[0]; 
+            // Actualiza el control del formulario para marcarlo como válido
+            this.form.patchValue({ file: this.fileToUpload });
+            this.form.get('file')?.updateValueAndValidity();
         }
     }
 
@@ -84,7 +87,7 @@ export class CreateDocumentComponent implements OnInit {
             });
             return;
         }
-
+    
         Swal.fire({
             title: "",
             text: `¿Desea finalizar la creación del documento?`,
@@ -97,15 +100,20 @@ export class CreateDocumentComponent implements OnInit {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 this._spinnerService.show();
-
+    
                 const formData = new FormData();
                 formData.append('file', this.fileToUpload as File);
                 formData.append('patientId', this.form.get('patientId')?.value);
                 formData.append('fileCategoryId', this.form.get('fileCategoryId')?.value);
-
+    
                 try {
                     const response = await this._documentService.cargarDocumento(formData);
-                    if (response) {
+    
+                    // Agrega un log para inspeccionar la respuesta del backend
+                    console.log("Respuesta del backend:", response);
+    
+                    // Simplificar chequeo de éxito basado en el código HTTP de respuesta
+                    if (response && response.code === 201) {
                         this._snackBarService.open("Documento cargado exitosamente", '', {
                             duration: 5000,
                             horizontalPosition: "center",
@@ -114,10 +122,17 @@ export class CreateDocumentComponent implements OnInit {
                         this.form.reset();
                         this.returnPage();
                     } else {
-                        throw new Error();
+                        // Muestra la respuesta completa para depuración
+                        console.warn("Respuesta inesperada del backend:", response);
+                        this._snackBarService.open("Error al cargar el documento: respuesta no esperada", '', {
+                            duration: 5000,
+                            horizontalPosition: "center",
+                            verticalPosition: "top"
+                        });
                     }
-                } catch (error) {
-                    this._snackBarService.open("Error al cargar el documento", '', {
+                } catch (error: any) {
+                    console.error("Error al cargar el documento", error);
+                    this._snackBarService.open("Error al cargar el documento: " + (error.message || ''), '', {
                         duration: 5000,
                         horizontalPosition: "center",
                         verticalPosition: "top"

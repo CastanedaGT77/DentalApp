@@ -12,14 +12,14 @@ import { DocumentService } from "../document.service";
     selector: "app-document-list-all",
     templateUrl: "./document-list-all.component.html"
 })
-export class DocumentListAll implements OnInit,AfterViewInit{
+export class DocumentListAll implements OnInit, AfterViewInit {
     documents: any[] = [];
     dataSource = new MatTableDataSource<any>(this.documents);
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     crearDocumento: Array<EPermissions>;
 
-    displayedColumns: string[] = ['id', 'fileName', 'fileCode', 'uploadedBy', 'created_at', 'actions'];
+    displayedColumns: string[] = ['id', 'icon', 'fileName', 'uploadedBy', 'created_at', 'actions'];
     
     constructor(
         private readonly _router: Router,
@@ -31,7 +31,7 @@ export class DocumentListAll implements OnInit,AfterViewInit{
         this.crearDocumento = [EPermissions.CREAR_SUCURSALES];
     }
 
-    async ngOnInit(){
+    async ngOnInit() {
         this.spinnerService.show();
         await this.getDocuments(); 
         this.spinnerService.hide();
@@ -39,18 +39,37 @@ export class DocumentListAll implements OnInit,AfterViewInit{
 
     async getDocuments() {
         try {
-          const response = await this._documentService.getAllDocuments();
-          if (response && Array.isArray(response)) {
-            this.documents = response;
-            console.log('Documentos1:', this.documents);  // Verifica la estructura aquí
-
-            this.dataSource.data = this.documents; // Para el componente de archivos
-            console.log('Documentos2:', this.dataSource.data);  // Verifica la estructura aquí
-          } else {
-            console.error('Error: No se encontraron datos en la respuesta o no es un array.');
-          }
+            const response = await this._documentService.getAllDocuments();
+            if (response && Array.isArray(response)) {
+                this.documents = response;
+                this.dataSource.data = this.documents;
+            } else {
+                console.error('Error: No se encontraron datos en la respuesta o no es un array.');
+            }
         } catch (error) {
-          console.error('Error al obtener datos:', error);
+            console.error('Error al obtener datos:', error);
+        }
+    }
+
+    getFileIcon(fileName: string) {
+        const extension = fileName.split('.').pop()?.toLowerCase();
+        switch (extension) {
+            case 'doc':
+            case 'docx':
+                return { name: 'file-text', color: '#2a72b5' }; // Azul para documentos
+            case 'xls':
+            case 'csv':
+            case 'xlsx':
+                return { name: 'file-spreadsheet', color: '#1c8b24' }; // Verde para hojas de cálculo
+            case 'pdf':
+                return { name: 'file', color: '#e23e57' }; // Rojo para PDFs
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+                return { name: 'photo', color: '#fbbd08' }; // Amarillo para imágenes
+            default:
+                return { name: 'file-unknown', color: '#6c757d' }; // Gris para archivos desconocidos
         }
     }
 
@@ -58,16 +77,20 @@ export class DocumentListAll implements OnInit,AfterViewInit{
         const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
         this.dataSource.filter = filterValue;
     }
-  
+
     ngAfterViewInit() {
         if (this.paginator) {
-          this.dataSource.paginator = this.paginator;
+            this.dataSource.paginator = this.paginator;
         } else {
-          console.error('Paginator no encontrado');
+            console.error('Paginator no encontrado');
         }
     }
-      
-    redirectCreate(){
+
+    viewDocument(document: any) {
+      console.log('Visualizando el archivo:', document);
+    }
+  
+    redirectCreate() {
         this._router.navigateByUrl("/document/create");
     }
 }

@@ -41,8 +41,6 @@ export class PatientService {
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.post('/patient/profileImage', request);
-            if(response && response.data.code === HttpStatusCode.InternalServerError)
-                throw Error();
             return response.data.id;
         } catch(error){
             return null;
