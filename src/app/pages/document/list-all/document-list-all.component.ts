@@ -19,7 +19,7 @@ export class DocumentListAll implements OnInit, AfterViewInit {
 
     crearDocumento: Array<EPermissions>;
 
-    displayedColumns: string[] = ['id', 'icon', 'fileName', 'uploadedBy', 'created_at', 'actions'];
+    displayedColumns: string[] = ['id', 'icon', 'fileName', 'uploadedBy', 'patient', 'created_at', 'actions'];
     
     constructor(
         private readonly _router: Router,
@@ -43,6 +43,7 @@ export class DocumentListAll implements OnInit, AfterViewInit {
             if (response && Array.isArray(response)) {
                 this.documents = response;
                 this.dataSource.data = this.documents;
+                console.log('documentos',this.documents)
             } else {
                 console.error('Error: No se encontraron datos en la respuesta o no es un array.');
             }
@@ -86,9 +87,26 @@ export class DocumentListAll implements OnInit, AfterViewInit {
         }
     }
 
-    viewDocument(document: any) {
-      console.log('Visualizando el archivo:', document);
+    async viewDocument(fileCode: string) {
+        try {
+            const fileBlob = await this._documentService.getDocument(fileCode);
+            if (fileBlob) {
+                const url = window.URL.createObjectURL(new Blob([fileBlob]));
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileCode; // Usar fileCode o un nombre más amigable si lo tienes
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } else {
+                console.error('Error: No se pudo obtener el archivo.');
+            }
+        } catch (error) {
+            console.error('Error al descargar el archivo:', error);
+        }
     }
+    
 
     getDecodedFileName(fileName: string): string {
       try {

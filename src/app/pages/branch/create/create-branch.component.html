@@ -22,7 +22,7 @@
             <div class="m-32">
                 <mat-form-field appearance="fill" [style.width.px]=600>
                   <mat-label>Nombre sucursal</mat-label>
-                  <input autocomplete="nope" matInput formControlName="name" minlength maxlength pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*">
+                  <input autocomplete="nope" matInput formControlName="name" minlength maxlength pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]*">
                   <mat-icon matSuffix>location_on</mat-icon>
                   <mat-error *ngIf="form.controls['name'].hasError('required')">Nombres <strong>requeridos</strong></mat-error>
                   <mat-error *ngIf="form.controls['name'].hasError('pattern')">Nombre inválido ingrese solo letras</mat-error>

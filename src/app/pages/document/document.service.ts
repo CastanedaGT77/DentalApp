@@ -28,6 +28,19 @@ export class DocumentService {
         }
     }
 
+    async getDocument(fileCode: string) {
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get(`/files/${fileCode}`, {
+                responseType: 'blob' // Importante para recibir datos binarios
+            });
+            return response.data; // Retorna el blob del archivo
+        } catch (error) {
+            console.error("Error al obtener documento:", error);
+            return null;
+        }
+    }
+    
     //documentos por paciente
     async getPatientDocuments(id: number) {
         try {
