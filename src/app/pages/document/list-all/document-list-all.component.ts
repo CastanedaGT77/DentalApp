@@ -89,6 +89,14 @@ export class DocumentListAll implements OnInit, AfterViewInit {
     viewDocument(document: any) {
       console.log('Visualizando el archivo:', document);
     }
+
+    getDecodedFileName(fileName: string): string {
+      try {
+          return decodeURIComponent(escape(fileName));
+      } catch (e) {
+          return fileName; // Si ocurre un error, devuelve el nombre original
+      }
+    }
   
     redirectCreate() {
         this._router.navigateByUrl("/document/create");

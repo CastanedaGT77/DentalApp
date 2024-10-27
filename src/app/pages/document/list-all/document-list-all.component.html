@@ -35,9 +35,10 @@
   </ng-container>
 
   <!-- File Name Column -->
+  <!-- File Name Column -->
   <ng-container matColumnDef="fileName">
-      <th mat-header-cell *matHeaderCellDef> Nombre del archivo </th>
-      <td mat-cell *matCellDef="let document"> {{document.fileName}} </td>
+    <th mat-header-cell *matHeaderCellDef> Nombre del archivo </th>
+    <td mat-cell *matCellDef="let document"> {{ getDecodedFileName(document.fileName) }} </td>
   </ng-container>
 
   <!-- File Code Column -->
