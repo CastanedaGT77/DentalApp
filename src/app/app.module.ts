@@ -31,6 +31,7 @@ import { AppSideLoginComponent } from './pages/authentication/login/login.compon
 import { Router } from '@angular/router';
 import { setAxiosClientRouter } from './axios/axiosConfig';
 import { SharedModule } from './shared.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { SharedModule } from './shared.module';
     MaterialModule,
     TablerIconsModule.pick(TablerIcons),
     NgxSpinnerModule,
-    SharedModule
+    SharedModule, 
+    MatIconModule
   ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],
