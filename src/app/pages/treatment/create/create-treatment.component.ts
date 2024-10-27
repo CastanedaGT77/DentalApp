@@ -208,11 +208,17 @@ export class CreateTreatmentComponent implements OnInit {
         price: treatmentTypeGroup.get('price')?.value,
         piece: treatmentTypeGroup.get('piece')?.value
       };
-      const response = await this._treatmentService.createTreatmentDetail(requestData);
-      if (response && response.code === 201) {
-        this._snackBarService.open('Tratamiento agregado correctamente', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-        treatmentTypeGroup.get('id')?.setValue(response.data.id);  // Assuming the response contains the new id
-      } else {
+
+      try {
+        const response = await this._treatmentService.createTreatmentDetail(requestData);
+        if (response && response.code === 201) {
+          this._snackBarService.open('Tratamiento agregado correctamente', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+          treatmentTypeGroup.get('id')?.setValue(response.data.id);
+        } else {
+          this._snackBarService.open('Error al agregar tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+        }
+      } catch (error) {
+        console.error('Error al agregar tratamiento:', error);
         this._snackBarService.open('Error al agregar tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       }
     }
@@ -237,12 +243,9 @@ export class CreateTreatmentComponent implements OnInit {
 
   onTreatmentTypeChange(index: number) {
     const selectedTreatmentTypeId = this.treatmentTypes.at(index).get('treatmentTypeId')?.value;
-    
-    // Busca el tratamiento seleccionado en la lista de tratamientos
     const selectedTreatmentType = this.treatmentTypesList.find(type => type.id === selectedTreatmentTypeId);
   
     if (selectedTreatmentType) {
-      // Establece el precio sugerido en el campo de 'price'
       this.treatmentTypes.at(index).get('price')?.setValue(selectedTreatmentType.suggestedPrice);
     }
   }
@@ -252,7 +255,7 @@ export class CreateTreatmentComponent implements OnInit {
   }
 
   private async initializeForm() {
-    console.log('iniciar edicion', this.treatment)
+    console.log('Iniciar edición', this.treatment);
     this.form.controls["patientId"].setValue(this.treatment.patientId);
     this.form.controls["name"].setValue(this.treatment.name);
     this.form.controls["quotation"].setValue(this.treatment.quotation);

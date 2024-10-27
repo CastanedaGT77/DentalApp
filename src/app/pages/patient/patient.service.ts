@@ -60,6 +60,7 @@ export class PatientService {
         }
     }
 
+    //pacientes aprobados 
     async getPatient(){
         try{
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";

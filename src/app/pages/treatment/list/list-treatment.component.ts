@@ -87,7 +87,7 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
     await this.getTreatmentDetail(treatment);
     //aca quiero mandar el treatment.patient.id
     console.log('funciona tratamiento editar', treatment);
-    this._router.navigate(['/treatment/edit'], { state: { treatmentD: this.treatmentD } });
+    this._router.navigate(['/treatment/edit'], { state: { treatment: this.treatment } });
   }
 
   async verTratamiento(treatment: number) {
