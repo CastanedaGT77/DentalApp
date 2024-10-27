@@ -13,50 +13,55 @@
     <input class="form-control" matInput placeholder="Buscar" (keyup)="applyFilter($event)">
 </mat-form-field>
 <table mat-table [dataSource]="dataSource">
-    <!-- Position Column -->
+    <!-- No. Column -->
     <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> No. </th>
-        <td mat-cell *matCellDef="let branch"> {{branch.id}} </td>
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let document"> {{document.id}} </td>
     </ng-container>
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nombre </th>
-        <td mat-cell *matCellDef="let branch"> {{branch.name}} </td>
+  
+    <!-- File Name Column -->
+    <ng-container matColumnDef="fileName">
+      <th mat-header-cell *matHeaderCellDef> Nombre del archivo </th>
+      <td mat-cell *matCellDef="let document"> {{document.fileName}} </td>
     </ng-container>
-    <!-- Status Column -->
-    <ng-container matColumnDef="isActive">
-        <th mat-header-cell *matHeaderCellDef> Estado </th>
-        <td mat-cell *matCellDef="let branch">
-            <ng-template [ngIf]="branch.active===true">
-                <span
-                  class="bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12"
-                >
-                    Activo
-                </span>
-            </ng-template>
-            <ng-template [ngIf]="branch.active===false">
-                <span
-                    class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12"
-                >
-                    Inactivo
-                </span>
-            </ng-template>
-        </td>
+  
+    <!-- File Code Column -->
+    <ng-container matColumnDef="fileCode">
+      <th mat-header-cell *matHeaderCellDef> Código del archivo </th>
+      <td mat-cell *matCellDef="let document"> {{document.fileCode}} </td>
     </ng-container>
+  
+    <!-- Uploaded By Column -->
+    <ng-container matColumnDef="uploadedBy">
+      <th mat-header-cell *matHeaderCellDef> Subido por </th>
+      <td mat-cell *matCellDef="let document"> {{document.uploadedBy}} </td>
+    </ng-container>
+  
+    <!-- Created At Column -->
+    <ng-container matColumnDef="created_at">
+      <th mat-header-cell *matHeaderCellDef> Fecha de creación </th>
+      <td mat-cell *matCellDef="let document"> {{document.created_at | date}} </td>
+    </ng-container>
+  
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Acciones </th>
-        <!-- <td mat-cell *matCellDef="let branch">
-            <button mat-icon-button (click)="editBranch(branch)" matTooltip="Editar"  *appHasPermission="actualizarSucursal">
-                <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteBranch(branch)" matTooltip="Eliminar"  *appHasPermission="eliminarSucursal">
-                <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
-            </button>
-        </td> -->
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let document">
+        <!-- Acciones que quieres realizar (ejemplo: editar/eliminar) -->
+        <!-- <button mat-icon-button (click)="editDocument(document)" matTooltip="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteDocument(document)" matTooltip="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button> -->
+      </td>
     </ng-container>
+  
+    <!-- Header row -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <!-- Data rows -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+  </table>
+  
 <mat-paginator [pageSize]="7" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
