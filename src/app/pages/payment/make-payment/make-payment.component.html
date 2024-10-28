@@ -25,7 +25,6 @@
                   {{ patient.firstName }} {{ patient.lastName }}
                 </mat-option>
               </mat-select>
-              <!-- Icono para Paciente -->
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
           </div>
@@ -38,7 +37,6 @@
       <mat-step [stepControl]="paymentDetails" label="Seleccionar Pagos Pendientes">
         <ng-template matStepLabel>Seleccionar Pagos Pendientes</ng-template>
 
-        <!-- Mostrar la tabla si hay pagos pendientes -->
         <div *ngIf="hasPendingPayments; else noPaymentsMessage">
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <!-- Definición de columnas -->
@@ -49,37 +47,31 @@
               </mat-cell>
             </ng-container>
 
-            <!-- Pieza -->
             <ng-container matColumnDef="piece">
               <mat-header-cell *matHeaderCellDef> Pieza </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{element.piece}} </mat-cell>
             </ng-container>
 
-            <!-- Precio Real -->
             <ng-container matColumnDef="realPrice">
               <mat-header-cell *matHeaderCellDef> Precio Real </mat-header-cell>
               <mat-cell *matCellDef="let element"> Q{{element.realPrice}} </mat-cell>
             </ng-container>
 
-            <!-- Monto Pendiente -->
             <ng-container matColumnDef="pendingAmount">
               <mat-header-cell *matHeaderCellDef> Monto Pendiente </mat-header-cell>
               <mat-cell *matCellDef="let element"> Q{{element.pendingAmount}} </mat-cell>
             </ng-container>
 
-            <!-- Fecha de Creación -->
             <ng-container matColumnDef="created_at">
               <mat-header-cell *matHeaderCellDef> Fecha de Creación </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{element.created_at | date}} </mat-cell>
             </ng-container>
 
-            <!-- Status -->
             <ng-container matColumnDef="status">
               <mat-header-cell *matHeaderCellDef> Finalizado </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{element.status ? 'Sí' : 'No'}} </mat-cell>
             </ng-container>
 
-            <!-- Cantidad Ingresada -->
             <ng-container matColumnDef="enteredAmount">
               <mat-header-cell *matHeaderCellDef> Cantidad Ingresada </mat-header-cell>
               <mat-cell *matCellDef="let element">
@@ -103,7 +95,6 @@
           </div>
         </div>
 
-        <!-- Mostrar mensaje si no hay pagos pendientes -->
         <ng-template #noPaymentsMessage>
           <div class="flex justify-center items-center h-32">
             <p class="text-lg text-gray-500">No existen pagos pendientes</p>
@@ -115,27 +106,21 @@
         <form [formGroup]="receiptControl" class="w-full shadow-md">
           <p class="text-lg font-semibold m-5">Información del Recibo</p>
           <div class="flex justify-around mb-5">
-            <!-- Nombre -->
             <mat-form-field appearance="fill">
               <mat-label>Nombre</mat-label>
               <input matInput formControlName="name">
-              <!-- Icono de persona para Nombre -->
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
 
-            <!-- Teléfono -->
             <mat-form-field appearance="fill">
               <mat-label>Teléfono</mat-label>
               <input matInput formControlName="phoneNumber">
-              <!-- Icono de teléfono para número de contacto -->
               <mat-icon matSuffix>phone</mat-icon>
             </mat-form-field>
 
-            <!-- Dirección -->
             <mat-form-field appearance="fill">
               <mat-label>Dirección</mat-label>
               <input matInput formControlName="address">
-              <!-- Icono de ubicación para Dirección -->
               <mat-icon matSuffix>place</mat-icon>
             </mat-form-field>
           </div>
