@@ -10,6 +10,7 @@ import { PatientService } from "../../patient/patient.service";
 import { UpdateTreatmentDto } from "src/app/data/dtos/treatment/UpdateTreatmentDTO";
 import { MatDialog } from "@angular/material/dialog";
 import { CreateTreatmentDetailDTO } from "src/app/data/dtos/treatment/CreateTreatmentDetailDTO";
+import { HttpStatusCode } from "@angular/common/http";
 
 @Component({
   selector: "app-create-treatment",
@@ -18,9 +19,11 @@ import { CreateTreatmentDetailDTO } from "src/app/data/dtos/treatment/CreateTrea
 export class CreateTreatmentComponent implements OnInit {
   type: "create" | "edit";
   form: FormGroup;
+  treatmentId: number = 0;
   patients: any[] = [];
   treatmentTypesList: any[] = [];
-  treatment: any;
+  treatment: any = {};
+  loading: boolean;
 
   constructor(
     private readonly _formBuilder: FormBuilder,
@@ -33,8 +36,21 @@ export class CreateTreatmentComponent implements OnInit {
     private readonly _treatmentTypeService: TreatmentTypeService,
     private readonly _patientService: PatientService
   ) {
-    this.type = this._route.snapshot.data["type"] ?? "create";
+    this.loading = false;
     this.createForm();
+  }
+
+  async ngOnInit() {
+    this.type = this._route.snapshot.data["type"] ?? "create";
+    // Get data
+    await this.getPatients();
+    await this.getTreatmentTypes();
+    
+    if (this.type === "edit" && history.state && history.state.treatmentId) {
+        this.treatmentId = history.state.treatmentId;
+        await this.getTreatmentDetails(this.treatmentId);
+        await this.initializeForm();
+     }
   }
 
   private createForm() {
@@ -45,6 +61,16 @@ export class CreateTreatmentComponent implements OnInit {
       description: ['', Validators.required],
       treatmentTypes: this._formBuilder.array([])
     });
+  }
+
+  private async getTreatmentDetails(id: number){
+    try {
+      const response = await this._treatmentService.getTreatmentDetail(id);
+      this.treatment = response.data;
+    }
+    catch(error){
+      this.returnPage();
+    }
   }
 
   get treatmentTypes() {
@@ -61,49 +87,42 @@ export class CreateTreatmentComponent implements OnInit {
     this.treatmentTypes.push(treatmentTypeGroup);
   }
 
-  removeTreatmentType(index: number) {
+  async removeTreatmentType(index: number) {
     const treatmentTypeId = this.treatmentTypes.at(index).get('id')?.value;
-    if (treatmentTypeId) {
-      this.deleteTreatmentType(treatmentTypeId).then(() => {
-        this.treatmentTypes.removeAt(index);
-      });
+    debugger;
+    if(this.type === 'edit' && treatmentTypeId){
+      const payments = this.treatment?.treatmentDetails?.find((t:any) => t.id === treatmentTypeId)?.payments || [];
+      if(payments?.length > 0){
+          this._snackBarService.open("Este elemento no puede ser eliminado porque ya existen pagos asignados", '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 }); 
+          return;
+      }
+      await this.deleteTreatmentType(parseInt(treatmentTypeId));
+      this.treatmentTypes.removeAt(index);
     } else {
       this.treatmentTypes.removeAt(index);
     }
   }
 
-  async ngOnInit() {
-    this.getPatients();
-    this.getTreatmentTypes();
-    if (this.type === "edit" && history.state && history.state.treatmentD) {
-      this.treatment = history.state.treatmentD[0];
-      await this.initializeForm();
-    }
-  }
-
-  getPatients() {
-    this._patientService.getPatient().then(response => {
-      if (response && response.patients) {
-        this.patients = response.patients;
-      } else {
-        console.error('Error: No se encontraron pacientes en la respuesta.');
+  async getPatients() {
+    try {
+      const {patients} = await this._patientService.getPatient();
+      if(patients){
+        this.patients = patients;
       }
-    }).catch(error => {
-      console.error('Error al obtener pacientes:', error);
-    });
+    }
+    catch(error){
+      this.patients = [];
+    }
   }
 
   async getTreatmentTypes() {
     try {
-      const response = await this._treatmentTypeService.getTreatmentTypes();
-      if (response) {
-        this.treatmentTypesList = response;
-        console.log('tipos', response)
-      } else {
-        console.error('Error: No se encontraron datos en la respuesta.');
-      }
+      const types = await this._treatmentTypeService.getTreatmentTypes();
+      if(types){
+        this.treatmentTypesList = types;
+      };
     } catch (error) {
-      console.error('Error al obtener datos:', error);
+      this.treatmentTypesList = [];
     }
   }
 
@@ -115,38 +134,22 @@ export class CreateTreatmentComponent implements OnInit {
     }
 
     if (this.type === "edit") {
-      const treatmentDetails = this.form.get('treatmentTypes')?.value.map((treatment: any) => ({
-        id: treatment.id,
-        treatmentTypeId: treatment.treatmentTypeId,
-        piece: treatment.piece,
-        price: treatment.price
-      })) as UpdateTreatmentDto[];
+      this._spinnerService.show();
+      const data = {
+        id: this.treatment.id,
+        name: this.form.get('name')?.value,
+        quotation: this.form.get('quotation')?.value,
+        description: this.form.get('description')?.value
+      };
 
-      console.log('Datos enviados para editar:', treatmentDetails);
-
-      const requests = treatmentDetails.map(async (detail: UpdateTreatmentDto) => {
-        try {
-          const response = await this._treatmentService.updateTreatment(detail);
-          if (response && response.code !== 200) {
-            const errorMessage = `Error al actualizar el detalle del tratamiento con ID ${detail.id}`;
-            this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-          }
-        } catch (error) {
-          console.error(`Error al actualizar el detalle del tratamiento con ID ${detail.id}:`, error);
-        }
-      });
-
-      Promise.all(requests).then(() => {
-        const message = "Plan de tratamiento actualizado correctamente";
-        this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-        this.form.reset();
+      const response = await this._treatmentService.updateTreatment(data);
+      if(response && response?.code === 200 ){
+        this._snackBarService.open("Plan de tratamiento actualizado correctamente", '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         this.returnPage();
-      }).catch(() => {
-        const errorMessage = "Error al actualizar el plan de tratamiento";
-        this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-      }).finally(() => {
-        this._spinnerService.hide();
-      });
+        return;
+      }
+      this._snackBarService.open("No se ha podido actualizar el tratamiento", '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+      this._spinnerService.hide();
     } else if (this.type === "create") {
       const data = {
         patientId: this.form.get('patientId')?.value,
@@ -155,8 +158,6 @@ export class CreateTreatmentComponent implements OnInit {
         treatmentTypes: this.form.get('treatmentTypes')?.value,
         description: this.form.get('description')?.value
       };
-
-      console.log('Datos enviados para crear:', data);
 
       Swal.fire({
         title: "",
@@ -175,8 +176,6 @@ export class CreateTreatmentComponent implements OnInit {
             if (response && response.code === 200) {
               const message = "Plan de tratamiento creado correctamente";
               this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-              this.form.reset();
-              this.returnPage();
             } else {
               const errorMessage = "Error al crear el plan de tratamiento";
               this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
@@ -187,6 +186,7 @@ export class CreateTreatmentComponent implements OnInit {
             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
           } finally {
             this._spinnerService.hide();
+            this.returnPage();
           }
         }
       });
@@ -194,6 +194,7 @@ export class CreateTreatmentComponent implements OnInit {
   }
 
   async saveNewTreatmentType(index: number) {
+    this._spinnerService.show();
     const treatmentTypeGroup = this.treatmentTypes.at(index);
     if (treatmentTypeGroup.invalid) {
       this._snackBarService.open('Verifique todos los campos del tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
@@ -213,7 +214,7 @@ export class CreateTreatmentComponent implements OnInit {
         const response = await this._treatmentService.createTreatmentDetail(requestData);
         if (response && response.code === 201) {
           this._snackBarService.open('Tratamiento agregado correctamente', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-          treatmentTypeGroup.get('id')?.setValue(response.data.id);
+          treatmentTypeGroup.get('id')?.setValue(response?.data?.id);
         } else {
           this._snackBarService.open('Error al agregar tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         }
@@ -222,21 +223,25 @@ export class CreateTreatmentComponent implements OnInit {
         this._snackBarService.open('Error al agregar tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       }
     }
+    this._spinnerService.hide();
   }
 
   async deleteTreatmentType(treatmentTypeId: number) {
     try {
+      this._spinnerService.show();
       const response = await this._treatmentService.deleteTreatmentDetail(treatmentTypeId);
       if (response && response.code === 200) {
-        const message = `Tratamiento con ID ${treatmentTypeId} eliminado correctamente`;
+        const message = `Tratamiento eliminado correctamente`;
         this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       } else {
-        const errorMessage = `Error al eliminar el tratamiento con ID ${treatmentTypeId}`;
+        const errorMessage = `Error al eliminar el tratamiento`;
         this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       }
+      this._spinnerService.hide();
     } catch (error) {
+      this._spinnerService.hide();
       console.error(`Error al eliminar el tratamiento con ID ${treatmentTypeId}:`, error);
-      const errorMessage = `Error al eliminar el tratamiento con ID ${treatmentTypeId}`;
+      const errorMessage = `Error al eliminar el tratamiento`;
       this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
     }
   }
@@ -255,14 +260,19 @@ export class CreateTreatmentComponent implements OnInit {
   }
 
   private async initializeForm() {
-    console.log('Iniciar edición', this.treatment);
-    this.form.controls["patientId"].setValue(this.treatment.patientId);
-    this.form.controls["name"].setValue(this.treatment.name);
-    this.form.controls["quotation"].setValue(this.treatment.quotation);
-    this.form.controls["description"].setValue(this.treatment.description);
-
-    this.treatment.treatmentDetails.forEach((detail: any) => {
-      this.addTreatmentType(detail.id, detail.treatmentType.id, detail.realPrice, detail.piece);
-    });
+    try {
+      console.log("TRIT", this.treatment);
+      this.form.controls["patientId"].setValue(this.treatment.patient.id);
+      this.form.controls["name"].setValue(this.treatment.name);
+      this.form.controls["quotation"].setValue(this.treatment.quotation);
+      this.form.controls["description"].setValue(this.treatment.description);
+      this.treatment.treatmentDetails.forEach((detail: any) => {
+        this.addTreatmentType(detail.id, detail.treatmentType.id, detail.realPrice, detail.piece);
+      });
+    }
+    catch(error){
+      console.log("ERROR:", error);
+      this.returnPage();
+    }
   }
 }

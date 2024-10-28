@@ -11,7 +11,7 @@ export class TreatmentService {
 
     async getTreatment() {
         try {
-            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.get('/treatment');
             return response.data;
         } catch (error) {
@@ -23,7 +23,7 @@ export class TreatmentService {
     //tratamientos por paciente
     async getPatientTreatment(id: number) {
         try {
-            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.get(`/treatment/patient/${id}`);
             return response.data;
         } catch (error) {
@@ -35,7 +35,7 @@ export class TreatmentService {
      //detalle de un tratamiento por id
      async getTreatmentDetail(id: number) {
         try {
-            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.get(`/treatment/${id}`);
             return response.data;
         } catch (error) {
@@ -46,7 +46,7 @@ export class TreatmentService {
 
     async createTreatment(requestData: Partial<CreateTreatmentDto>){
         try {
-            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.post('/treatment', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
@@ -58,8 +58,8 @@ export class TreatmentService {
 
     async updateTreatment(requestData: Partial<UpdateTreatmentDto>){
         try {
-            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
-            const response = await axiosClient.put('/treatment/detail', requestData);
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.put('/treatment', requestData);
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
             return response.data;
@@ -81,8 +81,9 @@ export class TreatmentService {
     
     async createTreatmentDetail(requestData: Partial<CreateTreatmentDetailDTO>){
         try {
-            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.post('/treatment/detail', requestData);
+            debugger;
             if(response && response.data.code === HttpStatusCode.InternalServerError)
                 throw Error();
             return response.data;
@@ -94,7 +95,7 @@ export class TreatmentService {
     //detalle de un tratamiento por id
     async deleteTreatmentDetail(id: number) {
         try {
-            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.delete(`/treatment/detail/${id}`);
             return response.data;
         } catch (error) {

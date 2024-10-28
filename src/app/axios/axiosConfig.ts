@@ -2,8 +2,8 @@ import axios from 'axios';
 import { Router } from '@angular/router'; // Necesitamos inyectar el Router
 
 export const axiosClient = axios.create({
-    //baseURL: 'http://localhost:3000/api',
-    baseURL: 'https://castaguate.duckdns.org/api',
+    baseURL: 'http://localhost:3000/api',
+    //baseURL: 'https://castaguate.duckdns.org/api',
     timeout: 5000
 });
 
@@ -33,7 +33,6 @@ axiosClient.interceptors.response.use(
     },
     (error) => {
         // Si recibimos un 401 o 403, el token puede haber expirado
-        debugger;
         if (error.response && (error.response.code === 401 || error.response.code === 403 
             || error.response.status === 401 || error.response.status === 403)) {
             // Limpiamos el token de localStorage y redirigimos al login

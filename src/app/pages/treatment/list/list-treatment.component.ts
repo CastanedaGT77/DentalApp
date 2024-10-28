@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TreatmentService } from '../treatment.service';
-import { DeleteTreatment } from '../delete/delete-treatment.component';
 import { EPermissions } from 'src/app/utils/permissionEnum';
 
 @Component({
@@ -14,7 +13,6 @@ import { EPermissions } from 'src/app/utils/permissionEnum';
   templateUrl: "./list-treatment.component.html"
 })
 export class ListTreatmentComponent implements OnInit, AfterViewInit {
-  treatmentD = [];
   treatment = [];
   dataSource = new MatTableDataSource<any>(this.treatment);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -67,33 +65,24 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
 
   async getTreatmentDetail(treatmentId: number) {
     try {
-      console.log('entra aca')
       const response = await this._treatment.getTreatmentDetail(treatmentId);
-      if (response && response.data) {
-        this.treatmentD = response.data;
-        console.log('Datos obtenidos all fin:', this.treatmentD);
-        this.dataSource.data = this.treatmentD;
-        console.log('Datos del dataSource:', this.dataSource.data);
-      } else {
-        console.error('Error: No se encontraron datos en la respuesta.');
-      }
+      return response && response.data ? response : null;
     } catch (error) {
       console.error('Error al obtener datos:', error);
+      return null;
     }
   }
 
   // Métodos de acción llamada a editar tratamiento
   async editarTreatment(treatment: number) {
-    await this.getTreatmentDetail(treatment);
-    //aca quiero mandar el treatment.patient.id
-    console.log('funciona tratamiento editar', treatment);
-    this._router.navigate(['/treatment/edit'], { state: { treatment: this.treatment } });
+    this._router.navigate(['/treatment/edit'], { state: { treatmentId: treatment} });
   }
 
   async verTratamiento(treatment: number) {
-    await this.getTreatmentDetail(treatment);
-    console.log('datos que mande', this.treatmentD);
-    this._router.navigate(['/treatment/specificTreatment'], { state: { treatmentD: this.treatmentD } });
+    const details = await this.getTreatmentDetail(treatment);
+    if(details){
+      this._router.navigate(['/treatment/specificTreatment'], { state: { treatmentD: details } });
+    }
   }
 
   applyFilter(event: Event) {

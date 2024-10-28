@@ -63,7 +63,7 @@ export class PatientService {
     //pacientes aprobados 
     async getPatient(){
         try{
-            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.get('/patient/approved');
             return response.data;
         }catch(error){

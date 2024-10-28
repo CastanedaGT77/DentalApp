@@ -51,6 +51,10 @@
         </mat-form-field>
       </div>
 
+      <div class="flex justify-end mt-4">
+        <button mat-raised-button color="primary" type="submit" *ngIf="type === 'edit'">{{'Actualizar'}}</button>
+      </div>
+
       <h3 class="text-lg font-semibold mb-2 mt-4">Tratamientos:</h3>
       <div formArrayName="treatmentTypes" class="space-y-4">
         <div *ngFor="let treatmentType of treatmentTypes.controls; let i = index" [formGroupName]="i" class="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -95,7 +99,7 @@
       <button mat-button color="primary" class="mt-4" (click)="addTreatmentType()">Agregar Tratamiento</button>
 
       <div class="flex justify-end mt-4">
-        <button mat-raised-button color="primary" type="submit">{{ type === 'create' ? 'Crear' : 'Actualizar' }}</button>
+        <button mat-raised-button color="primary" type="submit" *ngIf="type === 'create'">{{ type === 'create' ? 'Crear' : 'Actualizar' }}</button>
       </div>
     </form>
   </mat-card-content>
