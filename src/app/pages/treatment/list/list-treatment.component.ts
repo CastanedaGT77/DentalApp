@@ -80,6 +80,7 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
 
   async verTratamiento(treatment: number) {
     const details = await this.getTreatmentDetail(treatment);
+    console.log('details specific treatment', details)
     if(details){
       this._router.navigate(['/treatment/specificTreatment'], { state: { treatmentD: details } });
     }

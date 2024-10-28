@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PaymentService } from '../payment.service';
 import { PatientService } from '../../patient/patient.service';
 import { CreatePaymentDto } from 'src/app/data/dtos/payment/CreatePaymentDTO';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: "app-make-payment",
@@ -19,9 +20,10 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   payment: any[] = [];
   totalAmount = 0;
   form: FormGroup;
-  displayedColumns: string[] = ['select', 'piece', 'realPrice',  'pendingAmount', 'created_at', 'status', 'enteredAmount'];
+  displayedColumns: string[] = ['select', 'piece', 'realPrice', 'pendingAmount', 'created_at', 'status', 'enteredAmount'];
   dataSource = new MatTableDataSource<any>(this.payment);
-  hasPendingPayments = true; 
+  hasPendingPayments = true;
+  receiptFileUrl: SafeUrl | null = null; // Nueva variable para almacenar la URL segura del PDF
 
   @ViewChild('stepper') stepper: MatStepper;
 
@@ -32,6 +34,7 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
     private readonly spinnerService: NgxSpinnerService,
     private readonly _paymentService: PaymentService,
     private readonly _patientService: PatientService,
+    private readonly sanitizer: DomSanitizer
   ) {
     this.form = this._formBuilder.group({
       patientId: ['', Validators.required],
@@ -78,7 +81,6 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
     this.spinnerService.show();
     try {
       const response = await this._paymentService.getPatientPendingPayment(patientId);
-      console.log('response', response);
       if (response && response.data && response.data.pendingTreatments.length > 0) {
         this.payment = response.data.pendingTreatments;
         this.paymentDetails.clear();
@@ -102,19 +104,17 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
           });
         });
         this.dataSource.data = paymentDetailsArray;
-        this.hasPendingPayments = true;  // Tiene pagos pendientes
-        console.log('paymentDetails', this.dataSource.data);
+        this.hasPendingPayments = true;
       } else {
-        this.hasPendingPayments = false;  // No tiene pagos pendientes
+        this.hasPendingPayments = false;
       }
     } catch (error) {
       console.error('Error al obtener datos:', error);
-      this.hasPendingPayments = false;  // En caso de error, no mostrar pagos
+      this.hasPendingPayments = false;
     } finally {
       this.spinnerService.hide();
     }
   }
-  
 
   calculateTotal() {
     this.totalAmount = this.dataSource.data
@@ -159,18 +159,15 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
 
     try {
       const response = await this._paymentService.createPayment(requestData);
-      console.log('pago',response)
-      // AQUI AGREGAR PARA VALIDAR EL RECIBO
-      if (response && response.code === 200) {
+      if (response) {  // Ahora response es un blob
+        const fileUrl = window.URL.createObjectURL(response);
+        this.receiptFileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
+        this.stepper.next();  // Avanzar al paso del recibo
         this._snackBarService.open('Pago realizado con éxito', '', {
           duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
-        this.stepper.reset();
-        this.form.reset();
-        this.totalAmount = 0;
-        this.dataSource.data = [];
       } else {
         throw new Error('Error en el pago');
       }

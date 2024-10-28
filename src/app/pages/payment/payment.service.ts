@@ -30,8 +30,8 @@ export class PaymentService {
         }
     }
 
-    //hacer pago por paciente
-    async createPayment(requestData: Partial<CreatePaymentDto>){
+    //hacer pago por paciente antes del recibo
+    async createPayment2(requestData: Partial<CreatePaymentDto>){
         try {
             //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
             const response = await axiosClient.post('/payment', requestData);
@@ -41,6 +41,25 @@ export class PaymentService {
         } catch(error){
             return null;
         }
+    }
+
+    //hacer pago por paciente
+    async createPayment(requestData: Partial<CreatePaymentDto>){
+    try {
+        const response = await axiosClient.post('/payment', requestData, {
+            responseType: 'blob'  // Cambia el tipo de respuesta a 'blob' para manejar archivos binarios
+        });
+
+        // Verificar si la respuesta tiene un código de error
+        if (response && response.status === HttpStatusCode.InternalServerError) {
+            throw new Error('Error interno del servidor');
+        }
+
+        return response.data;  // Esto será un blob ahora
+    } catch (error) {
+        console.error('Error al crear el pago:', error);
+        return null;
+    }
     }
 
 }
