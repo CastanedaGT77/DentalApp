@@ -44,9 +44,8 @@ export class BranchService {
 
     async deleteBranch(id: number): Promise<boolean|null> {
         try {
-            axiosClient.defaults.headers.common['Authorization'] = 'Bearer 1031283sdasdsa';
-            await axiosClient.delete('/branch', { data: {id} });
-            return true;
+            const response = await axiosClient.delete(`/branch/${id}`);
+            return response.data;
         } catch (error) {
             return null;
         }
