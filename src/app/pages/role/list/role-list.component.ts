@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, ViewChild, OnInit, AfterViewInit, TemplateRef } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -24,7 +24,6 @@ interface Permission {
   updated_at: string;
 }
 
-
 @Component({
   selector: "app-role-user",
   templateUrl: "./role-list.component.html",
@@ -32,8 +31,10 @@ interface Permission {
 export class RoleListComponent implements OnInit, AfterViewInit {
 
   roles: Role[] = [];
+  selectedRole: Role | null = null;
   dataSource = new MatTableDataSource<Role>(this.roles);
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('permissionsDialogTemplate') permissionsDialogTemplate: TemplateRef<any>; // Añadido
   crearRolPermiso: Array<EPermissions>;
   actualizarRolPermiso: Array<EPermissions>;
   eliminarRolPermiso: Array<EPermissions>;
@@ -68,8 +69,15 @@ export class RoleListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  toggleExpand(role: Role) {
-    role.expanded = !role.expanded;
+  openPermissionsDialog(role: Role): void {
+    this.selectedRole = role;
+    const dialogRef = this.dialog.open(this.permissionsDialogTemplate, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.selectedRole = null;
+    });
   }
 
   editRole(role: Role) {
