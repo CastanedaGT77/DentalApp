@@ -10,77 +10,238 @@
     </mat-card-content>
 </mat-card>
 
-<mat-form-field>
-    <input class="form-control" matInput placeholder="Buscar" (keyup)="applyFilter($event)">
-</mat-form-field>
-<table mat-table [dataSource]="dataSource">
-    <!-- Position Column -->
-    <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> No. </th>
-        <td mat-cell *matCellDef="let patients"> {{patients.id}} </td>
-    </ng-container>
-    <!-- Name Column -->
-    <ng-container matColumnDef="firstName">
-        <th mat-header-cell *matHeaderCellDef> Nombre </th>
-        <td mat-cell *matCellDef="let patients"> {{patients.firstName}} </td>
-    </ng-container>
-    <!-- Weight Column -->
-    <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef> Apellido </th>
-        <td mat-cell *matCellDef="let patients"> {{patients.lastName}} </td>
-    </ng-container>
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="phoneNumber">
-        <th mat-header-cell *matHeaderCellDef> Número </th>
-        <td mat-cell *matCellDef="let patients"> {{patients.phoneNumber}} </td>
-    </ng-container>
-    <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Correo Electrónico </th>
-        <td mat-cell *matCellDef="let patients"> {{patients.email}} </td>
-    </ng-container>
-     <!-- Status Column -->
-     <ng-container matColumnDef="active">
-        <th mat-header-cell *matHeaderCellDef> Estado </th>
-        <td mat-cell *matCellDef="let patients">
-            <ng-template [ngIf]="patients.active===true">
-                <span
-                  class="bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12"
-                >
-                    Activo
-                </span>
-            </ng-template>
-            <ng-template [ngIf]="patients.active===false">
-                <span
-                    class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12"
-                >
-                    Inactivo
-                </span>
-            </ng-template>
-        </td>
-    </ng-container>
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Acciones </th>
-        <td mat-cell *matCellDef="let patients">
-            <button mat-icon-button (click)="verDetalle(patients)" *appHasPermission="visualizarPaciente">
-                <mat-icon [ngStyle]="{'color':'gray'}" matTooltip="Detalles">person</mat-icon>
-            </button>
-            <button mat-icon-button (click)="editarPaciente(patients)" matTooltip="Editar" *appHasPermission="actualizarPaciente">
-                <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
-            </button>
-            <button mat-icon-button (click)="eliminarPaciente(patients)" matTooltip="Eliminar" *appHasPermission="eliminarPacientes">
-                <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
-            </button>
-            <button mat-icon-button (click)="verTratamientos(patients)" matTooltip="Tratamientos" *appHasPermission="verTratamiento">
-                <mat-icon [ngStyle]="{'color':'blue'}" fontIcon="assignment">assignment</mat-icon>
-            </button>
-            <button mat-icon-button (click)="redirectPendingPayment(patients)" matTooltip="Pagos"  *appHasPermission="verPago">
-                <mat-icon [ngStyle]="{'color':'green'}" fontIcon="payment">payment</mat-icon>
-            </button>
-        </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+
+<mat-tab-group>
+    <mat-tab label="Aprobados"> 
+        <br>
+        <mat-form-field>
+            <input class="form-control" matInput placeholder="Buscar" (keyup)="applyFilter($event, dataSourceApproved)">
+        </mat-form-field>
+        <table mat-table [dataSource]="dataSourceApproved">
+            <!-- Position Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.id}} </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.firstName}} </td>
+            </ng-container>
+            <!-- Weight Column -->
+            <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef> Apellido </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.lastName}} </td>
+            </ng-container>
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef> Número </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.phoneNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Correo Electrónico </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.email}} </td>
+            </ng-container>
+             <!-- Status Column -->
+             <ng-container matColumnDef="active">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let patients">
+                    <ng-template [ngIf]="patients.approved===true">
+                        <span
+                          class="bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12"
+                        >
+                            Activo
+                        </span>
+                    </ng-template>
+                    <ng-template [ngIf]="patients.approved===false">
+                        <span
+                            class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12"
+                        >
+                            Inactivo
+                        </span>
+                    </ng-template>
+                </td>
+            </ng-container>
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let patients">
+                    <button mat-icon-button (click)="verDetalle(patients)" *appHasPermission="visualizarPaciente">
+                        <mat-icon [ngStyle]="{'color':'gray'}" matTooltip="Detalles">person</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="editarPaciente(patients)" matTooltip="Editar" *appHasPermission="actualizarPaciente">
+                        <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="eliminarPaciente(patients)" matTooltip="Eliminar" *appHasPermission="eliminarPacientes">
+                        <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="verTratamientos(patients)" matTooltip="Tratamientos" *appHasPermission="verTratamiento">
+                        <mat-icon [ngStyle]="{'color':'blue'}" fontIcon="assignment">assignment</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="redirectPendingPayment(patients)" matTooltip="Pagos"  *appHasPermission="verPago">
+                        <mat-icon [ngStyle]="{'color':'green'}" fontIcon="payment">payment</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-tab>
+
+    <mat-tab label="Activos"> 
+        <br>
+        <mat-form-field>
+            <input class="form-control" matInput placeholder="Buscar" (keyup)="applyFilter($event, dataSourceActive)">
+        </mat-form-field>
+
+        <table mat-table [dataSource]="dataSourceActive">
+            <!-- Position Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.id}} </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.firstName}} </td>
+            </ng-container>
+            <!-- Weight Column -->
+            <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef> Apellido </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.lastName}} </td>
+            </ng-container>
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef> Número </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.phoneNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Correo Electrónico </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.email}} </td>
+            </ng-container>
+             <!-- Status Column -->
+             <ng-container matColumnDef="active">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let patients">
+                    <ng-template [ngIf]="patients.active===true">
+                        <span
+                          class="bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12"
+                        >
+                            Activo
+                        </span>
+                    </ng-template>
+                    <ng-template [ngIf]="patients.active===false">
+                        <span
+                            class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12"
+                        >
+                            Inactivo
+                        </span>
+                    </ng-template>
+                </td>
+            </ng-container>
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let patients">
+                    <button mat-icon-button (click)="verDetalle(patients)" *appHasPermission="visualizarPaciente">
+                        <mat-icon [ngStyle]="{'color':'gray'}" matTooltip="Detalles">person</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="editarPaciente(patients)" matTooltip="Editar" *appHasPermission="actualizarPaciente">
+                        <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="eliminarPaciente(patients)" matTooltip="Eliminar" *appHasPermission="eliminarPacientes">
+                        <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="verTratamientos(patients)" matTooltip="Tratamientos" *appHasPermission="verTratamiento">
+                        <mat-icon [ngStyle]="{'color':'blue'}" fontIcon="assignment">assignment</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="redirectPendingPayment(patients)" matTooltip="Pagos"  *appHasPermission="verPago">
+                        <mat-icon [ngStyle]="{'color':'green'}" fontIcon="payment">payment</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-tab>
+    <mat-tab label="Todos"> 
+        <br>
+        <mat-form-field>
+            <input class="form-control" matInput placeholder="Buscar" (keyup)="applyFilter($event, dataSourceAll)">
+        </mat-form-field>
+
+        <table mat-table [dataSource]="dataSourceAll">
+            <!-- Position Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.id}} </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.firstName}} </td>
+            </ng-container>
+            <!-- Weight Column -->
+            <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef> Apellido </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.lastName}} </td>
+            </ng-container>
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef> Número </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.phoneNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Correo Electrónico </th>
+                <td mat-cell *matCellDef="let patients"> {{patients.email}} </td>
+            </ng-container>
+             <!-- Status Column -->
+             <ng-container matColumnDef="active">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let patients">
+                    <ng-template [ngIf]="patients.active===true">
+                        <span
+                          class="bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12"
+                        >
+                            Activo
+                        </span>
+                    </ng-template>
+                    <ng-template [ngIf]="patients.active===false">
+                        <span
+                            class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12"
+                        >
+                            Inactivo
+                        </span>
+                    </ng-template>
+                </td>
+            </ng-container>
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let patients">
+                    <button mat-icon-button (click)="verDetalle(patients)" *appHasPermission="visualizarPaciente">
+                        <mat-icon [ngStyle]="{'color':'gray'}" matTooltip="Detalles">person</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="editarPaciente(patients)" matTooltip="Editar" *appHasPermission="actualizarPaciente">
+                        <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="eliminarPaciente(patients)" matTooltip="Eliminar" *appHasPermission="eliminarPacientes">
+                        <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="verTratamientos(patients)" matTooltip="Tratamientos" *appHasPermission="verTratamiento">
+                        <mat-icon [ngStyle]="{'color':'blue'}" fontIcon="assignment">assignment</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="redirectPendingPayment(patients)" matTooltip="Pagos"  *appHasPermission="verPago">
+                        <mat-icon [ngStyle]="{'color':'green'}" fontIcon="payment">payment</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-tab>
+</mat-tab-group>
+
+
 <mat-paginator [pageSize]="7" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>

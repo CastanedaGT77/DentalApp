@@ -14,17 +14,30 @@ import { EPermissions } from 'src/app/utils/permissionEnum';
     templateUrl: "./list-patient.component.html"
 })
 export class ListPatientComponent {
-    patients = [];
+    patientsApproved = [];
+    patientsUnapproved = [];
+    patientsActive = [];
+    patientsInactive = [];
+    patientsAll = [];
 
     patientImage: string;
     sanitizedImage: SafeResourceUrl | null;
     
     displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'email', 'active', 'actions'];
 
-
-    dataSource = new MatTableDataSource<any>(this.patients);
+    dataSourceApproved = new MatTableDataSource<any>(this.patientsApproved);
+    dataSourceUnapproved = new MatTableDataSource<any>(this.patientsUnapproved);
+    dataSourceActive = new MatTableDataSource<any>(this.patientsActive);
+    dataSourceInactive = new MatTableDataSource<any>(this.patientsInactive);
+    dataSourceAll = new MatTableDataSource<any>(this.patientsAll);
   
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    // Define un paginator para cada tabla
+    @ViewChild('paginatorApproved') paginatorApproved: MatPaginator;
+    @ViewChild('paginatorUnapproved') paginatorUnapproved: MatPaginator;
+    @ViewChild('paginatorActive') paginatorActive: MatPaginator;
+    @ViewChild('paginatorInactive') paginatorInactive: MatPaginator;
+    @ViewChild('paginatorAll') paginatorAll: MatPaginator;
 
     visualizarPaciente: Array<EPermissions>;
     crearPaciente: Array<EPermissions>;
@@ -51,7 +64,11 @@ export class ListPatientComponent {
 
     async ngOnInit(){
         this.spinnerService.show();
-        this.getPatients(); 
+        this.getPatients();
+        this.getPatientsUnapproved();
+        this.getPatientsActive();
+        this.getPatientsInactive();
+        this.getAllPatients();
         this.spinnerService.hide();
     }
 
@@ -60,27 +77,19 @@ export class ListPatientComponent {
           const response = await this._patientService.getProfileImage(patientId);
           if(response){
             this.sanitizedImage = this._sanitizer.bypassSecurityTrustResourceUrl(response);
-            //console.log('imagen sana', this.sanitizedImage)
           }
         }
     }
 
-    // Métodos de acción llamada a editar paciente
     editarPaciente(paciente: any) {
-        //console.log('funciona paciente editar', paciente);
         this._getImage(paciente.id).then(() => {
-            console.log('imagen mandada', this.sanitizedImage);
-            console.log('acá funciono', paciente.id);
             this._router.navigate(['/patient/edit'], { state: { paciente: paciente, image: this.sanitizedImage } });
-
         }).catch(error => {
             console.error('Error al obtener la imagen del paciente:', error);
         });
-        // this._router.navigate(['/patient/edit'], { state: { paciente: paciente, image: this.sanitizedImage } });
     }
 
     eliminarPaciente(paciente: any): void {
-        console.log('funciona paciente delete', paciente);
         this.dialog.open(DeletePatient, {
             width: '300px',
             data: { paciente: paciente }
@@ -94,61 +103,99 @@ export class ListPatientComponent {
     getPatients() {
         this._patientService.getPatient().then(response => {
             if (response && response.patients) {
-                // Asigna los pacientes obtenidos al arreglo patients
-                this.patients = response.patients;
-    
-                // Imprime los pacientes obtenidos para verificar
-                //console.log('Pacientes obtenidos:', this.patients);
-    
-                // Actualiza la fuente de datos de la tabla
-                this.dataSource.data = this.patients;
-    
-                // Imprime el dataSource.data para verificar
-                console.log('Datos del dataSource:', this.dataSource.data);
+                this.patientsApproved = response.patients;
+                this.dataSourceApproved.data = this.patientsApproved;
             } else {
-                console.error('Error: No se encontraron pacientes en la respuesta.');
+                console.error('Error: No se encontraron pacientes aprobados en la respuesta.');
             }
         }).catch(error => {
-            console.error('Error al obtener pacientes:', error);
+            console.error('Error al obtener pacientes aprobados:', error);
         });
     }
-    
-    verDetalle(paciente: any) {
-        console.log('funciona paciente ver', paciente);
-        this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+
+    getPatientsUnapproved() {
+        this._patientService.getPatientUnApproved().then(response => {
+            if (response && response.patients) {
+                this.patientsUnapproved = response.patients;
+                this.dataSourceUnapproved.data = this.patientsUnapproved;
+            } else {
+                console.error('Error: No se encontraron pacientes no aprobados en la respuesta.');
+            }
+        }).catch(error => {
+            console.error('Error al obtener pacientes no aprobados:', error);
+        });
     }
 
-    verTratamientos(paciente: any) {
-        console.log('funciona paciente ver tratamientos', paciente);
-        const patientId = paciente.id ?? null;
-        if(patientId){
-            this._router.navigate(['/treatment/patientTreatment'], { state: { paciente: paciente } });
-        }
+    getPatientsActive() {
+        this._patientService.getPatientActive().then(response => {
+            if (response && response.data) {
+                this.patientsActive = response.data;
+                this.dataSourceActive.data = this.patientsActive;
+            } else {
+                console.error('Error: No se encontraron pacientes activos en la respuesta.');
+            }
+        }).catch(error => {
+            console.error('Error al obtener pacientes activos:', error);
+        });
     }
 
-    verPagos(paciente: any) {
-        console.log('funciona paciente ver pagos', paciente);
-        const patientId = paciente.id ?? null;
-        if(patientId){
-            //this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
-        }
+    getPatientsInactive() {
+        this._patientService.getPatientInactive().then(response => {
+            if (response && response.data) {
+                this.patientsInactive = response.data;
+                this.dataSourceInactive.data = this.patientsInactive;
+            } else {
+                console.error('Error: No se encontraron pacientes inactivos en la respuesta.');
+            }
+        }).catch(error => {
+            console.error('Error al obtener pacientes inactivos:', error);
+        });
     }
 
-    applyFilter(event: Event) {
+    getAllPatients() {
+        this._patientService.getAllPatient().then(response => {
+            if (response && response.data) {
+                this.patientsAll = response.data;
+                this.dataSourceAll.data = this.patientsAll;
+            } else {
+                console.error('Error: No se encontraron todos los pacientes en la respuesta.');
+            }
+        }).catch(error => {
+            console.error('Error al obtener todos los pacientes:', error);
+        });
+    }
+
+    // Método para aplicar el filtro en el dataSource correspondiente
+    applyFilter(event: Event, dataSource: MatTableDataSource<any>) {
         const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-        this.dataSource.filter = filterValue;
+        dataSource.filter = filterValue;
     }
-  
+
     ngAfterViewInit() {
-      this.dataSource.paginator = this.paginator;
+        // Asigna cada paginator a su dataSource correspondiente
+        this.dataSourceApproved.paginator = this.paginatorApproved;
+        this.dataSourceUnapproved.paginator = this.paginatorUnapproved;
+        this.dataSourceActive.paginator = this.paginatorActive;
+        this.dataSourceInactive.paginator = this.paginatorInactive;
+        this.dataSourceAll.paginator = this.paginatorAll;
     }
 
     redirectCreate(){
         this._router.navigateByUrl("/patient/create");
     }
 
+    verDetalle(paciente: any) {
+        this._router.navigate(['/patient/patientProfile'], { state: { paciente: paciente } });
+    }
+
+    verTratamientos(paciente: any) {
+        const patientId = paciente.id ?? null;
+        if(patientId){
+            this._router.navigate(['/treatment/patientTreatment'], { state: { paciente: paciente } });
+        }
+    }
+
     redirectPendingPayment(paciente: any){
         this._router.navigate(['/payment/list'], { state: { paciente: paciente } });
-
     }
 }

@@ -73,6 +73,58 @@ export class PatientService {
         }
     }
 
+    //pacientes sin aprovar 
+    async getPatientUnApproved(){
+        try{
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get('/patient/unapproved');
+            return response.data;
+        }catch(error){
+            // Maneja cualquier error y devuelve null
+            console.error("Error al obtener pacientes sin aprobar:", error);
+            return null;
+        }
+    }
+
+    //pacientes activos 
+    async getPatientActive(){
+        try{
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get('/patient/active');
+            return response.data;
+        }catch(error){
+            // Maneja cualquier error y devuelve null
+            console.error("Error al obtener pacientes activos:", error);
+            return null;
+        }
+    }
+
+    //pacientes inactivos 
+    async getPatientInactive(){
+        try{
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get('/patient/inactive');
+            return response.data;
+        }catch(error){
+            // Maneja cualquier error y devuelve null
+            console.error("Error al obtener pacientes sin activar:", error);
+            return null;
+        }
+    }
+
+    //pacientes todos 
+    async getAllPatient(){
+        try{
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get('/patient');
+            return response.data;
+        }catch(error){
+            // Maneja cualquier error y devuelve null
+            console.error("Error al obtener todos los pacientes pacientes:", error);
+            return null;
+        }
+    }
+
     async deletePatient(id: number): Promise<boolean|null> {
         try {
             axiosClient.defaults.headers.common['Authorization'] = 'Bearer 1031283sdasdsa';

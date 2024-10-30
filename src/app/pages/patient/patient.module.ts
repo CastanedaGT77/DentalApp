@@ -28,6 +28,7 @@ import { TreatmentService } from '../treatment/treatment.service';
 import { DateService } from '../date/date.service';
 import { SharedModule } from 'src/app/shared.module';
 import { DocumentService } from '../document/document.service';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { DocumentService } from '../document/document.service';
     FormsModule,
     MatButtonModule,
     MatTooltipModule,
-    SharedModule
+    SharedModule,
+    MatTabsModule
   ],
   declarations: [
     ListPatientComponent,
