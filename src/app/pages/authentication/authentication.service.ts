@@ -22,6 +22,7 @@ export class AuthenticationService {
         role: userData.rol.name,
         company: userData.company.name,
         companyId: userData.company.id,
+        properties: userData.properties,
         token: userData.access_token,
         permissions: [...new Set(userData.permissions)], // Limpia duplicados
       };
@@ -56,6 +57,7 @@ export class AuthenticationService {
     localStorage.removeItem('name');
     localStorage.removeItem('list');
     localStorage.removeItem('companyId');
+    localStorage.removeItem('properties');
     this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
   }
 
@@ -65,6 +67,7 @@ export class AuthenticationService {
     localStorage.removeItem('name');
     localStorage.removeItem('list');
     localStorage.removeItem('companyId');
+    localStorage.removeItem('properties');
     this.logout(); // Ejecuta el logout y redirige al login
     this.router.navigate(['/login']);
   }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
+import { ConfigService } from '../config.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class AppSideLoginComponent {
     private fb: FormBuilder,
     private authService: AuthenticationService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private configService: ConfigService // Inyecta el ConfigService aquí
   ) {
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
@@ -39,6 +41,8 @@ export class AppSideLoginComponent {
         localStorage.setItem('name',response.firstName+ ' ' + response.lastName);
         localStorage.setItem('access_token', response.token);
         localStorage.setItem('companyId', response.companyId);
+        localStorage.setItem('properties', JSON.stringify(response.properties));
+        this.configService.applyStylesFromLocalStorage(); // Actualizar estilos después del login
         this.router.navigate(['/dashboard']);
       }
     } catch (error) {
@@ -49,4 +53,5 @@ export class AppSideLoginComponent {
       this.loading = false;
     }
   }
+
 }

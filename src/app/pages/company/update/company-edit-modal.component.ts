@@ -65,7 +65,7 @@ export class CompanyEditModalComponent {
       const response = await this.companyService.updateCompany(companyData);
 
       if (response) {
-        this.snackBar.open('Compañía actualizada exitosamente', 'Cerrar', {
+        this.snackBar.open('Compañía actualizada exitosamente, sí realizo cambios en configuración se recomienda cerrar sesión!', 'Cerrar', {
           duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
