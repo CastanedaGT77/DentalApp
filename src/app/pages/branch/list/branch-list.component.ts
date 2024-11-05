@@ -47,6 +47,7 @@ export class BranchListComponent implements OnInit,AfterViewInit{
         if (response) {
             this.branches = response;
             this.dataSource.data = this.branches;
+            console.log('sucursales', this.dataSource.data)
         } else {
             console.error('Error: No se encontraron datos en la respuesta.');
         }

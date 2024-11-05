@@ -43,6 +43,17 @@ const routes: Routes = [
           },
       },
       {
+        path: 'company',
+        loadChildren: () =>
+          import('./pages/company/company.module').then(
+            (m) => m.CompanyModule
+          ),
+          canActivate: [AuthGuard], /// meter siempre el guard
+          data: {
+            permissions: [EPermissions.LISTAR_ROLES], // Definir permisos de compañia pendiente
+          },
+      },
+      {
         path: 'user',
         loadChildren: () =>
           import('./pages/user/user.module').then(

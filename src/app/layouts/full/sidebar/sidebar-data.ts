@@ -16,6 +16,12 @@ export const navItems: NavItem[] = [
     permissions: [EPermissions.ADMIN_MODULE]
   },
   {
+    displayName: "Compañia",
+    iconName: "home",
+    route: "company/list",
+    permissions: [EPermissions.LISTAR_ROLES] // Rol de listar roles pero cambiar para compañia
+  },
+  {
     displayName: "Roles",
     iconName: "user-shield",
     route: "role/list",
@@ -76,7 +82,7 @@ export const navItems: NavItem[] = [
     displayName: "Archivos",
     iconName: "folder",
     route: "document/list-all",
-    permissions: [EPermissions.REPORT_XQ90] // Rol de ver archivos pero pendiente
+    permissions: [EPermissions.REPORT_XQ90] // Rol de ver archivos pero pendiente de crear el que es 
   },
   {
     displayName: "Reportes",

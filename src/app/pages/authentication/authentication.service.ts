@@ -21,6 +21,7 @@ export class AuthenticationService {
         email: userData.email,
         role: userData.rol.name,
         company: userData.company.name,
+        companyId: userData.company.id,
         token: userData.access_token,
         permissions: [...new Set(userData.permissions)], // Limpia duplicados
       };
@@ -28,6 +29,7 @@ export class AuthenticationService {
       // Almacenar el token y los permisos en localStorage
       localStorage.setItem('access_token', userInfo.token);
       localStorage.setItem('list', JSON.stringify(userInfo.permissions));
+
 
       return userInfo;
 
@@ -53,6 +55,7 @@ export class AuthenticationService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('name');
     localStorage.removeItem('list');
+    localStorage.removeItem('companyId');
     this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
   }
 
@@ -61,6 +64,7 @@ export class AuthenticationService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('name');
     localStorage.removeItem('list');
+    localStorage.removeItem('companyId');
     this.logout(); // Ejecuta el logout y redirige al login
     this.router.navigate(['/login']);
   }
