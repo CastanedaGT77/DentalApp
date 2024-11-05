@@ -16,7 +16,7 @@ export const navItems: NavItem[] = [
     permissions: [EPermissions.ADMIN_MODULE]
   },
   {
-    displayName: "Compañia",
+    displayName: "Compañía",
     iconName: "home",
     route: "company/list",
     permissions: [EPermissions.LISTAR_ROLES] // Rol de listar roles pero cambiar para compañia

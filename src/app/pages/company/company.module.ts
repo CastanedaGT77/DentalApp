@@ -19,6 +19,7 @@ import { SharedModule } from 'src/app/shared.module';
 import { CompanyService } from './company.service';
 import { CompanyRouting } from './company.routing';
 import { CompanyListComponent } from './list/company-list.component';
+import { CompanyEditModalComponent } from './update/company-edit-modal.component';
 
 @NgModule({
     imports: [
@@ -38,7 +39,8 @@ import { CompanyListComponent } from './list/company-list.component';
       SharedModule
     ],
     declarations: [
-        CompanyListComponent
+        CompanyListComponent,
+        CompanyEditModalComponent
     ],
     providers: [
       NgxSpinnerService,

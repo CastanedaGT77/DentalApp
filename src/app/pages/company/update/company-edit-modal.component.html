@@ -1,0 +1,63 @@
+<!-- company-edit-modal.component.html -->
+<mat-dialog-content class="p-6">
+    <h2 class="text-xl font-semibold text-center mb-4">Editar Propiedades de la Compañía</h2>
+  
+    <!-- Formulario para editar la compañía -->
+    <form [formGroup]="companyForm">
+      
+      <!-- Cargar Logo -->
+      <div class="mb-4">
+        <label class="block font-semibold mb-1">Logo de la Compañía</label>
+        <input type="file" (change)="onFileChange($event)" accept="image/*" />
+        <img *ngIf="previewLogo" [src]="previewLogo" alt="Logo Preview" class="mt-2 h-16 w-16 object-cover rounded-full" />
+      </div>
+  
+      <!-- Encabezado -->
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Encabezado</mat-label>
+        <input matInput formControlName="header" />
+      </mat-form-field>
+  
+      <!-- Selección para Permitir Envío de Mensajes -->
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Permitir Enviar Mensajes</mat-label>
+        <mat-select formControlName="allowMessageSending">
+          <mat-option [value]="true">Sí</mat-option>
+          <mat-option [value]="false">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <!-- Footer -->
+      <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-label>Pie de página</mat-label>
+        <input matInput formControlName="footer" />
+      </mat-form-field>
+  
+      <!-- Colores -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block font-semibold mb-1">Color Primario</label>
+          <input type="color" formControlName="primaryColor" class="w-full h-10 rounded" />
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Color Secundario</label>
+          <input type="color" formControlName="secondaryColor" class="w-full h-10 rounded" />
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Color del Botón Primario</label>
+          <input type="color" formControlName="primaryButtonColor" class="w-full h-10 rounded" />
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Color del Botón Secundario</label>
+          <input type="color" formControlName="secondaryButtonColor" class="w-full h-10 rounded" />
+        </div>
+      </div>
+  
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end" class="p-4">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="companyForm.invalid">Guardar</button>
+  </mat-dialog-actions>
+  

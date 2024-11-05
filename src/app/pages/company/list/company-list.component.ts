@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { CompanyService } from "../company.service";
+import { CompanyEditModalComponent } from "../update/company-edit-modal.component";
 
 @Component({
     selector: "app-company-list",
@@ -32,12 +33,25 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
             if (this.company.logo) {
                 // Añade el prefijo si es necesario
                 this.logoUrl = this._sanitizer.bypassSecurityTrustResourceUrl(
-                    `data:image/png;base64,${this.company.logo}`
+                    this.company.logo
                 );
             }
         } else {
             console.error("Error: No se encontraron datos en la respuesta.");
         }
+    }
+
+    openEditDialog() {
+    const dialogRef = this.dialog.open(CompanyEditModalComponent, {
+      width: '500px',
+      data: this.company,
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getCompanyProperties(); // Recarga los datos después de actualizar
+      }
+    });
     }
 
     async ngOnInit() {
