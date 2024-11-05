@@ -12,6 +12,9 @@ import { AppDashboardComponent } from './dashboard/dashboard.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { MatIconModule } from '@angular/material/icon';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { BranchService } from './branch/branch.service';
+import { DashboardService } from './dashboard/dashboard.service';
 
 @NgModule({
   declarations: [AppDashboardComponent],
@@ -26,5 +29,9 @@ import { MatIconModule } from '@angular/material/icon';
 
   ],
   exports: [TablerIconsModule],
+  providers: [
+    NgxSpinnerService,
+    DashboardService
+  ]
 })
 export class PagesModule {}
