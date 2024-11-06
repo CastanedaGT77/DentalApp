@@ -74,14 +74,18 @@ export class CalendarComponent implements OnInit {
         if (!a.appointmentDate || !a.startHour || !a.endHour) {
           throw new Error("Missing appointment date or time");
         }
-        const appointmentStart = this.parseDate(a.appointmentDate, a.startHour);
-        const appointmentEnd = this.parseDate(a.appointmentDate, a.endHour);
-        console.log('horas', appointmentStart, appointmentEnd)
+  
+        // Usar appointmentDate directamente
+        const appointmentStart = new Date(`${a.appointmentDate.split('T')[0]}T${a.startHour}:00Z`);
+        const appointmentEnd = new Date(`${a.appointmentDate.split('T')[0]}T${a.endHour}:00Z`);
+        
+        console.log('Parsed Event Times:', appointmentStart, appointmentEnd);
+  
         tempEvents.push({
           id: a.id,
           start: appointmentStart,
           end: appointmentEnd,
-          title: `${a.patientId.firstName + ' ' + a.patientId.lastName} - ${a.observations}`,
+          title: `${a.patientId.firstName + ' ' + a.patientId.lastName} - ${a.reason}`,
           color: { ...colors['red'] },
           meta: a // Almacenar el objeto de la cita completa en la propiedad meta
         });
@@ -89,30 +93,9 @@ export class CalendarComponent implements OnInit {
         console.error('Error parsing date for appointment:', a, error);
       }
     });
-
+  
     this.events = this.ensureNoOverlap(tempEvents);
     this.refresh.next();
-  }
-
-  parseDate(dateString: string, timeString: string): Date {
-    if (!dateString || !timeString) {
-      throw new Error("Invalid date or time string");
-    }
-  
-    // Parsear la fecha desde formato ISO
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      throw new Error("Invalid date format");
-    }
-  
-    const [hour, minute] = timeString.split(':').map(part => parseInt(part, 10));
-    if (isNaN(hour) || isNaN(minute)) {
-      throw new Error("Invalid time components");
-    }
-  
-    // Ajustar la hora y minuto de la fecha
-    date.setHours(hour, minute);
-    return date;
   }
 
   ensureNoOverlap(events: CalendarEvent[]): CalendarEvent[] {

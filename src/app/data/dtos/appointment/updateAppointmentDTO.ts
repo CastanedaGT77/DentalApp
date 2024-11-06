@@ -4,7 +4,7 @@ export class updateAppointmentDTO {
     public branchId: number;
     public assignedUser: number;
     public appointmentDate: string | null;
-    public observations: string;
+    public reason: string;
     public startHour: string;
     public endHour: string;
 }

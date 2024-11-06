@@ -48,7 +48,7 @@ export class CreateDateComponent implements OnInit {
       branchId: ['', Validators.required],
       assignedUser: ['', Validators.required],
       appointmentDate: ['', Validators.required],
-      observations: ['', Validators.required],
+      reason: ['', Validators.required],
       startHour: ['', Validators.required],
       endHour: ['', Validators.required],
     });
@@ -118,8 +118,8 @@ export class CreateDateComponent implements OnInit {
         patientId: this.form.get('patientId')?.value,
         branchId: this.form.get('branchId')?.value,
         assignedUser: this.form.get('assignedUser')?.value,
-        appointmentDate: this.datePipe.transform(this.form.get('appointmentDate')?.value, 'dd/MM/yyyy'),
-        observations: this.form.get('observations')?.value,
+        appointmentDate: this.datePipe.transform(this.form.get('appointmentDate')?.value, 'MM/dd/yyyy'),
+        reason: this.form.get('reason')?.value,
         startHour: this.form.get('startHour')?.value,
         endHour: this.form.get('endHour')?.value
       };
@@ -182,7 +182,7 @@ export class CreateDateComponent implements OnInit {
     const dateParts = this.appointment.appointmentDate.split('/');
     const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
     this.form.controls["appointmentDate"].setValue(date);
-    this.form.controls["observations"].setValue(this.appointment.observations);
+    this.form.controls["reason"].setValue(this.appointment.reason);
     this.form.controls["startHour"].setValue(this.appointment.startHour);
     this.form.controls["endHour"].setValue(this.appointment.endHour);
   }

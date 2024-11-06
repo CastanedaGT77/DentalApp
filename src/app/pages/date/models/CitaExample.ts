@@ -5,7 +5,7 @@ export class CitaModel {
     public appointmentDate: string;  // formato 'dd/MM/yyyy'
     public startHour: string;        // formato 'HH:mm'
     public endHour: string;          // formato 'HH:mm'
-    public observations: string;
+    public reason: string;
     public patientId: {
         id: number;
         firstName: string;
