@@ -1,6 +1,6 @@
 export class CitaModel {
     public id: number;
-    public branchId: number;
+    public branchId: any;
     public assignedUser: number;
     public appointmentDate: string;  // formato 'dd/MM/yyyy'
     public startHour: string;        // formato 'HH:mm'

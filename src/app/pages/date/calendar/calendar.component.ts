@@ -98,12 +98,21 @@ export class CalendarComponent implements OnInit {
     if (!dateString || !timeString) {
       throw new Error("Invalid date or time string");
     }
-    const [day, month, year] = dateString.split('/').map(part => parseInt(part, 10));
-    const [hour, minute] = timeString.split(':').map(part => parseInt(part, 10));
-    if (isNaN(day) || isNaN(month) || isNaN(year) || isNaN(hour) || isNaN(minute)) {
-      throw new Error("Invalid date or time components");
+  
+    // Parsear la fecha desde formato ISO
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid date format");
     }
-    return new Date(year, month - 1, day, hour, minute);
+  
+    const [hour, minute] = timeString.split(':').map(part => parseInt(part, 10));
+    if (isNaN(hour) || isNaN(minute)) {
+      throw new Error("Invalid time components");
+    }
+  
+    // Ajustar la hora y minuto de la fecha
+    date.setHours(hour, minute);
+    return date;
   }
 
   ensureNoOverlap(events: CalendarEvent[]): CalendarEvent[] {
