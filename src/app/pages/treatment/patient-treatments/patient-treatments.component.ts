@@ -53,18 +53,11 @@ export class PatientTreatmentComponent implements OnInit {
 
   async getTreatmentDetail(treatmentId: number) {
     try {
-      console.log('entra aca')
-        const response = await this._treatment.getTreatmentDetail(treatmentId);
-        if (response && response.data) {
-            this.treatmentD = response.data;
-            console.log('Datos obtenidos all fin:', this.treatmentD);
-            this.dataSource2.data = this.treatmentD;
-            console.log('Datos del dataSource:', this.dataSource2.data);
-        } else {
-            console.error('Error: No se encontraron datos en la respuesta.');
-        }
+      const response = await this._treatment.getTreatmentDetail(treatmentId);
+      return response && response.data ? response : null;
     } catch (error) {
-        console.error('Error al obtener datos:', error);
+      console.error('Error al obtener datos:', error);
+      return null;
     }
   }
 
@@ -73,11 +66,13 @@ export class PatientTreatmentComponent implements OnInit {
   }
 
   async verTratamiento(treatment: number) {
-    await this.getTreatmentDetail(treatment);
-    console.log('datos que mande', this.treatmentD);
-    this._router.navigate(['/treatment/specificTreatment'], { state: { treatmentD: this.treatmentD } });
+    const details = await this.getTreatmentDetail(treatment);
+    console.log('details specific treatment', details)
+    if(details){
+      this._router.navigate(['/treatment/specificTreatment'], { state: { treatmentD: details } });
+    }
   }
-
+  
   editarTreatment(treatment: any) {
     // this._router.navigate(['/treatment/edit'], { state: { treatment: treatment } });
   }
