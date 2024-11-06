@@ -177,11 +177,14 @@ export class CreateDateComponent implements OnInit {
 
   private async initializeForm() {
     this.form.controls["patientId"].setValue(this.appointment.patientId.id);
-    this.form.controls["branchId"].setValue(this.appointment.branchId);
+    this.form.controls["branchId"].setValue(this.appointment.branchId.id);
     this.form.controls["assignedUser"].setValue(this.appointment.assignedUser);
-    const dateParts = this.appointment.appointmentDate.split('/');
-    const date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-    this.form.controls["appointmentDate"].setValue(date);
+    
+    // Crear fecha solo con año, mes y día, sin afectar la zona horaria
+    const appointmentDate = new Date(this.appointment.appointmentDate);
+    const dateWithoutTime = new Date(appointmentDate.getFullYear(), appointmentDate.getMonth(), appointmentDate.getDate()+1);
+    
+    this.form.controls["appointmentDate"].setValue(dateWithoutTime);
     this.form.controls["reason"].setValue(this.appointment.reason);
     this.form.controls["startHour"].setValue(this.appointment.startHour);
     this.form.controls["endHour"].setValue(this.appointment.endHour);
