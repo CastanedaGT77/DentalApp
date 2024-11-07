@@ -17,10 +17,18 @@ export class ReportService {
             return null;
         }
     }
-    
 
-    async getReport3(patient: number){
-
+    async getReportPatient(patient: number){
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get(`/report/patient/${patient}`, {
+                responseType: 'blob'
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener el reporte PDF:", error);
+            return null;
+        }
     }
 
     async getReport2(fecha1: Date | null, fecha2: Date | null){

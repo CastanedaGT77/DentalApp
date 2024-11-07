@@ -68,7 +68,7 @@ export class GeneralComponent implements OnInit {
       if (this.selectedReport === 'financial') {
         pdfBlob = await this.reportService.getReport();
       } else if (this.selectedReport === 'patient') {
-        pdfBlob = await this.reportService.getReport3(this.selectedPatient);
+        pdfBlob = await this.reportService.getReportPatient(1);
       } else if (this.selectedReport === 'summary') {
         pdfBlob = await this.reportService.getReport2(this.startDate, this.endDate);
       }
