@@ -184,6 +184,6 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   }
 
   async returnPage() {
-    this._router.navigateByUrl("/payment/list");
+    this._router.navigateByUrl("/payment/listAll");
   }
 }

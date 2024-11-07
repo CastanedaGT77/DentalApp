@@ -22,6 +22,7 @@ import { MakePaymentComponent } from './make-payment/make-payment.component';
 import { PatientService } from '../patient/patient.service';
 import { TreatmentService } from '../treatment/treatment.service';
 import { SharedModule } from 'src/app/shared.module';
+import { ListAllComponent } from './list-all/list-all.component';
 
 @NgModule({
     imports: [
@@ -42,8 +43,8 @@ import { SharedModule } from 'src/app/shared.module';
     ],
     declarations: [
       ListPendingPaymentComponent,
-      MakePaymentComponent
-      
+      MakePaymentComponent,
+      ListAllComponent
     ],
     providers: [
       PaymentService,

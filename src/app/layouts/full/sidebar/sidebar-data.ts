@@ -75,7 +75,7 @@ export const navItems: NavItem[] = [
   {
     displayName: "Pagos",
     iconName: "brand-visa",
-    route: "payment/makePayment",
+    route: "payment/listAll",
     permissions: [EPermissions.LISTAR_PAGOS] // Rol de listar pagos
   },
   {

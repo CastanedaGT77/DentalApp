@@ -18,6 +18,18 @@ export class PaymentService {
         }
     }
 
+    //todos los pagos 
+    async getAllPayments(){
+        try{
+            const response = await axiosClient.get('/payment/all');
+            return response.data;
+        }catch(error){
+            // Maneja cualquier error y devuelve null
+            console.error("Error al obtener todos los pagos:", error);
+            return null;
+        }
+    }
+
     //pagos por paciente
     async getPatientPendingPayment(id: number) {
         try {
@@ -60,6 +72,19 @@ export class PaymentService {
         console.error('Error al crear el pago:', error);
         return null;
     }
+    }
+
+    async getDocument(fileCode: any) {
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get(`/payment/receipt/${fileCode}`, {
+                responseType: 'blob' // Importante para recibir datos binarios
+            });
+            return response.data; // Retorna el blob del archivo
+        } catch (error) {
+            console.error("Error al obtener documento:", error);
+            return null;
+        }
     }
 
 }
