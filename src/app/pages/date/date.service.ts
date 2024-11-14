@@ -5,6 +5,7 @@ import { createAppointmentDTO } from "src/app/data/dtos/appointment/createAppoin
 import { HttpStatusCode } from "axios";
 import { updateAppointmentDTO } from "src/app/data/dtos/appointment/updateAppointmentDTO";
 import { DeleteAppointment } from "./delete/delete-appointment.component";
+import { finishAppointmentDTO } from "src/app/data/dtos/appointment/finishAppointmentDTO";
 
 
 
@@ -66,4 +67,26 @@ export class DateService {
         return null;
     }
   }       
+
+  //empezar cita
+  async startAppointment(id: number) {
+    try {
+        const response = await axiosClient.get(`/appointment/start/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al empezar citas", error);
+        return null;
+    }
+  }
+
+  //finalizar la cita
+  async finishAppointment(data: Partial<finishAppointmentDTO>) {
+    try {
+        const response = await axiosClient.post('/appointment/finish', data);
+        return response.data; // Retorna la respuesta completa del backend
+    } catch (error) {
+        console.error('Error al finalizar la cita:', error);
+        return null;
+    }
+  }
 }

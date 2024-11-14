@@ -29,6 +29,8 @@ import { BranchService } from '../branch/branch.service';
 import { UserService } from '../user/user.service';
 import { DeleteAppointment } from './delete/delete-appointment.component';
 import { SharedModule } from 'src/app/shared.module';
+import { FinishComponent } from './finish/finish.component';
+import { TreatmentService } from '../treatment/treatment.service';
 
 // Registrar los datos de localización en español
 registerLocaleData(localeEs);
@@ -58,10 +60,12 @@ registerLocaleData(localeEs);
     CalendarComponent,
     CreateDateComponent,
     AppointmentDetailsDialog,
-    DeleteAppointment
+    DeleteAppointment,
+    FinishComponent
   ],
   providers: [
     PatientService,
+    TreatmentService,
     DateService,
     BranchService,
     UserService,

@@ -113,12 +113,18 @@ export class CreateDateComponent implements OnInit {
     }
   
     if (this.form.valid) {
+      console.log('Fecha seleccionada antes de transformación:', this.form.get('appointmentDate')?.value);
+      const rawDate = this.form.get('appointmentDate')?.value;
+      const formattedDate = rawDate instanceof Date 
+        ? this.datePipe.transform(rawDate, 'dd/MM/yyyy') 
+        : this.datePipe.transform(new Date(rawDate), 'dd/MM/yyyy');
+  
       const data = {
         appointmentId: this.appointment ? this.appointment.id : undefined,
         patientId: this.form.get('patientId')?.value,
         branchId: this.form.get('branchId')?.value,
         assignedUser: this.form.get('assignedUser')?.value,
-        appointmentDate: this.datePipe.transform(this.form.get('appointmentDate')?.value, 'MM/dd/yyyy'),
+        appointmentDate: formattedDate,
         reason: this.form.get('reason')?.value,
         startHour: this.form.get('startHour')?.value,
         endHour: this.form.get('endHour')?.value
@@ -150,11 +156,9 @@ export class CreateDateComponent implements OnInit {
               this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
               this.form.reset();
               this.returnPage();
-            }
-            else if (response && response.code === 400) {
+            } else if (response && response.code === 400) {
               const message = "La cita no puede ser asignada en la fecha y hora seleccionada porque ya existe una, por favor seleccione un nuevo horario!";
               this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-              // Mantener al usuario en el formulario sin limpiar los datos, para que pueda modificar el horario
             } else {
               const errorMessage = this.type === "create" ? "Error al crear la cita" : "Error al actualizar la cita";
               this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });

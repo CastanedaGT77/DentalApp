@@ -3,6 +3,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { CreateDateComponent } from './create/create-date.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { EPermissions } from 'src/app/utils/permissionEnum';
+import { FinishComponent } from './finish/finish.component';
 
 export const DateRouting: Routes = [
   {
@@ -33,7 +34,15 @@ export const DateRouting: Routes = [
           type: 'edit',
           permissions: [EPermissions.ACTUALIZAR_CITAS]
         }
-      }
+      },
+      {
+        path: 'finish',
+        component: FinishComponent,
+        canActivate: [AuthGuard],
+        data: {
+          permissions: [EPermissions.ACTUALIZAR_CITAS] //pendiente ver permiso
+        }
+      },
     ],
   },
 ];

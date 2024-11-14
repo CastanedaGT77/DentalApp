@@ -4,6 +4,7 @@ import { CitaModel } from '../models/CitaExample';
 import { Router } from '@angular/router';
 import { DeleteAppointment } from '../delete/delete-appointment.component';
 import { EPermissions } from 'src/app/utils/permissionEnum';
+import { DateService } from '../date.service';
 
 @Component({
   selector: 'appointment-details-dialog',
@@ -13,11 +14,12 @@ export class AppointmentDetailsDialog  {
 
   actualizarCitas: Array<EPermissions>;
   eliminarCitas: Array<EPermissions>;
+  startAppointments!: any;
   
   constructor(
     private readonly _router: Router,
     public dialog: MatDialog,
-
+    private readonly _dateService: DateService,
     public dialogRef: MatDialogRef<AppointmentDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: CitaModel
   ) {
@@ -46,4 +48,10 @@ export class AppointmentDetailsDialog  {
     this._router.navigate(['/date/edit'], { state: { appointment: appointment } });
     this.dialogRef.close();
   }
+
+  async finalizarAppointment(appointment: any){
+    this._router.navigate(['/date/finish'], { state: { appointment: appointment } });
+    this.dialogRef.close();
+  }
+
 }

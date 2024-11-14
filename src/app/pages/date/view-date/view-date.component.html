@@ -19,6 +19,10 @@
 </div>
 
 <div mat-dialog-actions class="flex justify-end space-x-4 mt-6">
+  <button mat-raised-button class="bg-primary-button" (click)="finalizarAppointment(data)" *appHasPermission="actualizarCitas">
+    Atender
+    <mat-icon class="ml-1" fontIcon="edit"></mat-icon>
+  </button>
   <button mat-raised-button color="primary" (click)="editarAppointment(data)" *appHasPermission="actualizarCitas">
     Editar
     <mat-icon class="ml-1" fontIcon="edit"></mat-icon>

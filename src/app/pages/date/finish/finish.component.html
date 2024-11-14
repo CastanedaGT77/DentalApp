@@ -1,0 +1,102 @@
+<mat-card class="cardWithShadow p-6">
+    <mat-card-content>
+      <div class="flex justify-center space-x-6 mt-6">
+        <div>
+          <mat-card-title>Finalizar Cita</mat-card-title>
+        </div>
+      </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="cardWithShadow p-6">
+    <mat-card-content>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Información General -->
+        <div class="p-4 rounded-md shadow">
+          <h2 class="text-lg font-semibold mb-4 border-b pb-2">Información General</h2>
+          <p><strong>Fecha de creación:</strong> {{ appointment?.created_at | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Razón:</strong> {{ appointment?.reason }}</p>
+          <p><strong>Sucursal:</strong> {{ appointment?.branchId?.name }}</p>
+          <p><strong>Creada por:</strong> Usuario A</p>
+        </div>
+  
+        <!-- Información del Paciente -->
+        <div class="p-4 rounded-md shadow">
+          <h2 class="text-lg font-semibold mb-4 border-b pb-2">Información del Paciente</h2>
+          <div class="flex items-center space-x-4">
+            <img
+              *ngIf="appointment?.patientId?.profileImage"
+              [src]="appointment?.patientId?.profileImage"
+              alt="Imagen del paciente"
+              class="w-24 h-24 rounded-full object-cover border border-gray-300"
+            />
+            <div>
+              <p><strong>Nombre:</strong> {{ appointment?.patientId?.firstName }}</p>
+              <p><strong>Apellidos:</strong> {{ appointment?.patientId?.lastName }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Botones de Acción -->
+      <div class="flex justify-center space-x-6 mt-6">
+        <button mat-raised-button color="primary">Mostrar citas</button>
+        <button mat-raised-button color="primary">Mostrar todos los detalles</button>
+        <button mat-raised-button color="primary">Ficha clínica</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+<!-- Tratamientos disponibles -->
+<mat-card class="cardWithShadow p-6 mt-6">
+    <mat-card-title>Tratamientos disponibles</mat-card-title>
+    <mat-card-subtitle class="text-sm text-gray-600">
+      Seleccione los elementos que aplicará en la visita del paciente:
+    </mat-card-subtitle>
+    <mat-card-content>
+      <div *ngFor="let treatment of treatment" class="mt-6 border-t pt-4">
+        <h3 class="text-lg font-medium text-gray-800">{{ treatment.name }}</h3>
+        <div *ngFor="let detail of treatment.treatmentDetails" class="flex items-center mt-2">
+          <mat-checkbox
+            class="mr-2"
+            (change)="toggleTreatmentDetail(detail.id)"
+            [checked]="selectedTreatmentDetails.includes(detail.id)"
+          >
+            {{ detail.treatmentType.name }} - Pieza {{ detail.piece }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card class="cardWithShadow mt-6 p-6">
+    <mat-card-content>
+      <h2 class="text-lg font-semibold mb-4">Datos de la Cita</h2>
+      <form [formGroup]="form" class="space-y-4">
+        <!-- Síntomas -->
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>Síntomas</mat-label>
+          <textarea matInput formControlName="symptoms"></textarea>
+        </mat-form-field>
+  
+        <!-- Descripción -->
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+  
+        <!-- Métodos Aplicados -->
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>Métodos Aplicados</mat-label>
+          <textarea matInput formControlName="appliedMethods"></textarea>
+        </mat-form-field>
+  
+        <!-- Botones de Acción -->
+        <div class="flex justify-end space-x-4">
+          <button mat-flat-button color="warn" (click)="returnPage()">Cancelar</button>
+          <button mat-flat-button color="primary" (click)="finishAppointment()">Finalizar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  
