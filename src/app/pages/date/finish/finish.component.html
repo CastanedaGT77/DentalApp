@@ -47,14 +47,13 @@
     </mat-card-content>
   </mat-card>
 
-<!-- Tratamientos disponibles -->
-<mat-card class="cardWithShadow p-6 mt-6">
+  <mat-card class="cardWithShadow p-6 mt-6">
     <mat-card-title>Tratamientos disponibles</mat-card-title>
     <mat-card-subtitle class="text-sm text-gray-600">
       Seleccione los elementos que aplicará en la visita del paciente:
     </mat-card-subtitle>
     <mat-card-content>
-      <div *ngFor="let treatment of treatment" class="mt-6 border-t pt-4">
+      <div *ngFor="let treatment of treatment" class="mt-6">
         <h3 class="text-lg font-medium text-gray-800">{{ treatment.name }}</h3>
         <div *ngFor="let detail of treatment.treatmentDetails" class="flex items-center mt-2">
           <mat-checkbox
@@ -68,7 +67,7 @@
       </div>
     </mat-card-content>
   </mat-card>
-  
+
   <mat-card class="cardWithShadow mt-6 p-6">
     <mat-card-content>
       <h2 class="text-lg font-semibold mb-4">Datos de la Cita</h2>
