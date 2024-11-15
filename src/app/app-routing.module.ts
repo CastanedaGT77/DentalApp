@@ -184,6 +184,19 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: '',
+    component: BlankComponent,
+    children: [
+      {
+        path: 'clinic',
+        loadChildren: () =>
+          import('./pages/unprotected/unprotected.module').then(
+            (m) => m.UnprotectedModule
+          ),
+      }
+    ]
+  }
 ];
 
 @NgModule({

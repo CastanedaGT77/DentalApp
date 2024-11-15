@@ -6,6 +6,11 @@ export const axiosClient = axios.create({
     timeout: 5000
 });
 
+// export const axiosClient = axios.create({
+//     baseURL: 'http://localhost:3000/api',
+//     timeout: 5000
+// });
+
 let router: Router;
 
 export const setAxiosClientRouter = (r: Router) => {
