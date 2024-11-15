@@ -15,7 +15,7 @@ export class AppointmentDetailsDialog  {
   actualizarCitas: Array<EPermissions>;
   eliminarCitas: Array<EPermissions>;
   startAppointments!: any;
-  
+
   constructor(
     private readonly _router: Router,
     public dialog: MatDialog,
@@ -32,26 +32,38 @@ export class AppointmentDetailsDialog  {
   }
 
   eliminarAppointment(appointment: any): void {
-    console.log('funciona date delete', appointment);
     this.dialog.open(DeleteAppointment, {
-        width: '300px',
-        data: { appointment: appointment },
-        
+      width: '300px',
+      data: { appointment: appointment },
     }).afterClosed().subscribe(data => {
-        if(data){
-          this.dialogRef.close();
-        }
+      if (data) {
+        this.dialogRef.close();
+      }
     });
-}
+  }
 
   editarAppointment(appointment: any) {
     this._router.navigate(['/date/edit'], { state: { appointment: appointment } });
     this.dialogRef.close();
   }
 
-  async finalizarAppointment(appointment: any){
+  async finalizarAppointment(appointment: any) {
     this._router.navigate(['/date/finish'], { state: { appointment: appointment } });
     this.dialogRef.close();
   }
 
+  getStatusText(status: number): string {
+    switch (status) {
+      case 0:
+        return 'Pendiente';
+      case 1:
+        return 'Finalizada';
+      case 2:
+        return 'Cancelada';
+      case 3:
+        return 'No asistió';
+      default:
+        return 'Desconocido';
+    }
+  }
 }

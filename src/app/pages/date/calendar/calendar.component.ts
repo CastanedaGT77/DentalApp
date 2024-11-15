@@ -11,16 +11,20 @@ import { AppointmentDetailsDialog } from '../view-date/view-date.component';
 
 const colors: Record<string, any> = {
   red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3',
+    primary: '#FF5252',
+    secondary: '#FFCDD2',
   },
   blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF',
+    primary: '#2196F3',
+    secondary: '#BBDEFB',
+  },
+  green: {
+    primary: '#4CAF50',
+    secondary: '#C8E6C9',
   },
   yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA',
+    primary: '#FFC107',
+    secondary: '#FFECB3',
   },
 };
 
@@ -56,15 +60,15 @@ export class CalendarComponent implements OnInit {
   async ngOnInit() {
     try {
       this.appointments = await this.dateService.getAppointment();
-      console.log('dates', this.appointments)
+      console.log('dates', this.appointments);
       await this.createCalendarEvents();
     } catch (error) {
-      console.error("Error al obtener citas:", error);
+      console.error('Error al obtener citas:', error);
     }
   }
 
   redirectCreate() {
-    this._router.navigateByUrl("/date/create");
+    this._router.navigateByUrl('/date/create');
   }
 
   async createCalendarEvents() {
@@ -72,28 +76,47 @@ export class CalendarComponent implements OnInit {
     this.appointments.forEach(a => {
       try {
         if (!a.appointmentDate || !a.startHour || !a.endHour) {
-          throw new Error("Missing appointment date or time");
+          throw new Error('Missing appointment date or time');
         }
-  
+
         // Usar appointmentDate directamente
         const appointmentStart = new Date(`${a.appointmentDate.split('T')[0]}T${a.startHour}:00Z`);
         const appointmentEnd = new Date(`${a.appointmentDate.split('T')[0]}T${a.endHour}:00Z`);
-        
+
         console.log('Parsed Event Times:', appointmentStart, appointmentEnd);
-  
+
+        // Asignar color según el estado
+        let eventColor;
+        switch (a.status) {
+          case 0: // Pendiente
+            eventColor = colors['blue'];
+            break;
+          case 1: // Finalizada
+            eventColor = colors['green'];
+            break;
+          case 2: // Cancelada
+            eventColor = colors['red'];
+            break;
+          case 3: // No asistió
+            eventColor = colors['yellow'];
+            break;
+          default:
+            eventColor = colors['blue']; // Color por defecto
+        }
+
         tempEvents.push({
           id: a.id,
           start: appointmentStart,
           end: appointmentEnd,
           title: `${a.patientId.firstName + ' ' + a.patientId.lastName} - ${a.reason}`,
-          color: { ...colors['red'] },
+          color: eventColor,
           meta: a // Almacenar el objeto de la cita completa en la propiedad meta
         });
       } catch (error) {
         console.error('Error parsing date for appointment:', a, error);
       }
     });
-  
+
     this.events = this.ensureNoOverlap(tempEvents);
     this.refresh.next();
   }
@@ -146,7 +169,7 @@ export class CalendarComponent implements OnInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    if (action === "Clicked") {
+    if (action === 'Clicked') {
       // Abrir modal donde muestre información de la cita
       this.modalData = { event, action };
       this.openAppointmentDetails(event.meta);
@@ -158,6 +181,7 @@ export class CalendarComponent implements OnInit {
       width: '600px',
       data: appointment
     });
+    console.log('data cita', appointment);
   }
 
   openNewAppointmentModal() {

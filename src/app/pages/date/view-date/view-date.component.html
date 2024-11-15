@@ -8,12 +8,12 @@
   </div>
   
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <p><strong class="text-gray-600">Estado:</strong> {{ getStatusText(data.status) }}</p>
+    <p><strong class="text-gray-600">Fecha:</strong> {{data.appointmentDate | date : "dd-MM-yyyy" }}, De: {{data.startHour}} A: {{data.endHour}}  </p>
     <p><strong class="text-gray-600">Sucursal:</strong> {{data.branchId.name}}</p>
-    <p><strong class="text-gray-600">Encargado:</strong> {{data.assignedUser}}</p>
-    <p><strong class="text-gray-600">Fecha:</strong> {{data.appointmentDate }}</p>
-    <p><strong class="text-gray-600">Hora de Inicio:</strong> {{data.startHour}}</p>
-    <p><strong class="text-gray-600">Hora de Finalización:</strong> {{data.endHour}}</p>
-    <p><strong class="text-gray-600">Estado:</strong> {{data.status}}</p>
+    <p><strong class="text-gray-600">Encargado:</strong> {{data.assignedUser.firstName}} {{data.assignedUser.lastName}} </p>
+    <!-- <p><strong class="text-gray-600">Hora de Inicio:</strong> {{data.startHour}}</p>
+    <p><strong class="text-gray-600">Hora de Finalización:</strong> {{data.endHour}}</p> -->
     <p class="sm:col-span-2"><strong class="text-gray-600">Descripción:</strong> {{data.reason}}</p>
   </div>
 </div>

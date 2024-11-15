@@ -35,9 +35,9 @@ export class CompanyEditModalComponent {
       secondaryButtonColor: [data.secondaryButtonColor || '#ffffff', Validators.required],
     });
 
-    // Set preview if logo is provided
     if (data.logo) {
       this.previewLogo = this.sanitizer.bypassSecurityTrustUrl(data.logo);
+      this.logoBase64 = data.logo; // Inicializamos logoBase64 si el logo ya existe
     }
   }
 
@@ -46,30 +46,30 @@ export class CompanyEditModalComponent {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.logoBase64 = reader.result as string;
-        this.previewLogo = this.sanitizer.bypassSecurityTrustUrl(this.logoBase64);
+        this.logoBase64 = reader.result as string; // Guardamos el logo en Base64
+        this.previewLogo = this.sanitizer.bypassSecurityTrustUrl(this.logoBase64); // Actualizamos el preview
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Convertimos el archivo a Base64
     }
   }
 
   async onSave() {
     this.spinnerService.show();
-    
+
     try {
       const companyData: UpdateCompanyDTO = {
         ...this.companyForm.value,
-        logo: this.logoBase64,
+        logo: this.logoBase64, // Enviamos el logo en Base64
       };
 
       const response = await this.companyService.updateCompany(companyData);
 
       if (response) {
-        this.snackBar.open('Compañía actualizada exitosamente, sí realizo cambios en configuración se recomienda cerrar sesión!', 'Cerrar', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
+        this.snackBar.open(
+          'Compañía actualizada exitosamente, sí realizó cambios en configuración se recomienda cerrar sesión!',
+          'Cerrar',
+          { duration: 3000, horizontalPosition: 'center', verticalPosition: 'top' }
+        );
         this.dialogRef.close(true);
       } else {
         throw new Error('No se pudo actualizar la compañía');
