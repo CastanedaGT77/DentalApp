@@ -32,6 +32,18 @@ export class TreatmentService {
         }
     }
 
+    //tratamientos por paciente
+    async getPatientTreatmentPending(id: number) {
+        try {
+            //axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get(`/treatment/patient/pending/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener pending treatment:", error);
+            return null;
+        }
+    }
+
      //detalle de un tratamiento por id
      async getTreatmentDetail(id: number) {
         try {

@@ -62,7 +62,7 @@ export class FinishComponent implements OnInit {
 
   async getPatientTreatment(patientId: number) {
     try {
-      const response = await this._treatmentService.getPatientTreatment(patientId);
+      const response = await this._treatmentService.getPatientTreatmentPending(patientId);
       if (response && response.data) {
         this.treatment = response.data; // Tratamientos obtenidos
         console.log('Datos obtenidos:', this.treatment);
