@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DeleteAppointment } from '../delete/delete-appointment.component';
 import { EPermissions } from 'src/app/utils/permissionEnum';
 import { DateService } from '../date.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'appointment-details-dialog',
@@ -19,6 +20,7 @@ export class AppointmentDetailsDialog  {
   constructor(
     private readonly _router: Router,
     public dialog: MatDialog,
+    private datePipe: DatePipe,
     private readonly _dateService: DateService,
     public dialogRef: MatDialogRef<AppointmentDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: CitaModel
@@ -40,6 +42,13 @@ export class AppointmentDetailsDialog  {
         this.dialogRef.close();
       }
     });
+  }
+
+  getFormattedDate(date: string): string {
+    // Ajustar la fecha para corregir la zona horaria
+    const adjustedDate = new Date(date);
+    adjustedDate.setMinutes(adjustedDate.getMinutes() + adjustedDate.getTimezoneOffset());
+    return this.datePipe.transform(adjustedDate, 'dd/MM/yyyy') || '';
   }
 
   editarAppointment(appointment: any) {

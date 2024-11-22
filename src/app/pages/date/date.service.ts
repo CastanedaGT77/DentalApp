@@ -9,7 +9,10 @@ import { finishAppointmentDTO } from "src/app/data/dtos/appointment/finishAppoin
 
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root', // Esto lo hace accesible en toda la aplicación
+})
+
 export class DateService {
 
   async getAppointment(): Promise<CitaModel[]> {

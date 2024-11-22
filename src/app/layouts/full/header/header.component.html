@@ -1,14 +1,8 @@
 <mat-toolbar class="topbar">
-
-
   <!-- Mobile Menu -->
   <button mat-icon-button (click)="toggleMobileNav.emit()" *ngIf="!showToggle">
     <i-tabler name="menu-2" class="icon-20 d-flex"></i-tabler>
   </button>
-  <!-- --------------------------------------------------------------- -->
-
-
-  <!-- Espacio flexible para empujar el contenido hacia la derecha -->
   <span class="flex-grow"></span>
 
   <!-- Mostrar el nombre del usuario -->
@@ -16,28 +10,52 @@
     {{ userName }}
   </span>
 
-  <!-- --------------------------------------------------------------- -->
-  <!-- Notification Dropdown -->
-  <!-- --------------------------------------------------------------- -->
-
- 
-
-  <button mat-icon-button aria-label="Notifications">
-    <i-tabler
-      class="d-flex"
-      name="bell"
-      matBadge="1"
-      matBadgeColor="primary"
-    ></i-tabler>
+  <!-- Notificaciones -->
+  <button
+    mat-icon-button
+    aria-label="Notifications"
+    [matMenuTriggerFor]="menu"
+    matBadge="{{ notifications.length }}"
+    matBadgeColor="primary"
+  >
+    <i-tabler class="d-flex" name="bell"></i-tabler>
   </button>
 
-  <button mat-icon-button aria-label="Notifications" (click)="logout()" matTooltip="Cerrar sesión">
-    <i-tabler
-      class="d-flex"
-      name="logout"
-      matBadgeColor="primary"
-    ></i-tabler>
-  </button>
+  <mat-menu #menu="matMenu" class="notifications-menu">
+    <ng-container *ngIf="notifications.length > 0; else noNotifications">
+      <div *ngFor="let notification of notifications" class="flex items-center space-x-3 px-4 py-2">
+        <!-- Indicador de color -->
+        <span
+          class="w-3 h-3 rounded-full"
+          [ngClass]="getStatusColor(notification.status)"
+        ></span>
+      
+        <!-- Detalles de la notificación -->
+        <div class="text-sm">
+          <p class="font-semibold text-gray-800">
+            {{ notification.patientId.firstName }} {{ notification.patientId.lastName }}
+          </p>
+          <p class="text-gray-600">
+            {{ getFormattedDate(notification.appointmentDate) }} -
+            {{ notification.startHour }} a {{ notification.endHour }}
+          </p>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noNotifications>
+      <div class="text-center p-4">
+        <p class="text-sm text-gray-600">No hay notificaciones</p>
+      </div>
+    </ng-template>
+  </mat-menu>
 
-  
+  <!-- Logout -->
+  <button
+    mat-icon-button
+    aria-label="Cerrar sesión"
+    (click)="logout()"
+    matTooltip="Cerrar sesión"
+  >
+    <i-tabler class="d-flex" name="logout"></i-tabler>
+  </button>
 </mat-toolbar>

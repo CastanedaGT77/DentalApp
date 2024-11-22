@@ -33,6 +33,7 @@ import { setAxiosClientRouter } from './axios/axiosConfig';
 import { SharedModule } from './shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfigService } from './pages/authentication/config.service';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { ConfigService } from './pages/authentication/config.service';
     NgxSpinnerModule,
     SharedModule, 
     MatIconModule,
+    MatMenuModule
   ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],
