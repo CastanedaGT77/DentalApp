@@ -18,7 +18,7 @@ export class AppSideLoginComponent {
     private authService: AuthenticationService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private configService: ConfigService // Inyecta el ConfigService aquí
+    private configService: ConfigService
   ) {
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
@@ -35,23 +35,29 @@ export class AppSideLoginComponent {
     try {
       const response = await this.authService.login(this.loginForm.value);
       if (response) {
-        this.snackBar.open('Acceso exitoso, bienvenido'+ ' ' + response.firstName + ' ' + response.lastName, 'Cerrar', { duration: 3000 });
-        // Guardar el token en el localStorage
-        console.log(response)
-        localStorage.setItem('name',response.firstName+ ' ' + response.lastName);
+        this.snackBar.open(
+          `Acceso exitoso, bienvenido ${response.firstName} ${response.lastName}`,
+          'Cerrar',
+          { duration: 3000 }
+        );
+        localStorage.setItem(
+          'name',
+          `${response.firstName} ${response.lastName}`
+        );
         localStorage.setItem('access_token', response.token);
         localStorage.setItem('companyId', response.companyId);
         localStorage.setItem('properties', JSON.stringify(response.properties));
-        this.configService.applyStylesFromLocalStorage(); // Actualizar estilos después del login
+        this.configService.applyStylesFromLocalStorage();
         this.router.navigate(['/dashboard']);
       }
     } catch (error) {
-      this.snackBar.open('Error en el login. Verifique sus credenciales.', 'Cerrar', {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        'Error en el login. Verifique sus credenciales.',
+        'Cerrar',
+        { duration: 3000 }
+      );
     } finally {
       this.loading = false;
     }
   }
-
 }
