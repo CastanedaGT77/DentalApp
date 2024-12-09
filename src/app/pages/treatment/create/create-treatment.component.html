@@ -52,7 +52,7 @@
       </div>
 
       <div class="flex justify-end mt-4">
-        <button mat-raised-button color="primary" type="submit" *ngIf="type === 'edit'">{{'Actualizar'}}</button>
+        <button mat-raised-button class="bg-primary text-white" type="submit" *ngIf="type === 'edit'">{{'Actualizar'}}</button>
       </div>
 
       <h3 class="text-lg font-semibold mb-2 mt-4">Tratamientos:</h3>
@@ -90,16 +90,16 @@
             <mat-icon>delete</mat-icon>
           </button>
           
-          <button mat-icon-button color="primary" *ngIf="type === 'edit' && !treatmentType.get('id')?.value" (click)="saveNewTreatmentType(i)">
+          <button mat-icon-button class="bg-primary text-white" *ngIf="type === 'edit' && !treatmentType.get('id')?.value" (click)="saveNewTreatmentType(i)">
             <mat-icon>save</mat-icon>
           </button>
         </div>
         
       </div>
-      <button mat-button color="primary" class="mt-4" (click)="addTreatmentType()">Agregar Tratamiento</button>
+      <button mat-button class="bg-primary text-white mt-4" (click)="addTreatmentType()">Agregar Tratamiento</button>
 
       <div class="flex justify-end mt-4">
-        <button mat-raised-button color="primary" type="submit" *ngIf="type === 'create'">{{ type === 'create' ? 'Crear' : 'Actualizar' }}</button>
+        <button mat-raised-button class="bg-primary text-white" type="submit" *ngIf="type === 'create'">{{ type === 'create' ? 'Crear' : 'Actualizar' }}</button>
       </div>
     </form>
   </mat-card-content>

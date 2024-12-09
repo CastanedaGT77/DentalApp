@@ -19,11 +19,11 @@
 </div>
 
 <div mat-dialog-actions class="flex justify-end space-x-4 mt-6">
-  <button mat-raised-button class="bg-primary-button" (click)="finalizarAppointment(data)" *appHasPermission="actualizarCitas">
+  <button mat-raised-button class="bg-primary text-white" (click)="finalizarAppointment(data)" *appHasPermission="actualizarCitas">
     Atender
     <mat-icon class="ml-1" fontIcon="edit"></mat-icon>
   </button>
-  <button mat-raised-button color="primary" (click)="editarAppointment(data)" *appHasPermission="actualizarCitas">
+  <button mat-raised-button class="bg-primary text-white" (click)="editarAppointment(data)" *appHasPermission="actualizarCitas">
     Editar
     <mat-icon class="ml-1" fontIcon="edit"></mat-icon>
   </button>
@@ -31,7 +31,7 @@
     Eliminar
     <mat-icon class="ml-1" fontIcon="delete"></mat-icon>
   </button>
-  <button mat-raised-button color="primary" (click)="onNoClick()">
+  <button mat-raised-button class="bg-secondary text-white" (click)="onNoClick()">
     Cerrar
     <mat-icon class="ml-1">close</mat-icon>
   </button>

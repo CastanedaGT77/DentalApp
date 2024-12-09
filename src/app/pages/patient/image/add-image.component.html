@@ -1,9 +1,9 @@
 <h2 mat-dialog-title>Agregar imagen</h2>
 <mat-dialog-content>
   Selecciona la imagen
-  <input class="mb-5" (change)="capturarFile($event)" color="primary" accept=".jpg,.png,.jpeg" #fileInput type="file">
+  <input class="mb-5" (change)="capturarFile($event)" color="bg-primary" accept=".jpg,.png,.jpeg" #fileInput type="file">
   <img width="250px" [src]="previsualizacion">
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button color="whiteLetter" mat-flat-button mat-dialog-close>Cerrar</button>
+  <button class="bg-secondary text-white" mat-flat-button mat-dialog-close>Cerrar</button>
 </mat-dialog-actions>

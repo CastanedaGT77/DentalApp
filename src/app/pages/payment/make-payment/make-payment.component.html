@@ -90,8 +90,8 @@
             <h3>Total a pagar: Q{{totalAmount}}</h3>
           </div>
           <div>
-            <button mat-button matStepperPrevious>Anterior</button>
-            <button mat-button matStepperNext [disabled]="!isAnyTreatmentSelected() || !allAmountsValid()">Siguiente</button>
+            <button class="bg-secondary text-white" mat-button matStepperPrevious>Anterior</button>
+            <button class="bg-primary text-white" mat-button matStepperNext [disabled]="!isAnyTreatmentSelected() || !allAmountsValid()">Siguiente</button>
           </div>
         </div>
 
@@ -128,8 +128,8 @@
             <h3>Total a pagar: Q{{totalAmount}}</h3>
           </div>
           <div>
-            <button mat-button matStepperPrevious>Anterior</button>
-            <button mat-raised-button color="primary" (click)="createPayment()" [disabled]="!formValid()">Finalizar Pago</button>
+            <button mat-button matStepperPrevious class="bg-secondary text-white" >Anterior</button>
+            <button mat-raised-button class="bg-primary text-white" (click)="createPayment()" [disabled]="!formValid()">Finalizar Pago</button>
           </div>
         </form>
       </mat-step>
@@ -153,10 +153,10 @@
           </div>
           
           <div class="flex justify-end mt-4 space-x-2">
-            <button mat-stroked-button color="primary" matStepperPrevious class="px-4 py-2">
+            <button mat-stroked-button matStepperPrevious class="bg-secondary text-white px-4 py-2">
               <mat-icon>arrow_back</mat-icon> Anterior
             </button>
-            <button mat-raised-button color="primary" (click)="returnPage()" class="px-4 py-2">
+            <button mat-raised-button (click)="returnPage()" class="bg-primary text-white px-4 py-2">
               <mat-icon>done</mat-icon> Finalizar
             </button>
           </div>

@@ -5,7 +5,7 @@
         <mat-card-title>Calendario de Citas</mat-card-title>
       </div>
       <div>
-        <button mat-flat-button color="primary" (click)="redirectCreate()">
+        <button mat-flat-button class="bg-primary text-white" (click)="redirectCreate()">
           Agregar cita
         </button>
       </div>
@@ -15,24 +15,24 @@
 
 <div class="flex justify-between items-center mt-4">
   <div >
-    <button mat-stroked-button color="primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+    <button mat-stroked-button class="bg-primary text-white" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
       Previo
     </button>
-    <button mat-stroked-button color="primary" mwlCalendarToday [(viewDate)]="viewDate">
+    <button mat-stroked-button class="bg-primary text-white" mwlCalendarToday [(viewDate)]="viewDate">
       Hoy
     </button>
-    <button mat-stroked-button color="primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+    <button mat-stroked-button class="bg-primary text-white" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
       Siguiente
     </button>
   </div>
   <div >
-    <button mat-stroked-button color="primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+    <button mat-stroked-button class="bg-primary text-white" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
       Mes
     </button>
-    <button mat-stroked-button color="primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+    <button mat-stroked-button class="bg-primary text-white" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
       Semana
     </button>
-    <button mat-stroked-button color="primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+    <button mat-stroked-button class="bg-primary text-white" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
       Día
     </button>
   </div>

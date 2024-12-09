@@ -59,8 +59,8 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="p-4">
-  <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="companyForm.invalid">
+  <button mat-button class="bg-secondary text-white" (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button class="bg-primary text-white" (click)="onSave()" [disabled]="companyForm.invalid">
     Guardar
   </button>
 </mat-dialog-actions>

@@ -13,8 +13,8 @@
           <div mat-card-avatar class="example-header-image">
             <img mat-card-image [src]="sanitizedImage" alt="Patient Image">
           </div>
-          <button *ngIf="type === 'create' " (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Agregar imagen</button>
-          <button *ngIf="type === 'edit' " (click)="openDialog('0ms', '0ms')" mat-flat-button color="primary">Actualizar imagen</button>
+          <button *ngIf="type === 'create' " (click)="openDialog('0ms', '0ms')" mat-flat-button class="bg-primary text-white">Agregar imagen</button>
+          <button *ngIf="type === 'edit' " (click)="openDialog('0ms', '0ms')" mat-flat-button class="bg-primary text-white">Actualizar imagen</button>
       </div>
   </mat-card-content>
 </mat-card>
@@ -152,7 +152,7 @@
           <div class="flex grow">
             <br>
             <br>
-            <button matStepperNext (click)="onSubmit()"  mat-raised-button color="primary" type="submit" class="grow h-14">Guardar</button>
+            <button matStepperNext (click)="onSubmit()"  mat-raised-button type="submit" class="bg-primary text-white grow h-14">Guardar</button>
           </div>
       </mat-step>
     </mat-stepper>
