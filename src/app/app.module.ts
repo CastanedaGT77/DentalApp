@@ -34,6 +34,8 @@ import { SharedModule } from './shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfigService } from './pages/authentication/config.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { UnprotectedModule } from './pages/unprotected/unprotected.module';
+import { InitialComponent } from './pages/unprotected/initial/initial.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import { MatMenuModule } from '@angular/material/menu';
     HeaderComponent,
     BrandingComponent,
     AppNavItemComponent,
+    InitialComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,7 @@ import { MatMenuModule } from '@angular/material/menu';
     NgxSpinnerModule,
     SharedModule, 
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],
