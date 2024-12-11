@@ -151,18 +151,19 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
         patientTreatmentDetailId: data.id,
         amount: data.enteredAmount > data.pendingAmount ? data.pendingAmount : data.enteredAmount,
       }));
-
+  
     const requestData: Partial<CreatePaymentDto> = {
+      patientId: this.patientIdControl.value, // Agrega el patientId desde el formulario
       ...this.form.value.receipt,
       details: selectedDetails
     };
-
+  
     try {
       const response = await this._paymentService.createPayment(requestData);
-      if (response) {  // Ahora response es un blob
+      if (response) { // Ahora response es un blob
         const fileUrl = window.URL.createObjectURL(response);
         this.receiptFileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
-        this.stepper.next();  // Avanzar al paso del recibo
+        this.stepper.next(); // Avanzar al paso del recibo
         this._snackBarService.open('Pago realizado con éxito', '', {
           duration: 3000,
           horizontalPosition: 'center',
@@ -182,6 +183,7 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
       this.spinnerService.hide();
     }
   }
+  
 
   async returnPage() {
     this._router.navigateByUrl("/payment/listAll");

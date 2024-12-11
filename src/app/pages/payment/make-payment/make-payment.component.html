@@ -22,7 +22,7 @@
               <mat-label>Seleccione al Paciente</mat-label>
               <mat-select formControlName="patientId" (selectionChange)="getPendingPayment($event.value)">
                 <mat-option *ngFor="let patient of patients" [value]="patient.id">
-                  {{ patient.firstName }} {{ patient.lastName }}
+                  {{ patient.id }} {{ patient.firstName }} {{ patient.lastName }}
                 </mat-option>
               </mat-select>
               <mat-icon matSuffix>person</mat-icon>
