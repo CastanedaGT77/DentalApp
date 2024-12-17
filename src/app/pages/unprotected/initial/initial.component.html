@@ -1,1 +1,92 @@
-<h1>Componente inicial</h1>
+<mat-card class="cardWithShadow p-6">
+  <!-- Título -->
+  <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">
+    Consulta tus Citas
+  </h1>
+
+  <!-- Formulario para ingresar código de usuario -->
+  <form [formGroup]="userForm" (ngSubmit)="onLoadUserAppointments()" class="flex flex-col md:flex-row justify-center items-center gap-4 mb-6">
+    <mat-form-field appearance="outline" class="w-full md:w-1/3">
+      <mat-label>Ingresa tu Código de Usuario</mat-label>
+      <input matInput formControlName="userCode" placeholder="Ejemplo: USR001" />
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      class="bg-primary text-white px-6 py-2"
+      type="submit"
+    >
+      Buscar
+    </button>
+  </form>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="text-red-500 text-center mb-4">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Barra de búsqueda dentro de la tabla -->
+  <div *ngIf="appointments.length > 0" class="flex justify-end mb-4">
+    <mat-form-field appearance="outline" class="w-full md:w-1/3">
+      <mat-label>Buscar en las citas</mat-label>
+      <input matInput (keyup)="applyGlobalFilter($event)" placeholder="Buscar..." />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Tabla de Resultados -->
+  <div class="overflow-x-auto shadow-lg rounded-lg">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="mat-elevation-z8 w-full rounded-lg"
+    >
+      <!-- Columna Código -->
+      <ng-container matColumnDef="codCita">
+        <th mat-header-cell *matHeaderCellDef>Código</th>
+        <td mat-cell *matCellDef="let element">{{ element.codCita }}</td>
+      </ng-container>
+
+      <!-- Columna Fecha -->
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let element">{{ element.fecha }}</td>
+      </ng-container>
+
+      <!-- Columna Hora -->
+      <ng-container matColumnDef="hora">
+        <th mat-header-cell *matHeaderCellDef>Hora</th>
+        <td mat-cell *matCellDef="let element">{{ element.hora }}</td>
+      </ng-container>
+
+      <!-- Columna Doctor -->
+      <ng-container matColumnDef="doctor">
+        <th mat-header-cell *matHeaderCellDef>Doctor</th>
+        <td mat-cell *matCellDef="let element">{{ element.doctor }}</td>
+      </ng-container>
+
+      <!-- Filas -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <!-- Paginador -->
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    class="mt-4"
+  ></mat-paginator>
+
+  <!-- Botón de Login -->
+  <div class="flex justify-center mt-6">
+    <button
+      mat-raised-button
+      color="primary"
+      class="bg-primary text-white px-6 py-2"
+      (click)="redirectToLogin()"
+    >
+      Ir a Login
+    </button>
+  </div>
+</mat-card>
