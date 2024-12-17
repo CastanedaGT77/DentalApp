@@ -44,19 +44,19 @@ export class InitialComponent implements OnInit, AfterViewInit {
       title: 'Nueva Clínica Inaugurada',
       description: 'Apertura de nuestra nueva clínica en el centro de la ciudad.',
       date: '2024-12-10',
-      image: 'https://via.placeholder.com/400x200.png?text=Nueva+Clinica',
+      image: './assets/images/products/s5.jpg',
     },
     {
       title: 'Promoción Especial',
       description: 'Consulta gratuita durante diciembre.',
       date: '2024-12-05',
-      image: 'https://via.placeholder.com/400x200.png?text=Promocion+Especial',
+      image: './assets/images/products/s7.jpg',
     },
     {
       title: 'Nuevo Horario',
       description: 'Extendimos el horario de atención los fines de semana.',
       date: '2024-12-01',
-      image: 'https://via.placeholder.com/400x200.png?text=Nuevo+Horario',
+      image: './assets/images/products/s4.jpg',
     },
   ];
 
