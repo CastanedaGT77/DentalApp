@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 interface Appointment {
   codCita: string;
@@ -11,13 +11,20 @@ interface Appointment {
   doctor: string;
 }
 
+interface News {
+  title: string;
+  description: string;
+  date: string;
+  image: string;
+}
+
 @Component({
   selector: 'initial-test',
   templateUrl: './initial.component.html',
 })
 export class InitialComponent implements OnInit, AfterViewInit {
-  userForm: FormGroup; // Formulario para el código de usuario
-  dataSource = new MatTableDataSource<Appointment>([]); // Fuente de datos para la tabla
+  userForm: FormGroup;
+  dataSource = new MatTableDataSource<Appointment>([]);
   errorMessage: string = '';
   appointments: Appointment[] = [];
 
@@ -26,14 +33,36 @@ export class InitialComponent implements OnInit, AfterViewInit {
       { codCita: 'CITA001', fecha: '2024-12-11', hora: '10:00 AM', doctor: 'Dr. Pérez' },
       { codCita: 'CITA002', fecha: '2024-12-12', hora: '11:30 AM', doctor: 'Dr. Martínez' },
     ],
-    USR002: [
-      { codCita: 'CITA003', fecha: '2024-12-13', hora: '01:00 PM', doctor: 'Dr. Rodríguez' },
-    ],
   };
 
   displayedColumns: string[] = ['codCita', 'fecha', 'hora', 'doctor'];
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  // Noticias
+  newsData: News[] = [
+    {
+      title: 'Nueva Clínica Inaugurada',
+      description: 'Apertura de nuestra nueva clínica en el centro de la ciudad.',
+      date: '2024-12-10',
+      image: 'https://via.placeholder.com/400x200.png?text=Nueva+Clinica',
+    },
+    {
+      title: 'Promoción Especial',
+      description: 'Consulta gratuita durante diciembre.',
+      date: '2024-12-05',
+      image: 'https://via.placeholder.com/400x200.png?text=Promocion+Especial',
+    },
+    {
+      title: 'Nuevo Horario',
+      description: 'Extendimos el horario de atención los fines de semana.',
+      date: '2024-12-01',
+      image: 'https://via.placeholder.com/400x200.png?text=Nuevo+Horario',
+    },
+  ];
+
+  paginatedNews: News[] = [];
+  pageSize = 3;
+  pageIndex = 0;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.userForm = this.fb.group({
@@ -41,7 +70,9 @@ export class InitialComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadPaginatedNews();
+  }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -67,6 +98,17 @@ export class InitialComponent implements OnInit, AfterViewInit {
   }
 
   redirectToLogin(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/authentication/login']);
+  }
+
+  loadPaginatedNews(): void {
+    const startIndex = this.pageIndex * this.pageSize;
+    this.paginatedNews = this.newsData.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  onNewsPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadPaginatedNews();
   }
 }

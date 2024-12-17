@@ -26,6 +26,10 @@ export class AppSideLoginComponent {
     });
   }
 
+  redirectToInitial(): void {
+    this.router.navigate(['/clinic/initial']);
+  }
+
   async onSubmit() {
     if (this.loginForm.invalid) {
       return;

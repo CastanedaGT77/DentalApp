@@ -24,10 +24,7 @@
         <!-- Campo Usuario -->
         <mat-form-field appearance="fill" class="w-full" color="primary">
           <mat-label>Usuario</mat-label>
-          <input
-            matInput
-            formControlName="userName"
-          />
+          <input matInput formControlName="userName" />
           <mat-error *ngIf="loginForm.get('userName')?.invalid">
             El usuario es obligatorio
           </mat-error>
@@ -36,11 +33,7 @@
         <!-- Campo Contraseña -->
         <mat-form-field appearance="fill" class="w-full" color="primary">
           <mat-label>Contraseña</mat-label>
-          <input
-            matInput
-            type="password"
-            formControlName="password"
-          />
+          <input matInput type="password" formControlName="password" />
           <mat-error *ngIf="loginForm.get('password')?.invalid">
             La contraseña es obligatoria
           </mat-error>
@@ -66,9 +59,19 @@
         >
           {{ loading ? 'Iniciando sesión...' : 'Ingresar' }}
         </button>
-
-        
       </form>
+
+      <!-- Botón adicional para redirigir -->
+      <div class="flex justify-center mt-4">
+        <button
+          mat-flat-button
+          color="primary"
+          class="w-full py-2 text-white"
+          (click)="redirectToInitial()"
+        >
+          Ir a Consultar Citas
+        </button>
+      </div>
     </div>
   </div>
 </div>
