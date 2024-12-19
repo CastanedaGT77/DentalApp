@@ -86,16 +86,19 @@
             <mat-icon matSuffix>face</mat-icon>
           </mat-form-field>
         
-          <button mat-icon-button color="warn" (click)="removeTreatmentType(i)">
+          <!-- Botón para eliminar -->
+          <button mat-icon-button color="warn" (click)="onRemoveTreatmentType(i)" type="button">
             <mat-icon>delete</mat-icon>
           </button>
           
-          <button mat-icon-button class="bg-primary text-white" *ngIf="type === 'edit' && !treatmentType.get('id')?.value" (click)="saveNewTreatmentType(i)">
+          <!-- Botón para guardar -->
+          <button mat-icon-button class="bg-primary text-white" *ngIf="type === 'edit' && !treatmentType.get('id')?.value" (click)="onSaveTreatmentType(i)" type="button">
             <mat-icon>save</mat-icon>
           </button>
+      
         </div>
-        
       </div>
+      
       <button mat-button class="bg-primary text-white mt-4" (click)="addTreatmentType()">Agregar Tratamiento</button>
 
       <div class="flex justify-end mt-4">

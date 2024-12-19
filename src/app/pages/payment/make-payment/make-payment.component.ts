@@ -9,6 +9,7 @@ import { PaymentService } from '../payment.service';
 import { PatientService } from '../../patient/patient.service';
 import { CreatePaymentDto } from 'src/app/data/dtos/payment/CreatePaymentDTO';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: "app-make-payment",
@@ -145,45 +146,61 @@ export class MakePaymentComponent implements OnInit, AfterViewInit {
   }
 
   async createPayment() {
-    const selectedDetails = this.dataSource.data
-      .filter((data: any) => data.selected)
-      .map((data: any) => ({
-        patientTreatmentDetailId: data.id,
-        amount: data.enteredAmount > data.pendingAmount ? data.pendingAmount : data.enteredAmount,
-      }));
-  
-    const requestData: Partial<CreatePaymentDto> = {
-      patientId: this.patientIdControl.value, // Agrega el patientId desde el formulario
-      ...this.form.value.receipt,
-      details: selectedDetails
-    };
-  
-    try {
-      const response = await this._paymentService.createPayment(requestData);
-      if (response) { // Ahora response es un blob
-        const fileUrl = window.URL.createObjectURL(response);
-        this.receiptFileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
-        this.stepper.next(); // Avanzar al paso del recibo
-        this._snackBarService.open('Pago realizado con éxito', '', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
-      } else {
-        throw new Error('Error en el pago');
+    // Mostrar SweetAlert de confirmación
+    Swal.fire({
+      title: '¿Confirmar pago?',
+      text: 'Se procederá a realizar el pago para los tratamientos seleccionados.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, proceder',
+      cancelButtonText: 'Cancelar',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const selectedDetails = this.dataSource.data
+          .filter((data: any) => data.selected)
+          .map((data: any) => ({
+            patientTreatmentDetailId: data.id,
+            amount: data.enteredAmount > data.pendingAmount ? data.pendingAmount : data.enteredAmount,
+          }));
+      
+        const requestData: Partial<CreatePaymentDto> = {
+          patientId: this.patientIdControl.value, // Agrega el patientId desde el formulario
+          ...this.form.value.receipt,
+          details: selectedDetails,
+        };
+      
+        try {
+          this.spinnerService.show();
+          const response = await this._paymentService.createPayment(requestData);
+          if (response) { // Ahora response es un blob
+            const fileUrl = window.URL.createObjectURL(response);
+            this.receiptFileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
+            this.stepper.next(); // Avanzar al paso del recibo
+            Swal.fire('Éxito', 'Pago realizado con éxito.', 'success');
+            this._snackBarService.open('Pago realizado con éxito', '', {
+              duration: 3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+          } else {
+            throw new Error('Error en el pago');
+          }
+        } catch (error) {
+          Swal.fire('Error', 'Ocurrió un error al realizar el pago.', 'error');
+          this._snackBarService.open('Error al realizar el pago', '', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          console.error('Error al realizar el pago:', error);
+        } finally {
+          this.spinnerService.hide();
+        }
       }
-    } catch (error) {
-      this._snackBarService.open('Error al realizar el pago', '', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-      console.error('Error al realizar el pago:', error);
-    } finally {
-      this.spinnerService.hide();
-    }
+    });
   }
-  
 
   async returnPage() {
     this._router.navigateByUrl("/payment/listAll");

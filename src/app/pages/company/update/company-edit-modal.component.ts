@@ -6,6 +6,7 @@ import { CompanyService } from '../company.service';
 import { UpdateCompanyDTO } from 'src/app/data/dtos/company/UpdateCompanyDTO';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-company-edit-modal',
@@ -37,7 +38,7 @@ export class CompanyEditModalComponent {
 
     if (data.logo) {
       this.previewLogo = this.sanitizer.bypassSecurityTrustUrl(data.logo);
-      this.logoBase64 = data.logo; // Inicializamos logoBase64 si el logo ya existe
+      this.logoBase64 = data.logo;
     }
   }
 
@@ -46,44 +47,51 @@ export class CompanyEditModalComponent {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.logoBase64 = reader.result as string; // Guardamos el logo en Base64
-        this.previewLogo = this.sanitizer.bypassSecurityTrustUrl(this.logoBase64); // Actualizamos el preview
+        this.logoBase64 = reader.result as string;
+        this.previewLogo = this.sanitizer.bypassSecurityTrustUrl(this.logoBase64);
       };
-      reader.readAsDataURL(file); // Convertimos el archivo a Base64
+      reader.readAsDataURL(file);
     }
   }
 
   async onSave() {
-    this.spinnerService.show();
+    // Muestra la alerta de confirmación
+    Swal.fire({
+      title: 'Confirmar acción',
+      text: '¿Está seguro de que desea guardar los cambios en la compañía?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, guardar',
+      cancelButtonText: 'Cancelar',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Si el usuario confirma, realiza la actualización
+        this.spinnerService.show();
 
-    try {
-      const companyData: UpdateCompanyDTO = {
-        ...this.companyForm.value,
-        logo: this.logoBase64, // Enviamos el logo en Base64
-      };
+        try {
+          const companyData: UpdateCompanyDTO = {
+            ...this.companyForm.value,
+            logo: this.logoBase64,
+          };
 
-      const response = await this.companyService.updateCompany(companyData);
+          const response = await this.companyService.updateCompany(companyData);
 
-      if (response) {
-        this.snackBar.open(
-          'Compañía actualizada exitosamente, sí realizó cambios en configuración se recomienda cerrar sesión!',
-          'Cerrar',
-          { duration: 3000, horizontalPosition: 'center', verticalPosition: 'top' }
-        );
-        this.dialogRef.close(true);
-      } else {
-        throw new Error('No se pudo actualizar la compañía');
+          if (response) {
+            Swal.fire('Éxito', 'Compañía actualizada exitosamente.', 'success');
+            this.dialogRef.close(true);
+          } else {
+            throw new Error('No se pudo actualizar la compañía');
+          }
+        } catch (error) {
+          console.error('Error al actualizar la compañía:', error);
+          Swal.fire('Error', 'Ocurrió un error al actualizar la compañía.', 'error');
+        } finally {
+          this.spinnerService.hide();
+        }
       }
-    } catch (error) {
-      console.error('Error al actualizar la compañía:', error);
-      this.snackBar.open('Error al actualizar la compañía', 'Cerrar', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-    } finally {
-      this.spinnerService.hide();
-    }
+    });
   }
 
   onCancel() {

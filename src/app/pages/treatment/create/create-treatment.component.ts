@@ -87,22 +87,71 @@ export class CreateTreatmentComponent implements OnInit {
     this.treatmentTypes.push(treatmentTypeGroup);
   }
 
-  async removeTreatmentType(index: number) {
-    const treatmentTypeId = this.treatmentTypes.at(index).get('id')?.value;
-    debugger;
-    if(this.type === 'edit' && treatmentTypeId){
-      const payments = this.treatment?.treatmentDetails?.find((t:any) => t.id === treatmentTypeId)?.payments || [];
-      if(payments?.length > 0){
-          this._snackBarService.open("Este elemento no puede ser eliminado porque ya existen pagos asignados", '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 }); 
-          return;
+  async onRemoveTreatmentType(index: number) {
+    // Confirmación de SweetAlert
+    const result = await Swal.fire({
+      title: "¿Confirmar eliminación?",
+      text: "Esta acción eliminará el tratamiento seleccionado.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
+    });
+  
+    // Si el usuario confirma, ejecuta la eliminación
+    if (result.isConfirmed) {
+      const treatmentTypeId = this.treatmentTypes.at(index).get('id')?.value;
+      const payments = this.treatment?.treatmentDetails?.find((t: any) => t.id === treatmentTypeId)?.payments || [];
+      
+      // Verifica si tiene pagos asignados
+      if (payments?.length > 0) {
+        this._snackBarService.open(
+          "Este elemento no puede ser eliminado porque ya existen pagos asignados",
+          '',
+          { horizontalPosition: "center", verticalPosition: "top", duration: 5000 }
+        );
+        return;
       }
-      await this.deleteTreatmentType(parseInt(treatmentTypeId));
-      this.treatmentTypes.removeAt(index);
-    } else {
-      this.treatmentTypes.removeAt(index);
+  
+      // Muestra el spinner mientras procesa la eliminación
+      this._spinnerService.show();
+      try {
+        const response = await this._treatmentService.deleteTreatmentDetail(treatmentTypeId);
+        if (response && response.code === 200) {
+          this.treatmentTypes.removeAt(index); // Solo elimina si la respuesta fue exitosa
+          Swal.fire("Eliminado", "El tratamiento ha sido eliminado correctamente", "success");
+          this._snackBarService.open(
+            "Tratamiento eliminado correctamente",
+            '',
+            { horizontalPosition: "center", verticalPosition: "top", duration: 5000 }
+          );
+          this._spinnerService.hide();
+          this.returnPage();
+        } else {
+          Swal.fire("Error", "No se pudo eliminar el tratamiento", "error");
+          this._snackBarService.open(
+            "Error al eliminar el tratamiento",
+            '',
+            { horizontalPosition: "center", verticalPosition: "top", duration: 5000 }
+          );
+        }
+      } catch (error) {
+        console.error(`Error al eliminar el tratamiento con ID ${treatmentTypeId}:`, error);
+        Swal.fire("Error", "Error al eliminar el tratamiento", "error");
+        this._snackBarService.open(
+          "Error al eliminar el tratamiento",
+          '',
+          { horizontalPosition: "center", verticalPosition: "top", duration: 5000 }
+        );
+      } finally {
+        // Oculta el spinner después de completar el proceso
+        this._spinnerService.hide();
+      }
     }
   }
-
+  
   async getPatients() {
     try {
       const {patients} = await this._patientService.getPatient();
@@ -132,7 +181,7 @@ export class CreateTreatmentComponent implements OnInit {
       this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
       return;
     }
-
+  
     if (this.type === "edit") {
       this._spinnerService.show();
       const data = {
@@ -141,9 +190,9 @@ export class CreateTreatmentComponent implements OnInit {
         quotation: this.form.get('quotation')?.value,
         description: this.form.get('description')?.value
       };
-
+  
       const response = await this._treatmentService.updateTreatment(data);
-      if(response && response?.code === 200 ){
+      if (response && response?.code === 200) {
         this._snackBarService.open("Plan de tratamiento actualizado correctamente", '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
         this.returnPage();
         return;
@@ -158,15 +207,15 @@ export class CreateTreatmentComponent implements OnInit {
         treatmentTypes: this.form.get('treatmentTypes')?.value,
         description: this.form.get('description')?.value
       };
-
+  
       Swal.fire({
-        title: "",
+        title: "¿Confirmar creación?",
         text: "¿Desea finalizar la creación del plan?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Finalizar",
+        confirmButtonText: "Sí, finalizar",
         cancelButtonText: "Cancelar"
       }).then(async (result) => {
         if (result.isConfirmed) {
@@ -175,14 +224,17 @@ export class CreateTreatmentComponent implements OnInit {
             const response = await this._treatmentService.createTreatment(data);
             if (response && response.code === 200) {
               const message = "Plan de tratamiento creado correctamente";
+              Swal.fire("Éxito", message, "success");
               this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
             } else {
               const errorMessage = "Error al crear el plan de tratamiento";
+              Swal.fire("Error", errorMessage, "error");
               this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
             }
           } catch (error) {
             console.error("Error al crear el plan de tratamiento:", error);
             const errorMessage = "Error al crear el plan de tratamiento";
+            Swal.fire("Error", errorMessage, "error");
             this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
           } finally {
             this._spinnerService.hide();
@@ -193,56 +245,69 @@ export class CreateTreatmentComponent implements OnInit {
     }
   }
 
-  async saveNewTreatmentType(index: number) {
-    this._spinnerService.show();
+  async onSaveTreatmentType(index: number): Promise<void> {
+    // Muestra SweetAlert para confirmar la acción
+    const result = await Swal.fire({
+      title: "¿Confirmar acción?",
+      text: "¿Desea guardar este tratamiento?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, guardar",
+      cancelButtonText: "Cancelar"
+    });
+  
+    if (!result.isConfirmed) {
+      return; // No hacer nada si no se confirma
+    }
+  
     const treatmentTypeGroup = this.treatmentTypes.at(index);
+    
+    // Verifica si el formulario es inválido
     if (treatmentTypeGroup.invalid) {
-      this._snackBarService.open('Verifique todos los campos del tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+      this._snackBarService.open(
+        'Verifique todos los campos del tratamiento',
+        '',
+        { horizontalPosition: "center", verticalPosition: "top", duration: 5000 }
+      );
       return;
     }
-
-    const treatmentTypeId = treatmentTypeGroup.get('id')?.value;
-    if (!treatmentTypeId) {
-      const requestData: Partial<CreateTreatmentDetailDTO> = {
-        treatmentId: this.treatment.id,
-        treatmentTypeId: treatmentTypeGroup.get('treatmentTypeId')?.value,
-        price: treatmentTypeGroup.get('price')?.value,
-        piece: treatmentTypeGroup.get('piece')?.value
-      };
-
-      try {
-        const response = await this._treatmentService.createTreatmentDetail(requestData);
-        if (response && response.code === 201) {
-          this._snackBarService.open('Tratamiento agregado correctamente', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-          treatmentTypeGroup.get('id')?.setValue(response?.data?.id);
-        } else {
-          this._snackBarService.open('Error al agregar tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-        }
-      } catch (error) {
-        console.error('Error al agregar tratamiento:', error);
-        this._snackBarService.open('Error al agregar tratamiento', '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-      }
-    }
-    this._spinnerService.hide();
-  }
-
-  async deleteTreatmentType(treatmentTypeId: number) {
+  
+    this._spinnerService.show();
     try {
-      this._spinnerService.show();
-      const response = await this._treatmentService.deleteTreatmentDetail(treatmentTypeId);
-      if (response && response.code === 200) {
-        const message = `Tratamiento eliminado correctamente`;
-        this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
-      } else {
-        const errorMessage = `Error al eliminar el tratamiento`;
-        this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+      const treatmentTypeId = treatmentTypeGroup.get('id')?.value;
+  
+      if (!treatmentTypeId) {
+        // Crear un nuevo tratamiento
+        const requestData: Partial<CreateTreatmentDetailDTO> = {
+          treatmentId: this.treatment.id,
+          treatmentTypeId: treatmentTypeGroup.get('treatmentTypeId')?.value,
+          price: treatmentTypeGroup.get('price')?.value,
+          piece: treatmentTypeGroup.get('piece')?.value
+        };
+  
+        const response = await this._treatmentService.createTreatmentDetail(requestData);
+        
+        if (response && response.code === 201) {
+          const message = "Tratamiento agregado correctamente";
+          Swal.fire("Éxito", message, "success"); // SweetAlert de éxito
+          this._snackBarService.open(message, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+          treatmentTypeGroup.get('id')?.setValue(response?.data?.id); // Actualiza el ID en el formulario
+          this._spinnerService.hide();
+          this.returnPage();
+        } else {
+          const errorMessage = "Error al agregar tratamiento";
+          Swal.fire("Error", errorMessage, "error"); // SweetAlert de error
+          this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+        }
       }
-      this._spinnerService.hide();
     } catch (error) {
+      console.error("Error al agregar tratamiento:", error);
+      Swal.fire("Error", "Error al agregar tratamiento", "error"); // SweetAlert de error
+      this._snackBarService.open("Error al agregar tratamiento", '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
+    } finally {
       this._spinnerService.hide();
-      console.error(`Error al eliminar el tratamiento con ID ${treatmentTypeId}:`, error);
-      const errorMessage = `Error al eliminar el tratamiento`;
-      this._snackBarService.open(errorMessage, '', { horizontalPosition: "center", verticalPosition: "top", duration: 5000 });
     }
   }
 
