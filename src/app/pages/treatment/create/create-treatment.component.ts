@@ -88,6 +88,17 @@ export class CreateTreatmentComponent implements OnInit {
   }
 
   async onRemoveTreatmentType(index: number) {
+
+    if (this.type === "create") {
+      // Elimina del formulario en modo creación
+      this.treatmentTypes.removeAt(index);
+      this._snackBarService.open(
+        "Tipo de tratamiento eliminado del formulario.",
+        '',
+        { horizontalPosition: "center", verticalPosition: "top", duration: 5000 }
+      );
+      return;
+    } 
     // Confirmación de SweetAlert
     const result = await Swal.fire({
       title: "¿Confirmar eliminación?",
