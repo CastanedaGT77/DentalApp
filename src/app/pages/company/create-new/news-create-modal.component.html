@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Crear Noticia</h1>
+<div mat-dialog-content>
+    <form [formGroup]="newsForm" class="space-y-4">
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="title" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Fecha</mat-label>
+            <input matInput type="date" formControlName="date" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>URL de la Imagen</mat-label>
+            <input matInput formControlName="image" />
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions class="flex justify-end">
+    <button mat-button (click)="close()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="save()">Guardar</button>
+</div>
