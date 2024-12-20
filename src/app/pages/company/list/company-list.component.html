@@ -1,55 +1,103 @@
 <mat-card class="m-4 p-6 shadow-lg">
-    <mat-card-header>
-        <div class="flex items-center justify-between w-full">
-            <div *ngIf="logoUrl" class="mr-4">
-                <!-- Preview del logo en base64 -->
-                <img [src]="logoUrl" alt="Logo de la empresa" class="h-16 w-16 object-cover rounded-full" />
+    <mat-tab-group>
+        <!-- Pestaña: Información de la empresa -->
+        <mat-tab label="Compañía">
+            <mat-card-header>
+                <div class="flex items-center justify-between w-full">
+                    <div *ngIf="logoUrl" class="mr-4">
+                        <!-- Preview del logo en base64 -->
+                        <img [src]="logoUrl" alt="Logo de la empresa" class="h-16 w-16 object-cover rounded-full" />
+                    </div>
+                    <mat-card-title class="w-full text-center">{{ company?.header }}</mat-card-title>
+                </div>
+            </mat-card-header>
+
+            <mat-card-content class="mt-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Vista previa de colores -->
+                    <div class="flex flex-col items-center">
+                        <div class="text-center font-semibold mb-2">Color Primario</div>
+                        <div [style.backgroundColor]="company?.primaryColor" class="w-16 h-16 rounded-full border"></div>
+                        <span class="mt-2 text-gray-700">{{ company?.primaryColor }}</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <div class="text-center font-semibold mb-2">Color Secundario</div>
+                        <div [style.backgroundColor]="company?.secondaryColor" class="w-16 h-16 rounded-full border"></div>
+                        <span class="mt-2 text-gray-700">{{ company?.secondaryColor }}</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <div class="text-center font-semibold mb-2">Color del Botón Primario</div>
+                        <div [style.backgroundColor]="company?.primaryButtonColor" class="w-16 h-16 rounded-full border"></div>
+                        <span class="mt-2 text-gray-700">{{ company?.primaryButtonColor }}</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <div class="text-center font-semibold mb-2">Color del Botón Secundario</div>
+                        <div [style.backgroundColor]="company?.secondaryButtonColor" class="w-16 h-16 rounded-full border"></div>
+                        <span class="mt-2 text-gray-700">{{ company?.secondaryButtonColor }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+
+            <div mat-dialog-actions class="flex justify-end space-x-4 mt-6">
+                <button mat-raised-button class="bg-primary text-white" (click)="openEditDialog()">
+                    Editar
+                    <mat-icon class="ml-1" fontIcon="edit"></mat-icon>
+                </button>
             </div>
-            <mat-card-title class="w-full text-center">{{ company?.header }}</mat-card-title>
-        </div>
-    </mat-card-header>
+        </mat-tab>
 
-    <mat-card-content class="mt-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Vista previa de colores -->
-            <div class="flex flex-col items-center">
-                <div class="text-center font-semibold mb-2">Color Primario</div>
-                <div [style.backgroundColor]="company?.primaryColor" class="w-16 h-16 rounded-full border"></div>
-                <span class="mt-2 text-gray-700">{{ company?.primaryColor }}</span>
+        <!-- Pestaña: Noticias -->
+        <mat-tab label="Noticias">
+            <div class="p-4">
+                <table mat-table [dataSource]="newsDataSource" class="mat-elevation-z8 w-full">
+                    <!-- Columna de título -->
+                    <ng-container matColumnDef="title">
+                        <th mat-header-cell *matHeaderCellDef class="font-semibold">Título</th>
+                        <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+                    </ng-container>
+
+                    <!-- Columna de descripción -->
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef class="font-semibold">Descripción</th>
+                        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+                    </ng-container>
+
+                    <!-- Columna de fecha -->
+                    <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef class="font-semibold">Fecha</th>
+                        <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+                    </ng-container>
+
+                    <!-- Columna de imagen -->
+                    <ng-container matColumnDef="image">
+                        <th mat-header-cell *matHeaderCellDef class="font-semibold">Imagen</th>
+                        <td mat-cell *matCellDef="let element">
+                            <img [src]="element.image" alt="Imagen" class="h-12 w-12 object-cover rounded-full" />
+                        </td>
+                    </ng-container>
+
+                    <!-- Columna de acciones -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="font-semibold">Acciones</th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button color="primary" (click)="editNews(element)">
+                                <mat-icon [ngStyle]="{'color':'yellow'}" fontIcon="edit">more_vert</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteNews(element)">
+                                <mat-icon [ngStyle]="{'color':'red'}" fontIcon="delete">home</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <mat-paginator [pageSize]="5" showFirstLastButtons></mat-paginator>
             </div>
-
-            <div class="flex flex-col items-center">
-                <div class="text-center font-semibold mb-2">Color Secundario</div>
-                <div [style.backgroundColor]="company?.secondaryColor" class="w-16 h-16 rounded-full border"></div>
-                <span class="mt-2 text-gray-700">{{ company?.secondaryColor }}</span>
-            </div>
-
-            <div class="flex flex-col items-center">
-                <div class="text-center font-semibold mb-2">Color del Botón Primario</div>
-                <div [style.backgroundColor]="company?.primaryButtonColor" class="w-16 h-16 rounded-full border"></div>
-                <span class="mt-2 text-gray-700">{{ company?.primaryButtonColor }}</span>
-            </div>
-
-            <div class="flex flex-col items-center">
-                <div class="text-center font-semibold mb-2">Color del Botón Secundario</div>
-                <div [style.backgroundColor]="company?.secondaryButtonColor" class="w-16 h-16 rounded-full border"></div>
-                <span class="mt-2 text-gray-700">{{ company?.secondaryButtonColor }}</span>
-            </div>
-
-            <br>
-            
-           
-        </div>
-        
-        <div class="flex items-center justify-between w-full">
-            <mat-card-title class="w-full text-center">{{ company?.footer }}</mat-card-title>
-        </div>
-    </mat-card-content>
-
-    <div mat-dialog-actions class="flex justify-end space-x-4 mt-6">
-        <button mat-raised-button class="bg-primary text-white" (click)="openEditDialog()">
-            Editar
-            <mat-icon class="ml-1" fontIcon="edit"></mat-icon>
-        </button>
-    </div>
+        </mat-tab>
+    </mat-tab-group>
 </mat-card>

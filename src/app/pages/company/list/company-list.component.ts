@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
@@ -13,8 +14,26 @@ import { CompanyEditModalComponent } from "../update/company-edit-modal.componen
 })
 export class CompanyListComponent implements OnInit, AfterViewInit {
     companyId: any;
-    company: any = null; // Asegúrate de que esto esté en formato objeto
+    company: any = null;
     logoUrl: SafeResourceUrl | null = null;
+
+    displayedColumns: string[] = ["title", "description", "date", "image", "actions"];
+    newsDataSource = new MatTableDataSource([
+        {
+            title: "Noticia 1",
+            description: "Descripción de la noticia 1",
+            date: "2024-12-01",
+            image: './assets/images/products/s5.jpg',
+        },
+        {
+            title: "Noticia 2",
+            description: "Descripción de la noticia 2",
+            date: "2024-12-02",
+            image: './assets/images/products/s5.jpg',
+        }
+    ]);
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(
         private readonly _router: Router,
@@ -27,31 +46,32 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
     async getCompanyProperties() {
         const response = await this._companyService.getCompanyProperties(this.companyId);
         if (response) {
-            this.company = response.data; // Asigna el objeto completo
-            console.log("respuesta company1", this.company);
-            // Si el logo viene en base64, lo sanitizamos para mostrarlo en el HTML
+            this.company = response.data;
             if (this.company.logo) {
-                // Añade el prefijo si es necesario
-                this.logoUrl = this._sanitizer.bypassSecurityTrustResourceUrl(
-                    this.company.logo
-                );
+                this.logoUrl = this._sanitizer.bypassSecurityTrustResourceUrl(this.company.logo);
             }
-        } else {
-            console.error("Error: No se encontraron datos en la respuesta.");
         }
     }
 
     openEditDialog() {
-    const dialogRef = this.dialog.open(CompanyEditModalComponent, {
-      width: '500px',
-      data: this.company,
-    });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.getCompanyProperties(); // Recarga los datos después de actualizar
-      }
-    });
+        const dialogRef = this.dialog.open(CompanyEditModalComponent, {
+            width: "500px",
+            data: this.company
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.getCompanyProperties();
+            }
+        });
+    }
+
+    editNews(news: any) {
+        console.log("Editar noticia:", news);
+    }
+
+    deleteNews(news: any) {
+        console.log("Eliminar noticia:", news);
     }
 
     async ngOnInit() {
@@ -61,5 +81,7 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
         this.spinnerService.hide();
     }
 
-    ngAfterViewInit() {}
+    ngAfterViewInit() {
+        this.newsDataSource.paginator = this.paginator;
+    }
 }
