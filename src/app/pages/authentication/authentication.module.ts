@@ -19,6 +19,7 @@ import { AppSideRegisterComponent } from './register/register.component';
 import { AuthenticationService } from './authentication.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfigService } from './config.service';
+import { ForgotPasswordModalComponent } from './forgot-password-modal/forgot-password-modal.component';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { ConfigService } from './config.service';
   declarations: [
     AppSideLoginComponent,
     AppSideRegisterComponent,
+    ForgotPasswordModalComponent
   ],
   providers: [
     NgxSpinnerService,
