@@ -73,6 +73,10 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
   appointmentDataSource: MatTableDataSource<Appointment>;
   documentDataSource: MatTableDataSource<any>;
 
+  illnessDataSource: MatTableDataSource<any>;
+  displayedIllnessColumns: string[] = ['id', 'name', 'description', 'active', 'created_at'];
+
+
   displayedTreatmentColumns: string[] = ['treatment', 'description', 'date', 'details'];
   displayedAppointmentColumns: string[] = ['appointmentDate', 'startHour', 'endHour', 'status'];
   displayedDocumentColumns: string[] = ['id', 'icon', 'fileName', 'uploadedBy', 'created_at', 'actions'];
@@ -80,6 +84,7 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
   @ViewChild('treatmentPaginator') treatmentPaginator: MatPaginator;
   @ViewChild('appointmentPaginator') appointmentPaginator: MatPaginator;
   @ViewChild('documentPaginator') documentPaginator: MatPaginator;
+  @ViewChild('treatmentPaginator') illnessPaginator: MatPaginator;
 
   constructor(
     private readonly _router: Router,
@@ -104,13 +109,32 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
     this.appointments = await this._appointmentService.getAppointmentPacient(this.paciente?.id);
     this.appointmentDataSource.data = this.appointments;
     console.log('citas', this.appointments)
-    await this._getPatientDocuments(this.paciente?.id);
+    await this._getPatientDocuments(this.paciente?.id);// Inicializa el DataSource con illnessDetails
+    this.illnessDataSource = new MatTableDataSource(this.paciente?.illnessDetails || []);
+  
+    // Configura el filtro personalizado (opcional)
+    this.illnessDataSource.filterPredicate = (data: any, filter: string) => {
+      return (
+        data.name.toLowerCase().includes(filter) ||
+        data.description.toLowerCase().includes(filter)
+      );
+    };
+  }
+
+  applyIllnessFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.illnessDataSource.filter = filterValue;
+  
+    if (this.illnessDataSource.paginator) {
+      this.illnessDataSource.paginator.firstPage();
+    }
   }
 
   ngAfterViewInit() {
     this.treatmentDataSource.paginator = this.treatmentPaginator;
     this.appointmentDataSource.paginator = this.appointmentPaginator;
     this.documentDataSource.paginator = this.documentPaginator;
+    this.illnessDataSource.paginator = this.illnessPaginator;
   }
 
   getAge(birthDate: string): number {
@@ -150,6 +174,7 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
       const response = await this._documentService.getPatientDocuments(patientId);
       if (response) {
         this.documents = response;
+        console.log(this.documents)
         this.documentDataSource.data = this.documents;
       }
     }

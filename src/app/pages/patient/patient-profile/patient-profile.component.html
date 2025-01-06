@@ -37,11 +37,48 @@
     <h3 class="text-lg font-semibold mb-2">Detalles de Enfermedad</h3>
     <mat-form-field class="w-full mb-4">
       <mat-label>Buscar</mat-label>
-      <input matInput (keyup)="applyFilter($event)">
+      <input matInput (keyup)="applyIllnessFilter($event)">
     </mat-form-field>
     <div class="mat-elevation-z8">
-      
-      <mat-paginator #treatmentPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <mat-table [dataSource]="illnessDataSource" class="mat-table" matSort>
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+          <mat-cell *matCellDef="let illness"> {{ illness.id }} </mat-cell>
+        </ng-container>
+
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+          <mat-cell *matCellDef="let illness"> {{ illness.name }} </mat-cell>
+        </ng-container>
+
+        <!-- Descripción Column -->
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
+          <mat-cell *matCellDef="let illness"> {{ illness.description }} </mat-cell>
+        </ng-container>
+
+        <!-- Activo Column -->
+        <ng-container matColumnDef="active">
+          <mat-header-cell *matHeaderCellDef> Activo </mat-header-cell>
+          <mat-cell *matCellDef="let illness">
+            <span [ngClass]="{ 'text-green-600': illness.active, 'text-red-600': !illness.active }">
+              {{ illness.active ? 'Sí' : 'No' }}
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Fecha Creación Column -->
+        <ng-container matColumnDef="created_at">
+          <mat-header-cell *matHeaderCellDef> Fecha de Creación </mat-header-cell>
+          <mat-cell *matCellDef="let illness"> {{ illness.created_at | date }} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedIllnessColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedIllnessColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>
@@ -113,7 +150,7 @@
         <!-- Fecha Column -->
         <ng-container matColumnDef="appointmentDate">
           <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
-          <mat-cell *matCellDef="let appointment"> {{ appointment.appointmentDate }} </mat-cell>
+          <mat-cell *matCellDef="let appointment"> {{ appointment.appointmentDate | date }} </mat-cell>
         </ng-container>
         <!-- Hora de Inicio Column -->
         <ng-container matColumnDef="startHour">
