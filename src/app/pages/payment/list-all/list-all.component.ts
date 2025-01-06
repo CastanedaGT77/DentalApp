@@ -28,6 +28,7 @@ export class ListAllComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     this.spinnerService.show();
     await this.getAllPayments();
+    this.spinnerService.hide();
   }
 
   async getAllPayments() {

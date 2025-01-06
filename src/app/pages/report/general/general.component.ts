@@ -34,7 +34,10 @@ export class GeneralComponent implements OnInit {
     private spinnerService: NgxSpinnerService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.spinnerService.show();
+    this.spinnerService.hide();
+  }
 
   // Método que se ejecuta cuando cambia el tipo de reporte seleccionado
   onReportChange(reportType: string) {
