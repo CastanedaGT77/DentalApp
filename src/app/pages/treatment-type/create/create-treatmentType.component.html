@@ -52,10 +52,10 @@
                   <mat-error *ngIf="form.controls['estimatedTime'].hasError('pattern')">Tiempo Estamado inválido ingrese solo números</mat-error>
                 </mat-form-field>
             </div>
-            <div class="flex grow">
+            <div class="flex justify-end mt-4">
                 <br>
                 <br>
-                <button (click)="onSubmit()" mat-raised-button type="submit" class="bg-primary text-white grow h-14">Guardar</button>
+                <button (click)="onSubmit()" mat-raised-button type="submit" class="bg-primary text-white">Guardar</button>
             </div>
           </form>
         </mat-card-content>

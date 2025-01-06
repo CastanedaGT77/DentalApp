@@ -45,7 +45,9 @@
             </div>
 
             <!-- Botón para generar reporte -->
-            <button mat-raised-button class="bg-primary text-white w-full" (click)="generateReport()" [disabled]="!isFormValid()">Generar</button>
+            <div class="flex justify-end mt-4">
+                <button mat-raised-button class="bg-primary text-white" (click)="generateReport()" [disabled]="!isFormValid()">Generar</button>
+            </div>
         </div>
     </mat-card-content>
 </mat-card>

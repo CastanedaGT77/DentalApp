@@ -149,10 +149,10 @@
               <mat-slide-toggle [(ngModel)]="detalle.selected">{{detalle.name}}&nbsp;</mat-slide-toggle>
             </p>
           </div>
-          <div class="flex grow">
+          <div class="flex justify-end mt-4">
             <br>
             <br>
-            <button matStepperNext (click)="onSubmit()"  mat-raised-button type="submit" class="bg-primary text-white grow h-14">Guardar</button>
+            <button matStepperNext (click)="onSubmit()"  mat-raised-button type="submit" class="bg-primary text-white">Guardar</button>
           </div>
       </mat-step>
     </mat-stepper>

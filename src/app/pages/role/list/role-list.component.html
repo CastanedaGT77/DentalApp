@@ -10,9 +10,8 @@
       </button>
     </div>
 
-    <mat-form-field class="w-full mb-4">
-      <mat-label>Buscar</mat-label>
-      <input matInput (keyup)="applyFilter($event)">
+    <mat-form-field>
+      <input class="form-control" matInput placeholder="Buscar" (keyup)="applyFilter($event)">
     </mat-form-field>
 
     <table mat-table [dataSource]="dataSource" class="w-full">
