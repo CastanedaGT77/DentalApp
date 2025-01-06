@@ -31,6 +31,7 @@ export class AppSideLoginComponent {
   }
 
   redirectToInitial(): void {
+    console.log('entra aca')
     this.router.navigate(['/clinic/initial']);
   }
 

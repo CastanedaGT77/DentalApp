@@ -36,6 +36,8 @@ import { ConfigService } from './pages/authentication/config.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { UnprotectedModule } from './pages/unprotected/unprotected.module';
 import { InitialComponent } from './pages/unprotected/initial/initial.component';
+import { ScheduleAppointmentModalComponent } from './pages/unprotected/new-appointment/schedule-appointment-modal.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { InitialComponent } from './pages/unprotected/initial/initial.component'
     HeaderComponent,
     BrandingComponent,
     AppNavItemComponent,
-    InitialComponent
+    InitialComponent,
+    ScheduleAppointmentModalComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +64,7 @@ import { InitialComponent } from './pages/unprotected/initial/initial.component'
     SharedModule, 
     MatIconModule,
     MatMenuModule,
+    MatNativeDateModule
   ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],

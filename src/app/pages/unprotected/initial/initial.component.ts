@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { ScheduleAppointmentModalComponent } from '../new-appointment/schedule-appointment-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 interface Appointment {
   codCita: string;
   fecha: string;
   hora: string;
-  doctor: string;
 }
 
 interface News {
@@ -19,26 +19,26 @@ interface News {
 }
 
 @Component({
-  selector: 'initial-test',
+  selector: 'app-initial',
   templateUrl: './initial.component.html',
 })
-export class InitialComponent implements OnInit, AfterViewInit {
+export class InitialComponent implements OnInit {
   userForm: FormGroup;
   dataSource = new MatTableDataSource<Appointment>([]);
-  errorMessage: string = '';
   appointments: Appointment[] = [];
+  errorMessage: string = '';
+  successMessage: string = '';
+  valid: boolean = false;
 
   dummyData: { [key: string]: Appointment[] } = {
     USR001: [
-      { codCita: 'CITA001', fecha: '2024-12-11', hora: '10:00 AM', doctor: 'Dr. Pérez' },
-      { codCita: 'CITA002', fecha: '2024-12-12', hora: '11:30 AM', doctor: 'Dr. Martínez' },
+      { codCita: 'CITA001', fecha: '2024-12-11', hora: '10:00 AM' },
+      { codCita: 'CITA002', fecha: '2024-12-12', hora: '11:30 AM' },
     ],
   };
 
-  displayedColumns: string[] = ['codCita', 'fecha', 'hora', 'doctor'];
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  displayedColumns: string[] = ['codCita', 'fecha', 'hora'];
 
-  // Noticias
   newsData: News[] = [
     {
       title: 'Nueva Clínica Inaugurada',
@@ -60,55 +60,55 @@ export class InitialComponent implements OnInit, AfterViewInit {
     },
   ];
 
-  paginatedNews: News[] = [];
-  pageSize = 3;
-  pageIndex = 0;
-
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router,  private dialog: MatDialog,) {
     this.userForm = this.fb.group({
-      userCode: [''],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      userCode: ['', Validators.required],
     });
   }
 
-  ngOnInit(): void {
-    this.loadPaginatedNews();
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
+  ngOnInit(): void {}
 
   onLoadUserAppointments(): void {
-    const userCode = this.userForm.get('userCode')?.value;
-    this.errorMessage = '';
+    if (this.userForm.invalid) {
+      this.errorMessage = 'Todos los campos son obligatorios.';
+      this.successMessage = '';
+      this.valid = false;
+      this.appointments = [];
+      this.dataSource.data = [];
+      return;
+    }
 
-    if (userCode && this.dummyData[userCode]) {
+    const { userCode } = this.userForm.value;
+
+    if (userCode in this.dummyData) {
       this.appointments = this.dummyData[userCode];
       this.dataSource.data = this.appointments;
+      this.valid = true;
+      this.successMessage = 'Citas cargadas correctamente.';
+      this.errorMessage = '';
     } else {
       this.errorMessage = 'No se encontraron citas para el código ingresado.';
+      this.successMessage = '';
+      this.valid = false;
       this.appointments = [];
       this.dataSource.data = [];
     }
   }
 
-  applyGlobalFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  redirectToLogin(): void {
-    this.router.navigate(['/authentication/login']);
-  }
-
-  loadPaginatedNews(): void {
-    const startIndex = this.pageIndex * this.pageSize;
-    this.paginatedNews = this.newsData.slice(startIndex, startIndex + this.pageSize);
-  }
-
-  onNewsPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.loadPaginatedNews();
+  onScheduleAppointment(): void {
+    const dialogRef = this.dialog.open(ScheduleAppointmentModalComponent, {
+      width: '500px',
+      data: { userCode: 'USR001' }, // Pasar el código del usuario
+    });
+  
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        console.log('Cita creada exitosamente');
+      } else {
+        console.log('El usuario canceló la acción');
+      }
+    });
   }
 }

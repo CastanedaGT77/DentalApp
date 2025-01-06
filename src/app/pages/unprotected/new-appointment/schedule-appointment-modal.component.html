@@ -1,0 +1,65 @@
+<mat-dialog-content class="space-y-6">
+    <h2 class="text-xl font-bold text-gray-800 text-center">
+      Agendar Nueva Cita
+    </h2>
+    <form [formGroup]="appointmentForm" class="space-y-4">
+      <!-- Campo Código de Usuario -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Código de Usuario</mat-label>
+        <input matInput formControlName="userCode" readonly />
+      </mat-form-field>
+  
+      <!-- Campo Sucursal -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Sucursal</mat-label>
+        <mat-select formControlName="branch">
+          <mat-option *ngFor="let branch of branches" [value]="branch">
+            {{ branch }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <!-- Campo Encargado -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Encargado</mat-label>
+        <mat-select formControlName="inCharge">
+          <mat-option *ngFor="let charge of inCharges" [value]="charge">
+            {{ charge }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <!-- Campo Fecha de la Cita -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Fecha de la Cita</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+  
+      <!-- Campo Hora de Inicio -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Hora de Inicio</mat-label>
+        <input matInput type="time" formControlName="startTime" />
+      </mat-form-field>
+  
+      <!-- Campo Hora de Fin -->
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Hora de Fin</mat-label>
+        <input matInput type="time" formControlName="endTime" />
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions class="flex justify-end space-x-4">
+    <button mat-raised-button color="warn" (click)="closeModal()">Cancelar</button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="appointmentForm.invalid || checkingAvailability"
+      (click)="checkAvailability()"
+    >
+      {{ checkingAvailability ? 'Verificando...' : 'Confirmar' }}
+    </button>
+  </mat-dialog-actions>
+  

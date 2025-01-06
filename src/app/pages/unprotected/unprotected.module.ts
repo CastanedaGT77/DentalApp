@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UnprotectedRoutes } from './unprotected.routing';
 import { InitialService } from './initial/initial.service';
+import { ScheduleAppointmentModalComponent } from './new-appointment/schedule-appointment-modal.component';
+import { InitialComponent } from './initial/initial.component';
 
 @NgModule({
     imports: [
@@ -22,7 +24,9 @@ import { InitialService } from './initial/initial.service';
         MatButtonModule,
         FormsModule,
         ReactiveFormsModule,
-    ], 
+    ],
+    declarations: [
+    ],
     providers: [
         NgxSpinnerService,
         InitialService
