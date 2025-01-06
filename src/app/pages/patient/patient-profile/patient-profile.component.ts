@@ -113,6 +113,19 @@ export class PatientProfileComponent implements OnInit, AfterViewInit {
     this.documentDataSource.paginator = this.documentPaginator;
   }
 
+  getAge(birthDate: string): number {
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    
+    return age;
+  }
+
   private async _getImage(patientId: number) {
     if (patientId) {
       const response = await this._patientService.getProfileImage(patientId);

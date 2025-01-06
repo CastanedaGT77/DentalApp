@@ -89,7 +89,7 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
-
+  
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -98,11 +98,14 @@ export class ListTreatmentComponent implements OnInit, AfterViewInit {
   customFilterPredicate() {
     return (data: any, filter: string): boolean => {
       const searchString = filter.trim().toLowerCase();
+  
+      // Combina nombre y apellido en una cadena para realizar la búsqueda
+      const fullName = `${data.patient.firstName} ${data.patient.lastName}`.toLowerCase();
+  
       return (
         data.name.toLowerCase().includes(searchString) ||
         data.description.toLowerCase().includes(searchString) ||
-        data.patient.firstName.toLowerCase().includes(searchString) ||
-        data.patient.lastName.toLowerCase().includes(searchString) ||
+        fullName.includes(searchString) || // Busca en la combinación de nombre y apellido
         data.patient.phoneNumber.toLowerCase().includes(searchString) ||
         data.patient.email.toLowerCase().includes(searchString)
       );
