@@ -55,13 +55,21 @@ export class CreatePatientComponent implements OnInit {
             this.getDetalles();
         } else if (this.type === "edit") {
             this.paciente = history.state.paciente;
-            if (history.state.image) {
-                this.sanitizedImage = history.state.image.changingThisBreaksApplicationSecurity;
-            }
+            console.log(this.paciente)
+            this.sanitizedImage = this._getImage(this.paciente.id);
             this.initializeDetalles();
             await this.initializeForm();
         }
     }
+
+    private async _getImage(patientId: number) {
+        if (patientId) {
+          const response = await this._patientService.getProfileImage(patientId);
+          if (response) {
+            this.sanitizedImage = this._sanitizer.bypassSecurityTrustResourceUrl(response.data);
+          }
+        } return this.sanitizedImage;
+      }
 
     private async getDetalles() {
         const details = await this._illnessDetailService.getIllnessDetails();
