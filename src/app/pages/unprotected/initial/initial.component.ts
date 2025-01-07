@@ -59,6 +59,28 @@ export class InitialComponent implements OnInit {
       image: './assets/images/products/s4.jpg',
     },
   ];
+  currentIndex: number = 0; // Índice actual del carrusel
+
+  // Funciones para el carrusel
+  nextSlide() {
+    if (this.currentIndex < this.newsData.length - 1) {
+      this.currentIndex++;
+    } else {
+      this.currentIndex = 0; // Regresar al inicio
+    }
+  }
+
+  prevSlide() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    } else {
+      this.currentIndex = this.newsData.length - 1; // Ir al último slide
+    }
+  }
+
+  goToSlide(index: number) {
+    this.currentIndex = index;
+  }
 
   constructor(private fb: FormBuilder, private router: Router,  private dialog: MatDialog,) {
     this.userForm = this.fb.group({

@@ -1,30 +1,70 @@
 <mat-card class="cardWithShadow p-6">
   <!-- Sección de Noticias -->
-  <h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">Noticias Recientes</h1>
+  <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+    Noticias Recientes
+  </h1>
 
-  <div class="overflow-hidden">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-      <mat-card
+  <div class="relative overflow-hidden">
+    <!-- Contenedor del carrusel -->
+    <div
+      class="flex transition-transform duration-500 ease-in-out"
+      [style.transform]="'translateX(-' + currentIndex * 100 + '%)'"
+    >
+      <div
         *ngFor="let news of newsData"
-        class="shadow-lg rounded-lg hover:shadow-xl transition duration-300 ease-in-out"
+        class="w-full flex-shrink-0 flex flex-col items-center"
       >
-        <img
-          [src]="news.image"
-          alt="News Image"
-          class="w-full h-48 object-cover rounded-t-lg"
-        />
-        <mat-card-content class="p-4">
-          <h2 class="text-lg font-semibold text-gray-800">{{ news.title }}</h2>
-          <p class="text-sm text-gray-600 mb-2">
-            {{ news.date | date: 'fullDate' }}
-          </p>
-          <p class="text-gray-700 text-sm line-clamp-2">
-            {{ news.description }}
-          </p>
-        </mat-card-content>
-      </mat-card>
+        <mat-card
+          class="w-full max-w-md md:max-w-sm shadow-lg rounded-lg hover:shadow-xl transition duration-300 ease-in-out"
+        >
+          <img
+            [src]="news.image"
+            alt="News Image"
+            class="w-full h-48 md:h-56 object-cover rounded-t-lg"
+          />
+          <mat-card-content class="p-4">
+            <h2 class="text-base md:text-lg font-semibold text-gray-800 text-center">
+              {{ news.title }}
+            </h2>
+            <p class="text-xs md:text-sm text-gray-600 mb-2 text-center">
+              {{ news.date | date }}
+            </p>
+            <p class="text-sm text-gray-700 line-clamp-2 text-center">
+              {{ news.description }}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
-  </div>
+
+    <!-- Botones de navegación -->
+    <button
+    class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-black p-4 rounded-full hover:bg-gray-900 shadow-lg opacity-80 hover:opacity-100"
+    (click)="prevSlide()"
+    >
+      <mat-icon fontIcon="arrow_back" class="text-2xl"></mat-icon>
+    </button>
+    <button
+      class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black text-black p-4 rounded-full hover:bg-gray-900 shadow-lg opacity-80 hover:opacity-100"
+      (click)="nextSlide()"
+    >
+      <mat-icon fontIcon="arrow_forward" class="text-2xl"></mat-icon>
+    </button>
+ </div>
+
+ <!-- Indicadores del carrusel -->
+ <div class="flex justify-center mt-4">
+   <span
+     *ngFor="let news of newsData; let i = index"
+     class="h-2 md:h-3 w-2 md:w-3 mx-1 md:mx-2 rounded-full cursor-pointer"
+     [ngClass]="{
+       'bg-gray-700': i === currentIndex,
+       'bg-gray-300': i !== currentIndex
+     }"
+     (click)="goToSlide(i)"
+   ></span>
+ </div>
+</mat-card>
 
   <!-- Consulta de Citas -->
   <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">
@@ -112,4 +152,3 @@
   <div *ngIf="appointments.length === 0 && !valid && !errorMessage" class="text-gray-500 text-center">
     No existen citas para los datos ingresados.
   </div>
-</mat-card>
