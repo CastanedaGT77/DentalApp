@@ -31,6 +31,9 @@ export class AuthenticationService {
       localStorage.setItem('access_token', userInfo.token);
       localStorage.setItem('list', JSON.stringify(userInfo.permissions));
 
+      localStorage.setItem('name', userInfo.firstName + ' ' + userInfo.lastName);
+      localStorage.setItem('companyId', userInfo.companyId);
+      localStorage.setItem('properties', userInfo.properties);
 
       return userInfo;
 
