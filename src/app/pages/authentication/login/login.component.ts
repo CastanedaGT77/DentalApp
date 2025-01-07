@@ -53,7 +53,7 @@ export class AppSideLoginComponent {
         localStorage.setItem('companyId', response.companyId);
         localStorage.setItem('properties', JSON.stringify(response.properties));
         this.configService.applyStylesFromLocalStorage();
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard']); 
       }
     } catch (error) {
       this.snackBar.open(
