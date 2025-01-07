@@ -50,6 +50,9 @@ export class AppSideLoginComponent {
           { duration: 3000 }
         );
         localStorage.setItem('access_token', response.token);
+        localStorage.setItem('companyId', response.companyId);
+        localStorage.setItem('properties', JSON.stringify(response.properties));
+        this.configService.applyStylesFromLocalStorage();
         this.router.navigate(['/dashboard']);
       }
     } catch (error) {

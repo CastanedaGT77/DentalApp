@@ -58,6 +58,7 @@ export class AuthenticationService {
     localStorage.removeItem('list');
     localStorage.removeItem('companyId');
     localStorage.removeItem('properties');
+    localStorage.removeItem('user_permissions');
     this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
   }
 
