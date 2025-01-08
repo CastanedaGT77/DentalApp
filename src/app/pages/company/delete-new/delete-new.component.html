@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Eliminar Noticia</h2>
+<mat-dialog-content>
+  <div>
+    <p>¿Te gustaría eliminar el registro:</p>
+    <br>
+    <p class="text-md font-bold">
+      {{data.element.title}} ?
+    </p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button (click)="closeDialog()" class="bg-secondary text-white" mat-flat-button>No</button>
+  <button (click)="eliminarNew(data.element.id)" class="bg-primary text-white" mat-flat-button cdkFocusInitial>Eliminar</button>
+</mat-dialog-actions>

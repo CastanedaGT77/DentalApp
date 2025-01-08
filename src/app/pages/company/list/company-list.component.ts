@@ -7,8 +7,8 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { CompanyService } from "../company.service";
 import { CompanyEditModalComponent } from "../update/company-edit-modal.component";
-import Swal from "sweetalert2";
 import { NewsCreateModalComponent } from "../create-new/news-create-modal.component";
+import { DeleteNew } from "../delete-new/delete-new.component";
 
 @Component({
     selector: "app-company-list",
@@ -19,21 +19,11 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
     company: any = null; // Datos de la empresa
     logoUrl: SafeResourceUrl | null = null;
 
-    displayedColumns: string[] = ["title", "description", "date", "image", "actions"];
-    newsDataSource = new MatTableDataSource([
-        {
-            title: "Noticia 1",
-            description: "Descripción de la noticia 1",
-            date: "2024-12-01",
-            image: "https://via.placeholder.com/150"
-        },
-        {
-            title: "Noticia 2",
-            description: "Descripción de la noticia 2",
-            date: "2024-12-02",
-            image: "https://via.placeholder.com/150"
-        }
-    ]);
+    news = [];
+    dataSource = new MatTableDataSource<any>(this.news);
+
+    displayedColumns: string[] = ["id","title", "description", "date", "image", "available", "actions"];
+    newsDataSource = new MatTableDataSource([]);
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -49,8 +39,6 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
         const response = await this._companyService.getCompanyProperties(this.companyId);
         if (response) {
             this.company = response.data;
-            console.log("respuesta company1", this.company);
-
             if (this.company.logo) {
                 this.logoUrl = this._sanitizer.bypassSecurityTrustResourceUrl(
                     this.company.logo
@@ -76,17 +64,18 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
 
     openCreateNewsDialog() {
         const dialogRef = this.dialog.open(NewsCreateModalComponent, {
-            width: "600px"
+            width: "600px",
         });
-
+    
+        // Manejar el cierre del modal
         dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                Swal.fire("Éxito", "La noticia fue creada exitosamente", "success");
-                // Añade la nueva noticia al listado
-                this.newsDataSource.data = [...this.newsDataSource.data, result];
+                // Si el resultado es positivo, recarga la lista de noticias
+                this.loadAllNews(); // Reutiliza tu función para obtener las noticias del backend
             }
         });
     }
+    
 
     formatUrl(url: string): string {
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -99,28 +88,48 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
         console.log("Editar noticia:", news);
     }
 
-    deleteNews(news: any) {
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "Esta acción eliminará la noticia seleccionada.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Sí, eliminar",
-            cancelButtonText: "Cancelar"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.newsDataSource.data = this.newsDataSource.data.filter(
-                    (item) => item !== news
-                );
-                Swal.fire("Eliminada", "La noticia fue eliminada correctamente.", "success");
+    deleteNew(element: any): void {
+        console.log('funciona delete delete', element);
+        this.dialog.open(DeleteNew, {
+            width: '300px',
+            data: { element: element }
+        }).afterClosed().subscribe(data => {
+            if(data){
+                this.loadAllNews();
             }
         });
     }
+
+    async loadAllNews() {
+        try {
+            const response = await this._companyService.getAllNews();
+            if (response) {
+                // Ajusta el formato de las noticias para que sean compatibles con el componente
+                this.news = response.data.map((newsItem: any) => ({
+                    id: newsItem.id,
+                    title: newsItem.title,
+                    description: newsItem.description,
+                    date: new Date(newsItem.created_at).toLocaleDateString(), // Convierte la fecha
+                    image: newsItem.image,
+                    available: newsItem.available ? "Sí" : "No" // Transforma el booleano en texto
+                }));
+    
+                this.newsDataSource.data = this.news; // Asigna los datos al dataSource
+                console.log('news', this.newsDataSource.data);
+            } else {
+                console.error('Error: No se encontraron datos en la respuesta.');
+            }
+        } catch (error) {
+            console.error('Error al cargar las noticias:', error);
+        }
+    }
+    
 
     async ngOnInit() {
         this.companyId = localStorage.getItem("companyId");
         this.spinnerService.show();
         await this.getCompanyProperties();
+        await this.loadAllNews();
         this.spinnerService.hide();
         this.newsDataSource.paginator = this.paginator;
     }

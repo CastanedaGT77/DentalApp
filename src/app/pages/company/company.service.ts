@@ -27,5 +27,53 @@ export class CompanyService {
             return null;
         }
     }
+
+
+    async getAllNews() {
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get('/news/all');
+            console.log('news back', response)
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener all news:", error);
+            return null;
+        }
+    }
+
+
+    async getAvailable() {
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.get('/news/available');
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener all news available:", error);
+            return null;
+        }
+    }
+
+
+    async crearNew(request: FormData) {
+        try {
+            axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
+            const response = await axiosClient.post('/news', request);
+            return response; // Devuelve la respuesta completa del backend
+        } catch (error) {
+            console.error("Error al cargar el documento:", error);
+            throw error; // Lanza el error para que sea manejado en el componente
+        }
+    }
+
+    async deleteNew(id: number): Promise<boolean|null> {
+        try {
+            const response = await axiosClient.delete(`/news/${id}`);
+            return response.data;
+        } catch (error) {
+            return null;
+        }
+    }     
+
+
     
 }

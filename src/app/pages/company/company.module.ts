@@ -21,6 +21,7 @@ import { CompanyRouting } from './company.routing';
 import { CompanyListComponent } from './list/company-list.component';
 import { CompanyEditModalComponent } from './update/company-edit-modal.component';
 import { NewsCreateModalComponent } from './create-new/news-create-modal.component';
+import { DeleteNew } from './delete-new/delete-new.component';
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import { NewsCreateModalComponent } from './create-new/news-create-modal.compone
     declarations: [
         CompanyListComponent,
         CompanyEditModalComponent,
-        NewsCreateModalComponent
+        NewsCreateModalComponent,
+        DeleteNew
     ],
     providers: [
       NgxSpinnerService,
