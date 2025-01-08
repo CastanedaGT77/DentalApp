@@ -88,6 +88,13 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
         });
     }
 
+    formatUrl(url: string): string {
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          return `https://${url}`;
+        }
+        return url;
+    }
+
     editNews(news: any) {
         console.log("Editar noticia:", news);
     }

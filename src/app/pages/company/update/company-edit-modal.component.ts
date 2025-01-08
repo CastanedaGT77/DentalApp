@@ -34,6 +34,9 @@ export class CompanyEditModalComponent {
       secondaryColor: [data.secondaryColor || '#ffffff', Validators.required],
       primaryButtonColor: [data.primaryButtonColor || '#ffffff', Validators.required],
       secondaryButtonColor: [data.secondaryButtonColor || '#ffffff', Validators.required],
+      waLink: [data.waLink, Validators.required],
+      fbLink: [data.fbLink, Validators.required],
+      igLink: [data.igLink, Validators.required],
     });
 
     if (data.logo) {

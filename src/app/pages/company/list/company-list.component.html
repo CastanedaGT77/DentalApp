@@ -8,38 +8,73 @@
                         <!-- Preview del logo en base64 -->
                         <img [src]="logoUrl" alt="Logo de la empresa" class="h-16 w-16 object-cover rounded-full" />
                     </div>
-                    <mat-card-title class="w-full text-center">{{ company?.header }}</mat-card-title>
+                    <mat-card-title class="w-full text-center">{{ company?.header }} - {{ company?.footer }} </mat-card-title>
                 </div>
             </mat-card-header>
 
             <mat-card-content class="mt-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Vista previa de colores -->
-                    <div class="flex flex-col items-center">
-                        <div class="text-center font-semibold mb-2">Color Primario</div>
-                        <div [style.backgroundColor]="company?.primaryColor" class="w-16 h-16 rounded-full border"></div>
-                        <span class="mt-2 text-gray-700">{{ company?.primaryColor }}</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <div class="text-center font-semibold mb-2">Color Secundario</div>
-                        <div [style.backgroundColor]="company?.secondaryColor" class="w-16 h-16 rounded-full border"></div>
-                        <span class="mt-2 text-gray-700">{{ company?.secondaryColor }}</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <div class="text-center font-semibold mb-2">Color del Botón Primario</div>
-                        <div [style.backgroundColor]="company?.primaryButtonColor" class="w-16 h-16 rounded-full border"></div>
-                        <span class="mt-2 text-gray-700">{{ company?.primaryButtonColor }}</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <div class="text-center font-semibold mb-2">Color del Botón Secundario</div>
-                        <div [style.backgroundColor]="company?.secondaryButtonColor" class="w-16 h-16 rounded-full border"></div>
-                        <span class="mt-2 text-gray-700">{{ company?.secondaryButtonColor }}</span>
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Vista previa de colores -->
+                  <div class="flex flex-col items-center">
+                    <div class="text-center font-semibold mb-2">Color Primario</div>
+                    <div [style.backgroundColor]="company?.primaryColor" class="w-16 h-16 rounded-full border"></div>
+                    <span class="mt-2 text-gray-700">{{ company?.primaryColor }}</span>
+                  </div>
+            
+                  <div class="flex flex-col items-center">
+                    <div class="text-center font-semibold mb-2">Color Secundario</div>
+                    <div [style.backgroundColor]="company?.secondaryColor" class="w-16 h-16 rounded-full border"></div>
+                    <span class="mt-2 text-gray-700">{{ company?.secondaryColor }}</span>
+                  </div>
+            
+                  <div class="flex flex-col items-center">
+                    <div class="text-center font-semibold mb-2">Botón Primario</div>
+                    <div [style.backgroundColor]="company?.primaryButtonColor" class="w-16 h-16 rounded-full border"></div>
+                    <span class="mt-2 text-gray-700">{{ company?.primaryButtonColor }}</span>
+                  </div>
+            
+                  <div class="flex flex-col items-center">
+                    <div class="text-center font-semibold mb-2">Botón Secundario</div>
+                    <div [style.backgroundColor]="company?.secondaryButtonColor" class="w-16 h-16 rounded-full border"></div>
+                    <span class="mt-2 text-gray-700">{{ company?.secondaryButtonColor }}</span>
+                  </div>
                 </div>
-            </mat-card-content>
+            
+                <!-- Redes Sociales -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold text-center mb-4">Redes Sociales</h3>
+                    <div class="flex justify-center gap-6">
+                      <a
+                        *ngIf="company?.waLink"
+                        [href]="formatUrl(company.waLink)"
+                        target="_blank"
+                        class="flex items-center justify-center w-16 h-16 bg-green-500 rounded-full shadow-lg hover:scale-110 transition transform"
+                        matTooltip="WhatsApp"
+                      >
+                        <mat-icon class="text-2xl">chat</mat-icon>
+                      </a>
+                      <a
+                        *ngIf="company?.fbLink"
+                        [href]="formatUrl(company.fbLink)"
+                        target="_blank"
+                        class="flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full shadow-lg hover:scale-110 transition transform"
+                        matTooltip="Facebook"
+                      >
+                        <mat-icon class="text-2xl">facebook</mat-icon>
+                      </a>
+                      <a
+                        *ngIf="company?.igLink"
+                        [href]="formatUrl(company.igLink)"
+                        target="_blank"
+                        class="flex items-center justify-center w-16 h-16 bg-pink-500 rounded-full shadow-lg hover:scale-110 transition transform"
+                        matTooltip="Instagram"
+                      >
+                        <mat-icon class="text-2xl">photo_camera</mat-icon>
+                      </a>
+                    </div>
+                  </div>
+                  
+              </mat-card-content>
 
             <div mat-dialog-actions class="flex justify-end space-x-4 mt-6">
                 <button mat-raised-button class="bg-primary text-white" (click)="openEditDialog()">

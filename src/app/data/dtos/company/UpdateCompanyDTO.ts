@@ -7,4 +7,7 @@ export class UpdateCompanyDTO {
     secondaryColor: string;
     primaryButtonColor: string;
     secondaryButtonColor: string;
+    waLink: string;
+    fbLink: string;
+    igLink: string;
 }

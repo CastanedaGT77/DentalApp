@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { HttpStatusCode } from "axios";
 import { axiosClient } from "src/app/axios/axiosConfig";
+import { ResetPasswordDTO } from "src/app/data/dtos/login/ResetPasswordDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -74,5 +76,16 @@ export class AuthenticationService {
     localStorage.removeItem('properties');
     this.logout(); // Ejecuta el logout y redirige al login
     this.router.navigate(['/login']);
+  }
+
+  async resetPassword(requestData: Partial<ResetPasswordDTO>){
+    try {
+        const response = await axiosClient.post('/auth/reset', requestData);
+        if(response && response.data.code === HttpStatusCode.InternalServerError)
+            throw Error();
+        return response.data;
+    } catch(error){
+        return null;
+    }
   }
 }

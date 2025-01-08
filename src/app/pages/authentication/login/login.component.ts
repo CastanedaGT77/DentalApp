@@ -70,26 +70,5 @@ export class AppSideLoginComponent {
     const dialogRef = this.dialog.open(ForgotPasswordModalComponent, {
       width: '400px',
     });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        Swal.fire({
-          title: '¿Está seguro?',
-          text: 'Se enviará un correo de recuperación de contraseña.',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Sí, enviar',
-          cancelButtonText: 'Cancelar',
-        }).then((confirmation) => {
-          if (confirmation.isConfirmed) {
-            Swal.fire(
-              'Correo enviado',
-              'Revisa tu bandeja de entrada.',
-              'success'
-            );
-          }
-        });
-      }
-    });
   }
 }
