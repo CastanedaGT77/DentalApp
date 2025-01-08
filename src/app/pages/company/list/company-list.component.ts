@@ -75,7 +75,20 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
             }
         });
     }
-    
+
+    openEditNewsDialog(news: any) {
+        const dialogRef = this.dialog.open(NewsCreateModalComponent, {
+          width: "600px",
+          data: news, // Pasamos los datos de la noticia seleccionada
+        });
+      
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            // Recarga la lista de noticias después de una edición exitosa
+            this.loadAllNews();
+          }
+        });
+    }
 
     formatUrl(url: string): string {
         if (!url.startsWith('http://') && !url.startsWith('https://')) {

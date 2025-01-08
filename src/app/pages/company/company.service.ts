@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpStatusCode } from "axios";
 import { axiosClient } from "src/app/axios/axiosConfig";
 import { UpdateCompanyDTO } from "src/app/data/dtos/company/UpdateCompanyDTO";
+import { UpdateNewDTO } from "src/app/data/dtos/company/UpdateNewDTO";
 
 
 @Injectable()
@@ -54,10 +55,10 @@ export class CompanyService {
     }
 
 
-    async crearNew(request: FormData) {
+    async crearNew(requestData: Partial<UpdateNewDTO>) {
         try {
             axiosClient.defaults.headers.common['Authorization'] = "Bearer 1031283sdasdsa";
-            const response = await axiosClient.post('/news', request);
+            const response = await axiosClient.post('/news', requestData);
             return response; // Devuelve la respuesta completa del backend
         } catch (error) {
             console.error("Error al cargar el documento:", error);
@@ -73,6 +74,18 @@ export class CompanyService {
             return null;
         }
     }     
+
+
+    async updateNew(requestData: Partial<UpdateNewDTO>){
+        try {
+            const response = await axiosClient.put('/news', requestData);
+            if(response && response.data.code === HttpStatusCode.InternalServerError)
+                throw Error();
+            return response.data;
+        } catch(error){
+            return null;
+        }
+    }
 
 
     
