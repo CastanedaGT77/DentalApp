@@ -89,50 +89,49 @@ export class NewsCreateModalComponent {
 
   async save() {
     if (this.newsForm.valid) {
-      const newsData = {
-        title: this.newsForm.get('title')?.value,
-        description: this.newsForm.get('description')?.value,
-        image: this.base64Image, // Imagen en Base64
-        ...(this.isEditMode && { id: this.data.id }), // Solo incluye el ID en caso de edición
-      };
-  
-      const actionText = this.isEditMode ? 'actualizar' : 'crear';
-  
-      Swal.fire({
-        title: 'Confirmar acción',
-        text: `¿Está seguro de que desea ${actionText} esta noticia?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: `Sí, ${actionText}`,
-        cancelButtonText: 'Cancelar',
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          try {
-            const response = this.isEditMode
-              ? await this.companyService.updateNew(newsData) // Actualiza
-              : await this.companyService.crearNew(newsData); // Crea nueva
-  
-            if (response?.code === 200 && this.isEditMode) {
-              // Alerta para actualización exitosa
-              Swal.fire('Éxito', 'La noticia fue actualizada exitosamente.', 'success');
-            } else if (response?.code === 201 && !this.isEditMode) {
-              // Alerta para creación exitosa
-              Swal.fire('Éxito', 'La noticia fue creada exitosamente.', 'success');
-            } else {
-              throw new Error(`Error inesperado al ${actionText} la noticia.`);
+        const newsData = {
+            title: this.newsForm.get('title')?.value,
+            description: this.newsForm.get('description')?.value,
+            image: this.base64Image, // Imagen en Base64
+            ...(this.isEditMode && { id: this.data.id }), // Solo incluye el ID en caso de edición
+        };
+
+        const actionText = this.isEditMode ? 'actualizar' : 'crear';
+
+        Swal.fire({
+            title: 'Confirmar acción',
+            text: `¿Está seguro de que desea ${actionText} esta noticia?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Sí, ${actionText}`,
+            cancelButtonText: 'Cancelar',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = this.isEditMode
+                        ? await this.companyService.updateNew(newsData) // Actualiza
+                        : await this.companyService.crearNew(newsData); // Crea nueva
+
+                    // Manejo correcto de alertas según código de respuesta
+                    if (response && response.code === 200 && this.isEditMode) {
+                        Swal.fire('Éxito', 'Noticia actualizada exitosamente.', 'success');
+                    } else if (response && response.code === 201 && !this.isEditMode) {
+                        Swal.fire('Éxito', 'Noticia creada exitosamente.', 'success');
+                    } else {
+                        throw new Error(`Error al ${actionText} la noticia.`);
+                    }
+
+                    this.dialogRef.close(true); // Cierra el modal y notifica éxito
+                } catch (error) {
+                    console.error(`Error al ${actionText} la noticia:`, error);
+                    Swal.fire('Error', `Ocurrió un problema al ${actionText} la noticia.`, 'error');
+                }
             }
-  
-            this.dialogRef.close(true); // Cierra el modal y notifica éxito
-          } catch (error) {
-            console.error(`Error al ${actionText} la noticia:`, error);
-            Swal.fire('Error', `Ocurrió un problema al ${actionText} la noticia.`, 'error');
-          }
-        }
-      });
+        });
     } else {
-      Swal.fire('Error', 'Por favor complete todos los campos.', 'error');
+        Swal.fire('Error', 'Por favor complete todos los campos.', 'error');
     }
   }
   
