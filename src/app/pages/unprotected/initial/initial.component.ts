@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { ScheduleAppointmentModalComponent } from '../new-appointment/schedule-appointment-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { InitialService } from './initial.service';
+import { ScheduleAppointmentModalComponent } from '../new-appointment/schedule-appointment-modal.component';
 
 interface Appointment {
   codCita: string;
@@ -39,50 +40,16 @@ export class InitialComponent implements OnInit {
 
   displayedColumns: string[] = ['codCita', 'fecha', 'hora'];
 
-  newsData: News[] = [
-    {
-      title: 'Nueva Clínica Inaugurada',
-      description: 'Apertura de nuestra nueva clínica en el centro de la ciudad.',
-      date: '2024-12-10',
-      image: './assets/images/products/s5.jpg',
-    },
-    {
-      title: 'Promoción Especial',
-      description: 'Consulta gratuita durante diciembre.',
-      date: '2024-12-05',
-      image: './assets/images/products/s7.jpg',
-    },
-    {
-      title: 'Nuevo Horario',
-      description: 'Extendimos el horario de atención los fines de semana.',
-      date: '2024-12-01',
-      image: './assets/images/products/s4.jpg',
-    },
-  ];
+  // Noticias desde el backend
+  newsData: News[] = [];
   currentIndex: number = 0; // Índice actual del carrusel
 
-  // Funciones para el carrusel
-  nextSlide() {
-    if (this.currentIndex < this.newsData.length - 1) {
-      this.currentIndex++;
-    } else {
-      this.currentIndex = 0; // Regresar al inicio
-    }
-  }
-
-  prevSlide() {
-    if (this.currentIndex > 0) {
-      this.currentIndex--;
-    } else {
-      this.currentIndex = this.newsData.length - 1; // Ir al último slide
-    }
-  }
-
-  goToSlide(index: number) {
-    this.currentIndex = index;
-  }
-
-  constructor(private fb: FormBuilder, private router: Router,  private dialog: MatDialog,) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private dialog: MatDialog,
+    private initialService: InitialService // Servicio para obtener las noticias
+  ) {
     this.userForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -90,7 +57,49 @@ export class InitialComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadNews(); // Cargar noticias desde el backend al iniciar el componente
+  }
+
+  // Cargar noticias desde el backend
+  async loadNews(): Promise<void> {
+    try {
+      const response = await this.initialService.getNews();
+      if (response && response.code === 200 && response.data.length > 0) {
+        this.newsData = response.data.map((news: any) => ({
+          title: news.title,
+          description: news.description,
+          date: news.created_at, // Usamos `created_at` para la fecha
+          image: news.image, // Asumimos que `image` es Base64 o una URL válida
+        }));
+      } else {
+        console.error('No se encontraron noticias.');
+      }
+    } catch (error) {
+      console.error('Error al cargar las noticias:', error);
+    }
+  }
+
+  // Funciones para el carrusel
+  nextSlide(): void {
+    if (this.currentIndex < this.newsData.length - 1) {
+      this.currentIndex++;
+    } else {
+      this.currentIndex = 0; // Regresar al inicio
+    }
+  }
+
+  prevSlide(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    } else {
+      this.currentIndex = this.newsData.length - 1; // Ir al último slide
+    }
+  }
+
+  goToSlide(index: number): void {
+    this.currentIndex = index;
+  }
 
   onLoadUserAppointments(): void {
     if (this.userForm.invalid) {
@@ -124,7 +133,7 @@ export class InitialComponent implements OnInit {
       width: '500px',
       data: { userCode: 'USR001' }, // Pasar el código del usuario
     });
-  
+
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         console.log('Cita creada exitosamente');
@@ -133,4 +142,4 @@ export class InitialComponent implements OnInit {
       }
     });
   }
-} 
+}
