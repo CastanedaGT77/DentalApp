@@ -44,11 +44,14 @@ export class InitialComponent implements OnInit {
   newsData: News[] = [];
   currentIndex: number = 0; // Índice actual del carrusel
 
+  // Propiedades de la compañía
+  companyProperties: any = null;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
-    private initialService: InitialService // Servicio para obtener las noticias
+    private initialService: InitialService // Servicio para obtener las noticias y propiedades
   ) {
     this.userForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -58,7 +61,8 @@ export class InitialComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadNews(); // Cargar noticias desde el backend al iniciar el componente
+    this.loadNews(); // Cargar noticias desde el backend
+    this.loadCompanyProperties(); // Cargar propiedades de la compañía
   }
 
   // Cargar noticias desde el backend
@@ -77,6 +81,20 @@ export class InitialComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error al cargar las noticias:', error);
+    }
+  }
+
+  // Cargar propiedades de la compañía
+  async loadCompanyProperties(): Promise<void> {
+    try {
+      const response = await this.initialService.getCompanyProperties();
+      if (response && response.code === 200) {
+        this.companyProperties = response.data.data;
+      } else {
+        console.error('No se encontraron propiedades de la compañía.');
+      }
+    } catch (error) {
+      console.error('Error al cargar las propiedades de la compañía:', error);
     }
   }
 
