@@ -96,46 +96,36 @@ export class NewsCreateModalComponent {
             ...(this.isEditMode && { id: this.data.id }), // Solo incluye el ID en caso de edición
         };
 
-        const actionText = this.isEditMode ? 'actualizar' : 'crear';
+        try {
+            let response;
 
-        Swal.fire({
-            title: 'Confirmar acción',
-            text: `¿Está seguro de que desea ${actionText} esta noticia?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: `Sí, ${actionText}`,
-            cancelButtonText: 'Cancelar',
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = this.isEditMode
-                        ? await this.companyService.updateNew(newsData) // Actualiza
-                        : await this.companyService.crearNew(newsData); // Crea nueva
-
-                    // Manejo correcto de alertas según código de respuesta
-                    if (response && response.code === 200 && this.isEditMode) {
-                        Swal.fire('Éxito', 'Noticia actualizada exitosamente.', 'success');
-                    } else if (response && response.code === 201 && !this.isEditMode) {
-                        Swal.fire('Éxito', 'Noticia creada exitosamente.', 'success');
-                    } else {
-                        throw new Error(`Error al ${actionText} la noticia.`);
-                    }
-
-                    this.dialogRef.close(true); // Cierra el modal y notifica éxito
-                } catch (error) {
-                    console.error(`Error al ${actionText} la noticia:`, error);
-                    Swal.fire('Error', `Ocurrió un problema al ${actionText} la noticia.`, 'error');
+            if (this.isEditMode) {
+                response = await this.companyService.updateNew(newsData); // Actualiza
+                if (response?.code === 200) { // Verifica el código HTTP correcto
+                    this.dialogRef.close({ success: true }); // Notifica éxito al componente padre
+                    return;
+                }
+            } else {
+                response = await this.companyService.crearNew(newsData); // Crea nueva
+                if (response?.status === 201) { // Verifica el código HTTP correcto
+                    this.dialogRef.close({ success: true }); // Notifica éxito al componente padre
+                    return;
                 }
             }
-        });
+
+            // Si el código no es el esperado
+            this.dialogRef.close({ error: true });
+        } catch (error) {
+            console.error('Error al guardar la noticia:', error);
+            this.dialogRef.close({ error: true }); // Notifica error al componente padre
+        }
     } else {
         Swal.fire('Error', 'Por favor complete todos los campos.', 'error');
     }
   }
-  
+
   close() {
-    this.dialogRef.close(false);
+      this.dialogRef.close();
   }
+
 }

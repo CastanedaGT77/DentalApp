@@ -9,6 +9,7 @@ import { CompanyService } from "../company.service";
 import { CompanyEditModalComponent } from "../update/company-edit-modal.component";
 import { NewsCreateModalComponent } from "../create-new/news-create-modal.component";
 import { DeleteNew } from "../delete-new/delete-new.component";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-company-list",
@@ -67,26 +68,49 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
             width: "600px",
         });
     
-        // Manejar el cierre del modal
         dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                // Si el resultado es positivo, recarga la lista de noticias
-                this.loadAllNews(); // Reutiliza tu función para obtener las noticias del backend
+            if (result && result.success) {
+                Swal.fire({
+                    title: 'Éxito',
+                    text: 'Noticia creada exitosamente.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                });
+                this.loadAllNews(); // Recarga las noticias después de una creación exitosa
+            } else if (result && result.error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Ocurrió un problema al crear la noticia.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
             }
         });
     }
-
+    
     openEditNewsDialog(news: any) {
         const dialogRef = this.dialog.open(NewsCreateModalComponent, {
-          width: "600px",
-          data: news, // Pasamos los datos de la noticia seleccionada
+            width: "600px",
+            data: news, // Pasamos los datos de la noticia seleccionada
         });
-      
+    
         dialogRef.afterClosed().subscribe((result) => {
-          if (result) {
-            // Recarga la lista de noticias después de una edición exitosa
-            this.loadAllNews();
-          }
+            if (result && result.success) {
+                Swal.fire({
+                    title: 'Éxito',
+                    text: 'Noticia actualizada exitosamente.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                });
+                this.loadAllNews(); // Recarga las noticias después de una edición exitosa
+            } else if (result && result.error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Ocurrió un problema al actualizar la noticia.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
+            }
         });
     }
 
