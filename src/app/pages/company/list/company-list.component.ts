@@ -114,6 +114,45 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
         });
     }
 
+    async toggleAvailable(news: any) {
+        const newStatus = !news.available; // Cambia el estado actual
+        Swal.fire({
+          title: 'Confirmar acción',
+          text: `¿Está seguro de que desea cambiar el estado a ${
+            newStatus ? 'Disponible' : 'No Disponible'
+          }?`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, cambiar',
+          cancelButtonText: 'Cancelar',
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await this._companyService.toggleNewsAvailable(news.id);
+              if (response && response.code === 201) {
+                news.available = newStatus; // Actualiza el estado en el objeto local
+                Swal.fire(
+                  'Éxito',
+                  'El estado de disponibilidad fue cambiado exitosamente.',
+                  'success'
+                );
+              } else {
+                throw new Error('No se pudo cambiar el estado.');
+              }
+            } catch (error) {
+              console.error('Error al cambiar el estado:', error);
+              Swal.fire(
+                'Error',
+                'Ocurrió un problema al intentar cambiar el estado.',
+                'error'
+              );
+            }
+          }
+        });
+      }
+
     formatUrl(url: string): string {
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
           return `https://${url}`;

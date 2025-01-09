@@ -88,5 +88,13 @@ export class CompanyService {
     }
 
 
-    
+    async toggleNewsAvailable(id: number) {
+        try {
+          const response = await axiosClient.put(`/news/toggle/${id}`);
+          return response.data; // Devuelve la respuesta
+        } catch (error) {
+          console.error('Error al cambiar el estado de disponibilidad:', error);
+          throw error; // Lanza el error para manejarlo en el componente
+        }
+    }
 }
